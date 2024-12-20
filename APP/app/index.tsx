@@ -1,9 +1,7 @@
-import { View, Text } from "react-native";
+import TelaInicio01 from "@/components/TelaInicio01";
 
 export default function HomeScreen() {
   return(
-    <View>
-      <Text>hello word</Text>
-    </View>
+    <TelaInicio01/>
   );
 }
