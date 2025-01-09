@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
 
-export default function IniciarSessao() {
+export default function IniciarSessao({navigation}) {
   return (
     <View style={styles.container}>
       <Text style={[styles.welcomeText, { fontWeight: 'bold' }]}>Iniciar Sessão</Text>
@@ -10,7 +10,7 @@ export default function IniciarSessao() {
       <Text style={styles.text}>Password</Text>
       <TextInput style={styles.textbox} secureTextEntry={true}/>
       <Text style={styles.esqueci}>Esqueci a password!</Text>
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Navegacao")}>
         <Text style={styles.buttonText}>Iniciar Sessão</Text>
       </TouchableOpacity>
     </View>

@@ -10,10 +10,9 @@ export default function CriarConta02() {
 
   const genders = ['Masculino', 'Feminino', 'Não incluir'];
 
-  // Configurando o limite de 10 anos atrás
-  const minimumDate = new Date(1900, 0, 1); // Data mínima válida (pode ajustar conforme necessário)
-  const maximumDate = new Date(); // Data atual
-  maximumDate.setFullYear(maximumDate.getFullYear() - 10); // Apenas até 10 anos atrás
+  const minimumDate = new Date(1900, 0, 1);
+  const maximumDate = new Date();
+  maximumDate.setFullYear(maximumDate.getFullYear() - 10);
 
   const onDateChange = (_event: any, selectedDate?: Date) => {
     setShowDatePicker(false);

@@ -6,6 +6,7 @@ import Selecao from "@/components/IniciarCriar/Selecao";
 import IniciarSessao from "@/components/IniciarCriar/IniciarSessao";
 import CriarConta01 from "@/components/IniciarCriar/CriarConta01";
 import CriarConta02 from "@/components/IniciarCriar/CriarConta02";
+import Navegacao from "@/components/Navegacao";
 import React from "react";
 
 const Stack = createStackNavigator();
@@ -19,6 +20,7 @@ export default function HomeScreen() {
       <Stack.Screen name="IniciarSessao" component={IniciarSessao} options={{headerShown: false}}/>
       <Stack.Screen name="CriarConta01" component={CriarConta01} options={{headerShown: false}}/>
       <Stack.Screen name="CriarConta02" component={CriarConta02} options={{headerShown: false}}/>
+      <Stack.Screen name="Navegacao" component={Navegacao} options={{headerShown: false}}/>
     </Stack.Navigator>
   );
 }
