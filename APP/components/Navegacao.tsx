@@ -2,6 +2,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import Conversa from './Paciente/Conversa/Conversa';
+import Profissionais from './Paciente/Profissionais/Profissionais';
 
 const Tab = createBottomTabNavigator();
 
@@ -27,7 +28,7 @@ return (
         />
         <Tab.Screen
           name="Profissionais"
-          component={() => null} 
+          component={() => Profissionais()} 
           options={{
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="people-outline" size={size} color={color} />
