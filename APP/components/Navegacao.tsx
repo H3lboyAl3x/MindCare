@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import Conversa from './Paciente/Conversa/Conversa';
 import Profissionais from './Paciente/Profissionais/Profissionais';
+import Perfil01 from './Paciente/Perfil/Perfil01';
 
 const Tab = createBottomTabNavigator();
 
@@ -18,7 +19,7 @@ return (
       }}>
         <Tab.Screen
           name="Conversas"
-          component={() => Conversa()}
+          component={Conversa}
           options={{
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="chatbox-outline" size={size} color={color} />
@@ -28,7 +29,7 @@ return (
         />
         <Tab.Screen
           name="Profissionais"
-          component={() => Profissionais()} 
+          component={Profissionais} 
           options={{
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="people-outline" size={size} color={color} />
@@ -48,7 +49,7 @@ return (
         />
         <Tab.Screen
           name="Perfil"
-          component={() => null} 
+          component={Perfil01} 
           options={{
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="person-circle-outline" size={size} color={color} />
