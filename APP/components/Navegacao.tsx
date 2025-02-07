@@ -4,6 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import Conversa from './Paciente/Conversa/Conversa';
 import Profissionais from './Paciente/Profissionais/Profissionais';
 import Perfil01 from './Paciente/Perfil/Perfil01';
+import Consulta from './Paciente/Consulta/Consulta';
 
 const Tab = createBottomTabNavigator();
 
@@ -39,7 +40,7 @@ return (
         />
         <Tab.Screen
           name="Consulta"
-          component={() => null} 
+          component={Consulta} 
           options={{
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="videocam-outline" size={size} color={color} />
