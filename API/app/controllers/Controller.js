@@ -13,6 +13,7 @@ export const getAllUsuario = async (req, res) => {
 
 export const createUsuario = async (req, res) => {
     try {
+        console.log("Recebido no backend:", req.body); 
         const newUser = await Services.createUsuario(req.body);
         res.status(201).json(newUser);
     } catch (error) {

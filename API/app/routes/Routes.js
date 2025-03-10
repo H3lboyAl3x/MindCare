@@ -7,7 +7,7 @@ const router = express.Router();
 router.get("/users", Controller.getAllUsuario);
 router.post("/users", Controller.createUsuario);
 router.get("/users/:id", Controller.getUsuarioById);
-router.put("/users/:id", Controller.uptadeUsuario);  // Alterado para PUT para atualização
+router.put("/users/:id", Controller.uptadeUsuario);
 router.delete("/users/:id", Controller.deleteUsuario);
 
 //PARA O PACIENTE_________________________________________

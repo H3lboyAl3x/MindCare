@@ -16,9 +16,9 @@ const Usuario = sequelize.define('usuario', {
         allowNull: false
     },
     telefone: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: false
-    },
+    },    
     datanascimento: {
         type: DataTypes.DATE,
         allowNull: false
