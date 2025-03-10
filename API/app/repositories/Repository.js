@@ -25,6 +25,10 @@ export const getAllUsuario = async () => {
 export const getUsuarioById = async (id) => {
     return await Usuario.findByPk(id);
 };
+
+//Buscar um usuario por Nome(analise)
+//buscar um usuario por Nome e Password(Login)
+
 //atualizar usuario
 export const uptadeUsuario = async (id, updates) => {
     const user = await Usuario.findByPk(id);
