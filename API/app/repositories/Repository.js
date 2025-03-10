@@ -7,6 +7,10 @@ import Semanas from "../models/Semanas.js";
 import Consultas from "../models/Consultas.js";
 import Chat from "../models/Chat.js";
 import Mensagem from "../models/Mensagem.js";
+import NumeroP from "../models/NumeroP.js";
+import SemanasProf from "../models/SemanaProf.js";
+import HorarioProf from "../models/HorarioProf.js";
+import ExperienciaProf from "../models/ExperienciaProf.js";
  
 //PARA O USUARIO_____________________________________________________________________
 //adicionar usurio
@@ -289,5 +293,129 @@ export const deleteMensagem = async (id) => {
         return null
     }
     await mensagem.destroy();
+    return true;
+};
+
+//PARANUMEROP______________________________________________
+// adicionar Numerop
+export const createNumeroP = async (numeroPData) => {
+    return await NumeroP.create(numeroPData);
+};
+// buscar todas as NumeroP
+export const getAllNumeroP = async () => {
+    return await NumeroP.findAll();
+};
+// buscar uma NumeroP por id
+export const getNumeroPById = async (id) => {
+    return await NumeroP.findByPk(id);
+};
+// atualizar NumeroP
+export const updateNumeroP = async (id, updates) => {
+    const numeroP = await NumeroP.findByPk(id);
+    if (!numeroP) {
+        return null;
+    }
+    return await numeroP.update(updates);
+};
+// apagar NumeroP
+export const deleteNumeroP = async (id) => {
+    const numeroP = await NumeroP.findByPk(id);
+    if (!numeroP) {
+        return null
+    }
+    await numeroP.destroy();
+    return true;
+};
+
+//PARASEMANASPROF______________________________________________
+// adicionar SemanasProf
+export const createSemanasProf = async (semanasProfData) => {
+    return await SemanasProf.create(semanasProfData);
+};
+// buscar todas as SemanasProf
+export const getAllSemanasProf = async () => {
+    return await SemanasProf.findAll();
+};
+// buscar uma SemanasProf por id
+export const getSemanasProfById = async (id) => {
+    return await SemanasProf.findByPk(id);
+};
+// atualizar SemanasProf
+export const updateSemanasProf = async (id, updates) => {
+    const semanasprof = await SemanasProf.findByPk(id);
+    if (!semanasprof) {
+        return null;
+    }
+    return await semanasprof.update(updates);
+};
+// apagar SemanasProf
+export const deleteSemanasProf = async (id) => {
+    const semanasprof = await SemanasProf.findByPk(id);
+    if (!semanassrof) {
+        return null
+    }
+    await semanasprof.destroy();
+    return true;
+};
+
+//PARAHORARIOPROF______________________________________________
+// adicionar HorarioProf
+export const createHorarioProf = async (HorarioProfData) => {
+    return await HorarioProf.create(HorarioProfData);
+};
+// buscar todas as HorarioProf
+export const getAllHorarioProf= async () => {
+    return await HorarioProf.findAll();
+};
+// buscar uma HorarioProf por id
+export const getHorarioProfById = async (id) => {
+    return await HorarioProf.findByPk(id);
+};
+// atualizar HorarioProf
+export const updateHorarioProf = async (id, updates) => {
+    const horarioprof = await HorarioProf.findByPk(id);
+    if (!horarioprof) {
+        return null;
+    }
+    return await horarioprof.update(updates);
+};
+// apagar HorarioProf
+export const deleteHorarioProf = async (id) => {
+    const horarioprof = await HorarioProf.findByPk(id);
+    if (!horarioprof) {
+        return null
+    }
+    await horarioprof.destroy();
+    return true;
+};
+
+//PARAEXPERIENCIAPROF______________________________________________
+// adicionar ExperienciaProf
+export const createExperienciaProf = async (ExperienciaProfData) => {
+    return await ExperienciaProf.create(ExperienciaProfData);
+};
+// buscar todas as ExperienciaProf
+export const getAllExperienciaProf = async () => {
+    return await ExperienciaProf.findAll();
+};
+// buscar uma ExperienciaProf por id
+export const getExperienciaProfById = async (id) => {
+    return await ExperienciaProf.findByPk(id);
+};
+// atualizar ExperienciaProf
+export const updateExperienciaProf = async (id, updates) => {
+    const experienciaprof = await ExperienciaProf.findByPk(id);
+    if (!experienciaprof) {
+        return null;
+    }
+    return await experienciaprof.update(updates);
+};
+// apagar ExperienciaProf
+export const deleteExperienciaProf = async (id) => {
+    const experienciaprof = await NumeroP.findByPk(id);
+    if (!experienciaprof) {
+        return null
+    }
+    await experienciaprof.destroy();
     return true;
 };

@@ -192,3 +192,91 @@ export const updateMensagem = async (id, mensagemData) => {
 export const deleteMensagem = async (id) => {
     return await Repository.deleteMensagem(id);
 };
+
+//PARA A NumeroP____________________________________________
+// adicionar NumeroP
+export const createNumeroP = async (NumeroPData) => {
+    return await Repository.createNumeroP(NumeroPData);
+};
+// buscar todas as NumeroP
+export const getAllNumeroP = async () => {
+    return await Repository.getAllNumeroP();
+};
+// buscar uma NumeroP por id
+export const getNumeroPById = async (id) => {
+    return await Repository.getNumeroPById(id);
+};
+// atualizar NumeroP
+export const updateNumeroP = async (id, NumeroPData) => {
+    return await Repository.updateNumeroP(id, NumeroPData);
+};
+// apagar NumeroP
+export const deleteNumeroP = async (id) => {
+    return await Repository.deleteNumeroP(id);
+};
+
+//PARA A SemanasProf____________________________________________
+// adicionar SemanasProf
+export const createSemanasProf = async (SemanasProfData) => {
+    return await Repository.createSemanasProf(SemanasProfData);
+};
+// buscar todas as SemanasProf
+export const getAllSemanasProf = async () => {
+    return await Repository.getAllSemanasProf();
+};
+// buscar uma SemanasProf por id
+export const getSemanasProfById = async (id) => {
+    return await Repository.getSemanasProfById(id);
+};
+// atualizar SemanasProf
+export const updateSemanasProf = async (id, SemanasProfData) => {
+    return await Repository.updateSemanasProf(id, SemanasProfData);
+};
+// apagar SemanasProf
+export const deleteSemanasProf = async (id) => {
+    return await Repository.deleteSemanasProf(id);
+};
+
+//PARA A HorarioProf____________________________________________
+// adicionar HorarioProf
+export const createHorarioProf = async (HorarioProfData) => {
+    return await Repository.createHorarioProf(HorarioProfData);
+};
+// buscar todas as HorarioProf
+export const getAllHorarioProf = async () => {
+    return await Repository.getAllHorarioProf();
+};
+// buscar uma HorarioProf por id
+export const getHorarioProfById = async (id) => {
+    return await Repository.getHorarioProfById(id);
+};
+// atualizar HorarioProf
+export const updateHorarioProf = async (id, HorarioProfData) => {
+    return await Repository.updateHorarioProf(id, HorarioProfData);
+};
+// apagar HorarioProf
+export const deleteHorarioProf = async (id) => {
+    return await Repository.deleteHorarioProf(id);
+};
+
+//PARA A ExperienciaProf____________________________________________
+// adicionar ExperienciaProf
+export const createExperienciaProf = async (ExperienciaProfData) => {
+    return await Repository.createExperienciaProf(ExperienciaProfData);
+};
+// buscar todas as ExperienciaProf
+export const getAllExperienciaProf = async () => {
+    return await Repository.getAllExperienciaProf();
+};
+// buscar uma ExperienciaProf por id
+export const getExperienciaProfById = async (id) => {
+    return await Repository.getExperienciaProfById(id);
+};
+// atualizar ExperienciaProf
+export const updateExperienciaProf = async (id, ExperienciaProfData) => {
+    return await Repository.updateExperienciaProf(id, ExperienciaProfData);
+};
+// apagar ExperienciaProf
+export const deleteExperienciaProf = async (id) => {
+    return await Repository.deleteExperienciaProf(id);
+};

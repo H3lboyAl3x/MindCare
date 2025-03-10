@@ -66,4 +66,32 @@ router.get("/mensagens/:id", Controller.getMensagemById);
 router.put("/mensagens/:id", Controller.updateMensagem);
 router.delete("/mensagens/:id", Controller.deleteMensagem);
 
+//PARA A NumeroP________________________________________
+router.get("/numeroP", Controller.getAllNumeroP);
+router.post("/numeroP", Controller.createNumeroP);
+router.get("/numeroP/:id", Controller.getNumeroPById);
+router.put("/numeroP/:id", Controller.updateNumeroP);
+router.delete("/numeroP/:id", Controller.deleteNumeroP);
+
+//PARA A SemanasProf________________________________________
+router.get("/semanasprof", Controller.getAllSemanasProf);
+router.post("/semanasprof", Controller.createSemanasProf);
+router.get("/semanasprof/:id", Controller.getSemanasProfById);
+router.put("/semanasprof/:id", Controller.updateSemanasProf);
+router.delete("/semanasprof/:id", Controller.deleteSemanasProf);
+
+//PARA A HorarioProf________________________________________
+router.get("/horarioprof", Controller.getAllHorarioProf);
+router.post("/horarioprof", Controller.createHorarioProf);
+router.get("/horarioprof/:id", Controller.getHorarioProfById);
+router.put("/horarioprof/:id", Controller.updateHorarioProf);
+router.delete("/horarioprof/:id", Controller.deleteHorarioProf);
+
+//PARA A ExperienciaProf________________________________________
+router.get("/experienciaprof", Controller.getAllExperienciaProf);
+router.post("/experienciaprof", Controller.createExperienciaProf);
+router.get("/experienciaprof/:id", Controller.getExperienciaProfById);
+router.put("/experienciaprof/:id", Controller.updateExperienciaProf);
+router.delete("/experienciaprof/:id", Controller.deleteExperienciaProf);
+
 export default router;

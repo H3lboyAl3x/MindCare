@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 
 //rotas
-app.use("/api", Routes);
+app.use("/MindCare/API", Routes);
 
 //middlewares de erro
 app.use(errorHandler);

@@ -1,7 +1,11 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
+import { useState } from 'react';
 
 export default function IniciarSessao({navigation}) {
+
+  
+
   return (
     <View style={styles.container}>
       <Text style={[styles.welcomeText, { fontWeight: 'bold' }]}>Iniciar Sessão</Text>

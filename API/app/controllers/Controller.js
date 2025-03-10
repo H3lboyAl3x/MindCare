@@ -495,3 +495,223 @@ export const deleteMensagem = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+//PARA A NumeroP______________________________________________
+export const getAllNumeroP = async (req, res) => {
+    try {
+        const numeroP = await Services.getAllNumeroP();
+        res.status(200).json(numeroP);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+export const createNumeroP = async (req, res) => {
+    try {
+        const newNumeroPm = await Services.createNumeroP(req.body);
+        res.status(201).json(newNumeroP);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
+export const getNumeroPById = async (req, res) => {
+    try {
+        const numeroP = await Services.getNumeroPById(req.params.id);
+        if (!numeroP) {
+            return res.status(404).json({ message: 'NumeroP nao encontrada de id:' + req.params.id });
+        }
+        res.status(200).json(numeroP);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+export const updateNumeroP = async (req, res) => {
+    try {
+        const updateNumeroP = await Services.updateNumeroP(req.params.id, req.body);
+        if (!updateNumeroP) {
+            return res.status(404).json({ message: 'NumeroP nao encontrada' });
+        }
+        res.status(200).json(updateNumeroP);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
+export const deleteNumeroP = async (req, res) => {
+    try {
+        const deleted = await Services.deleteNumeroP(req.params.id);
+        if (!deleted) {
+            return res.status(404).json({ message: 'NumeroP nao encontrada' });
+        }
+        res.status(204).json();
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+//PARA A SemanasProf______________________________________________
+export const getAllSemanasProf = async (req, res) => {
+    try {
+        const semanasprof = await Services.getAllSemanasProf();
+        res.status(200).json(semanasprof);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+export const createSemanasProf = async (req, res) => {
+    try {
+        const newSemanasProf = await Services.createSemanasProf(req.body);
+        res.status(201).json(newSemanasProf);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
+export const getSemanasProfById = async (req, res) => {
+    try {
+        const semanasprof = await Services.getSemanasProfById(req.params.id);
+        if (!semanasprof) {
+            return res.status(404).json({ message: 'SemanasProf nao encontrada de id:' + req.params.id });
+        }
+        res.status(200).json(semanasprof);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+export const updateSemanasProf = async (req, res) => {
+    try {
+        const updateSemanasProf = await Services.updateSemanasProf(req.params.id, req.body);
+        if (!updateSemanasProf) {
+            return res.status(404).json({ message: 'SemanasProf nao encontrada' });
+        }
+        res.status(200).json(updateSemanasProf);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
+export const deleteSemanasProf = async (req, res) => {
+    try {
+        const deleted = await Services.deleteSemanasProf(req.params.id);
+        if (!deleted) {
+            return res.status(404).json({ message: 'SemanasProf nao encontrada' });
+        }
+        res.status(204).json();
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+//PARA A SemanasProf______________________________________________
+export const getAllHorarioProf = async (req, res) => {
+    try {
+        const horarioprof = await Services.getAllHorarioProf();
+        res.status(200).json(horarioprof);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+export const createHorarioProf = async (req, res) => {
+    try {
+        const newHorarioProf = await Services.createHorarioProf(req.body);
+        res.status(201).json(newHorarioProf);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
+export const getHorarioProfById = async (req, res) => {
+    try {
+        const horarioprof = await Services.getHorarioProfById(req.params.id);
+        if (!horarioprof) {
+            return res.status(404).json({ message: 'HorarioProf nao encontrada de id:' + req.params.id });
+        }
+        res.status(200).json(horarioprof);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+export const updateHorarioProf = async (req, res) => {
+    try {
+        const updateHorarioProf = await Services.updateHorarioProf(req.params.id, req.body);
+        if (!updateHorarioProf) {
+            return res.status(404).json({ message: 'HorarioProf nao encontrada' });
+        }
+        res.status(200).json(updateHorarioProf);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
+export const deleteHorarioProf = async (req, res) => {
+    try {
+        const deleted = await Services.deleteHorarioProf(req.params.id);
+        if (!deleted) {
+            return res.status(404).json({ message: 'eHorarioProf nao encontrada' });
+        }
+        res.status(204).json();
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+//PARA A ExperienciaProf______________________________________________
+export const getAllExperienciaProf = async (req, res) => {
+    try {
+        const experienciaprof = await Services.getAllExperienciaProf();
+        res.status(200).json(experienciaprof);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+export const createExperienciaProf = async (req, res) => {
+    try {
+        const newExperienciaProf = await Services.createExperienciaProf(req.body);
+        res.status(201).json(newExperienciaProf);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
+export const getExperienciaProfById = async (req, res) => {
+    try {
+        const experienciaprof = await Services.getExperienciaProfById(req.params.id);
+        if (!experienciaprof) {
+            return res.status(404).json({ message: 'ExperienciaProf nao encontrada de id:' + req.params.id });
+        }
+        res.status(200).json(experienciaprof);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+export const updateExperienciaProf = async (req, res) => {
+    try {
+        const updateExperienciaProf = await Services.updateExperienciaProf(req.params.id, req.body);
+        if (!updateExperienciaProf) {
+            return res.status(404).json({ message: 'ExperienciaProf nao encontrada' });
+        }
+        res.status(200).json(updateExperienciaProf);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
+export const deleteExperienciaProf = async (req, res) => {
+    try {
+        const deleted = await Services.deleteExperienciaProf(req.params.id);
+        if (!deleted) {
+            return res.status(404).json({ message: 'ExperienciaProf nao encontrada' });
+        }
+        res.status(204).json();
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
