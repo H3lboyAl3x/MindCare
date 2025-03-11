@@ -744,3 +744,113 @@ export const deleteExperienciaProf = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+//PARA O AreaTrabalho_______________________________________________
+export const getAllAreaTrabalho = async (req, res) => {
+    try {
+        const areaTrabalho = await Services.getAllAreaTrabalho();
+        res.status(200).json(areaTrabalho);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+export const createAreaTrabalho = async (req, res) => {
+    try {
+        const newAreaTrabalho = await Services.createAreaTrabalho(req.body);
+        res.status(201).json(newAreaTrabalho);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
+export const getAreaTrabalhoById = async (req, res) => {
+    try {
+        const areaTrabalho = await Services.getAreaTrabalhoById(req.params.id);
+        if (!areaTrabalho) {
+            return res.status(404).json({ message: 'Area de Trabalho nao encontrado de id:' + req.params.id });
+        }
+        res.status(200).json(areaTrabalho);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+export const updadeAreaTrabalho = async (req, res) => {
+    try {
+        const updateareaTrabalho = await Services.updadeAreaTrabalho(req.params.id, req.body);
+        if (!updateareaTrabalho) {
+            return res.status(404).json({ message: 'Area de Trabalho nao encontrado' });
+        }
+        res.status(200).json(updateareaTrabalho);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
+export const deleteAreaTrabalho = async (req, res) => {
+    try {
+        const deleted = await Services.deleteAreaTrabalho(req.params.id);
+        if (!deleted) {
+            return res.status(404).json({ message: 'Area de Trabalho nao encontrado' });
+        }
+        res.status(204).json();
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+//PARA O AreaProf_______________________________________________
+export const getAllAreaProf = async (req, res) => {
+    try {
+        const areaProf = await Services.getAllAreaProf();
+        res.status(200).json(areaProf);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+export const createAreaProf = async (req, res) => {
+    try {
+        const newAreaProf = await Services.createAreaProf(req.body);
+        res.status(201).json(newAreaProf);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
+export const getAreaProfById = async (req, res) => {
+    try {
+        const areaProf = await Services.getAreaProfById(req.params.id);
+        if (!areaProf) {
+            return res.status(404).json({ message: 'areaProf nao encontrado de id:' + req.params.id });
+        }
+        res.status(200).json(areaProf);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+export const updadeAreaProf = async (req, res) => {
+    try {
+        const updateAreaProf = await Services.updadeAreaProf(req.params.id, req.body);
+        if (!updateAreaProf) {
+            return res.status(404).json({ message: 'AreaProf nao encontrado' });
+        }
+        res.status(200).json(updateAreaProf);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
+export const deleteAreaProf = async (req, res) => {
+    try {
+        const deleted = await Services.deleteAreaProf(req.params.id);
+        if (!deleted) {
+            return res.status(404).json({ message: 'AreaProf nao encontrado' });
+        }
+        res.status(204).json();
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};

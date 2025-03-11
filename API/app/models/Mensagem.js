@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../config/db.js";
-import Chat from "./Chat.js";
-import Usuario from "./Usuario.js";
+import Chats from "./Chats.js";
+import Usuarios from "./Usuarios.js";
 
 const Mensagem = sequelize.define('mensagem', {
     id: {
@@ -12,7 +12,7 @@ const Mensagem = sequelize.define('mensagem', {
     idchat: {
         type: DataTypes.INTEGER,
         references: {
-            model: Chat,
+            model: Chats,
             key: 'id'
         },
         allowNull:false
@@ -20,7 +20,7 @@ const Mensagem = sequelize.define('mensagem', {
     remetente: {
         type: DataTypes.INTEGER,
         references: {
-            model: Usuario,
+            model: Usuarios,
             key: 'id'
         },
         allowNull:false

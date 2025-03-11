@@ -287,3 +287,47 @@ export const updateExperienciaProf = async (id, ExperienciaProfData) => {
 export const deleteExperienciaProf = async (id) => {
     return await Repository.deleteExperienciaProf(id);
 };
+
+//PARA A AreaTrabalho____________________________________________
+// adicionar AreaTrabalho
+export const createAreaTrabalho = async (AreaTrabalhoData) => {
+    return await Repository.createAreaTrabalho(AreaTrabalhoData);
+};
+// buscar todas as AreaTrabalho
+export const getAllAreaTrabalho = async () => {
+    return await Repository.getAllAreaTrabalho();
+};
+// buscar uma AreaTrabalho por id
+export const getAreaTrabalhoById = async (id) => {
+    return await Repository.getAreaTrabalhoById(id);
+};
+// atualizar AreaTrabalho
+export const updateAreaTrabalho = async (id, AreaTrabalhoData) => {
+    return await Repository.updateAreaTrabalho(id, AreaTrabalhoData);
+};
+// apagar AreaTrabalho
+export const deleteAreaTrabalho = async (id) => {
+    return await Repository.deleteAreaTrabalho(id);
+};
+
+//PARA A AreaProf____________________________________________
+// adicionar AreaProf
+export const createAreaProf = async (AreaProfData) => {
+    return await Repository.createAreaProf(AreaProfData);
+};
+// buscar todas as AreaProf
+export const getAllAreaProf = async () => {
+    return await Repository.getAllAreaProf();
+};
+// buscar uma AreaProf por id
+export const getAreaProfById = async (id) => {
+    return await Repository.getAreaProfById(id);
+};
+// atualizar AreaProf
+export const updateAreaProf = async (id, AreaProfData) => {
+    return await Repository.updateAreaProf(id, AreaProfData);
+};
+// apagar AreaProf
+export const deleteAreaProf = async (id) => {
+    return await Repository.deleteAreaProf(id);
+};

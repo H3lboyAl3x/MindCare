@@ -9,7 +9,7 @@ const NumeroP = sequelize.define('numerop', {
         primaryKey: true,
         autoIncrement: true
     },
-    Profissionais: {
+    idprof: {
         type: DataTypes.INTEGER,
         references: {
             model: Profissionais,
@@ -17,7 +17,7 @@ const NumeroP = sequelize.define('numerop', {
         },
         allowNull: false
     },
-    Pacientes: {
+    idpac: {
         type: DataTypes.INTEGER,
         references: {
             model: Pacientes,

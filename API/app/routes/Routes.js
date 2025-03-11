@@ -96,4 +96,18 @@ router.get("/experienciaprof/:id", Controller.getExperienciaProfById);
 router.put("/experienciaprof/:id", Controller.updateExperienciaProf);
 router.delete("/experienciaprof/:id", Controller.deleteExperienciaProf);
 
+//PARA O CHAT_____________________________________________
+router.get("/areatrabalho", Controller.getAllAreaTrabalho);
+router.post("/areatrabalho", Controller.createAreaTrabalho);
+router.get("/areatrabalho/:id", Controller.getAreaTrabalhoById);
+router.put("/areatrabalho/:id", Controller.updadeAreaTrabalho);
+router.delete("/areatrabalho/:id", Controller.deleteAreaTrabalho);
+
+//PARA O CHAT_____________________________________________
+router.get("/areaprof", Controller.getAllAreaProf);
+router.post("/areaprof", Controller.createAreaProf);
+router.get("/areaprof/:id", Controller.getAreaProfById);
+router.put("/areaprof/:id", Controller.updadeAreaProf);
+router.delete("/areaprof/:id", Controller.deleteAreaProf);
+
 export default router;

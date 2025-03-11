@@ -1,6 +1,6 @@
 import { DataTypes, INTEGER } from "sequelize";
 import sequelize from "../config/db.js";
-import Usuario from "./Usuario.js";
+import Usuarios from "./Usuarios.js";
 
 const Pacientes = sequelize.define('pacientes', {
     id: {
@@ -11,7 +11,7 @@ const Pacientes = sequelize.define('pacientes', {
     iduser: {
         type: DataTypes.INTEGER,
         references: {
-            model: Usuario,
+            model: Usuarios,
             key: 'id'
         },
         allowNull: false

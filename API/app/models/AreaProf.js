@@ -1,18 +1,18 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../config/db.js";
-import Pacientes from "./Pacientes.js";
 import Profissionais from "./Profissionais.js";
+import AreaTrabalho from "./AreTrabalho.js";
 
-const Chat = sequelize.define('chat', {
+const AreaProf = sequelize.define('areaprof', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
     },
-    idpaci: {
+    idarea: {
         type: DataTypes.INTEGER,
         references: {
-            model: Pacientes,
+            model: AreaTrabalho,
             key: 'id'
         },
         allowNull: false
@@ -27,4 +27,4 @@ const Chat = sequelize.define('chat', {
     }
 });
 
-export default Chat;
+export default AreaProf;

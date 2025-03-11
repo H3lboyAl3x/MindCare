@@ -1,25 +1,30 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../config/db.js";
-import Usuarios from "./Usuarios.js"
+import Pacientes from "./Pacientes.js";
+import Profissionais from "./Profissionais.js";
 
-const Profissionais = sequelize.define('profissionais', {
+const Chats = sequelize.define('chats', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
     },
-    tempoexperiencia: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
-    iduser: {
+    idpaci: {
         type: DataTypes.INTEGER,
         references: {
-            model: Usuarios,
+            model: Pacientes,
+            key: 'id'
+        },
+        allowNull: false
+    },
+    idpro: {
+        type: DataTypes.INTEGER,
+        references: {
+            model: Profissionais,
             key: 'id'
         },
         allowNull: false
     }
 });
 
-export default Profissionais;
+export default Chats;

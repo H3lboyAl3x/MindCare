@@ -1,40 +1,42 @@
-import Usuario from "../models/Usuario.js";
+import Usuarios from "../models/Usuarios.js";
 import Pacientes from "../models/Pacientes.js";
 import Profissionais from "../models/Profissionais.js";
 import Experiencias from "../models/Experiencias.js";
 import Horarios from "../models/Horarios.js";
 import Semanas from "../models/Semanas.js";
 import Consultas from "../models/Consultas.js";
-import Chat from "../models/Chat.js";
+import chats from "../models/Chats.js";
 import Mensagem from "../models/Mensagem.js";
 import NumeroP from "../models/NumeroP.js";
 import SemanasProf from "../models/SemanaProf.js";
 import HorarioProf from "../models/HorarioProf.js";
 import ExperienciaProf from "../models/ExperienciaProf.js";
+import AreaTrabalho from "../models/AreTrabalho.js";
+import AreaProf from "../models/AreaProf.js";
  
 //PARA O USUARIO_____________________________________________________________________
 //adicionar usurio
 export const createUsuario = async (userData) => {
-    return await Usuario.create(userData);
+    return await Usuarios.create(userData);
 };
 //buscar todos os usuarios
 export const getAllUsuario = async () => {
-    return await Usuario.findAll();
+    return await Usuarios.findAll();
 };
 //buscar um usuario por id
 export const getUsuarioById = async (id) => {
-    return await Usuario.findByPk(id);
+    return await Usuarios.findByPk(id);
 };
 
 //buscar um usuario por Nome e Password(Login)
 export const getUsuarioByLogin = async (nome, password) => {
-    return await Usuario.findOne({ where: { nome, password } });
+    return await Usuarios.findOne({ where: { nome, password } });
 };
 
 
 //atualizar usuario
 export const uptadeUsuario = async (id, updates) => {
-    const user = await Usuario.findByPk(id);
+    const user = await Usuarios.findByPk(id);
     if (!user) {
         return null;
     }
@@ -42,7 +44,7 @@ export const uptadeUsuario = async (id, updates) => {
 };
 //apagar usuario
 export const deleteUsuario = async (id) => {
-    const user = await Usuario.findByPk(id);
+    const user = await Usuarios.findByPk(id);
     if (!user) {
         return null
     }
@@ -250,19 +252,19 @@ export const deleteConsulta = async (id) => {
 //PARACHAT__________________________________________________
 // adicionar chat
 export const createChat = async (chatData) => {
-    return await Chat.create(chatData);
+    return await chats.create(chatData);
 };
 // buscar todos os chats
 export const getAllChats = async () => {
-    return await Chat.findAll();
+    return await chats.findAll();
 };
 // buscar um chat por id
 export const getChatById = async (id) => {
-    return await Chat.findByPk(id);
+    return await chats.findByPk(id);
 };
 // atualizar chat
 export const updateChat = async (id, updates) => {
-    const chat = await Chat.findByPk(id);
+    const chat = await chats.findByPk(id);
     if (!chat) {
         return null;
     }
@@ -270,7 +272,7 @@ export const updateChat = async (id, updates) => {
 };
 // apagar chat
 export const deleteChat = async (id) => {
-    const chat = await Chat.findByPk(id);
+    const chat = await chats.findByPk(id);
     if (!chat) {
         return null
     }
@@ -430,5 +432,65 @@ export const deleteExperienciaProf = async (id) => {
         return null
     }
     await experienciaprof.destroy();
+    return true;
+};
+
+// adicionar AreaTrabalho
+export const createAreaTrabalho = async (AreaTrabalhoData) => {
+    return await AreaTrabalho.create(AreaTrabalhoData);
+};
+// buscar todas as AreaTrabalho
+export const getAllAreaTrabalho= async () => {
+    return await AreaTrabalho.findAll();
+};
+// buscar uma AreaTrabalho por id
+export const getAreaTrabalhoById = async (id) => {
+    return await AreaTrabalho.findByPk(id);
+};
+// atualizar AreaTrabalho
+export const updateAreaTrabalho = async (id, updates) => {
+    const areatrabalho = await AreaTrabalho.findByPk(id);
+    if (!areatrabalho) {
+        return null;
+    }
+    return await areatrabalho.update(updates);
+};
+// apagar AreaTrabalho
+export const deleteAreaTrabalho = async (id) => {
+    const areatrabalho = await AreaTrabalho.findByPk(id);
+    if (!areatrabalho) {
+        return null
+    }
+    await areatrabalho.destroy();
+    return true;
+};
+
+// adicionar AreaProf
+export const createAreaProf = async (AreaProfData) => {
+    return await AreaProf.create(AreaProfData);
+};
+// buscar todas as AreaProf
+export const getAllAreaProf= async () => {
+    return await AreaProf.findAll();
+};
+// buscar uma AreaProf por id
+export const getAreaProfById = async (id) => {
+    return await AreaProf.findByPk(id);
+};
+// atualizar AreaProf
+export const updateAreaProf = async (id, updates) => {
+    const areaprof = await AreaProf.findByPk(id);
+    if (!areaprof) {
+        return null;
+    }
+    return await areaprof.update(updates);
+};
+// apagar AreaProf
+export const deleteAreaProf = async (id) => {
+    const areaprof = await AreaProf.findByPk(id);
+    if (!areaprof) {
+        return null
+    }
+    await areaprof.destroy();
     return true;
 };
