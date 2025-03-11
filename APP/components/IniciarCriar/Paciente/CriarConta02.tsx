@@ -5,32 +5,40 @@ import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/dat
 
 export default function CriarConta02({ route, navigation }) {
   const { nome, telefone, email, password } = route.params;
+  const [id, setid] = useState(null);
 
   const [datanascimento, setDatan] = useState<Date | null>(null);
   const [genero, setGenero] = useState('');
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showGenderModal, setShowGenderModal] = useState(false);
-  const [espaco, setEspaco] = useState("");
+  const [espaco, setespaco] = useState("");
 
   const criar2 = async () => {
     if (!datanascimento || !genero) {
-      setEspaco("Preencha todos os campos antes de continuar.");
+      setespaco("Preencha todos os campos antes de continuar.");
       return;
     }
   
-    // Formata a data para YYYY-MM-DD antes de enviar
     const formattedDate = datanascimento.toISOString().split('T')[0];
   
     try {
-      await axios.post("http://192.168.1.219:3000/MindCare/API/users", {
+      const response = await axios.post("http://192.168.1.219:3000/MindCare/API/users", {
         nome,
         telefone,
         email,
         password,
-        datanascimento: formattedDate, // Usa a data formatada
+        datanascimento: formattedDate,
         genero
       });
-      navigation.navigate("Navegacao", { nome, telefone, email, password, datanascimento: formattedDate, genero });
+      const Usuario = response.data;
+      const userId = Usuario.id;
+      setid(userId);
+
+      await axios.post("http://192.168.1.219:3000/MindCare/API/pacientes", {
+        iduser: userId
+      });
+
+      navigation.navigate("Navegacao1", {id: userId, nome, telefone, email, password, datanascimento: formattedDate, genero });
     } catch (error) {
       Alert.alert("Erro ao cadastrar", "Tente novamente mais tarde.");
     }
@@ -57,7 +65,6 @@ export default function CriarConta02({ route, navigation }) {
     <View style={styles.container}>
       <Text style={styles.title}>Criar Conta</Text>
 
-      {/* Data de Nascimento */}
       <Text style={styles.text}>Data de Nascimento</Text>
       <TouchableOpacity style={styles.input} onPress={() => setShowDatePicker(true)}>
         <Text style={{ color: datanascimento ? '#000' : '#aaa' }}>
@@ -76,7 +83,6 @@ export default function CriarConta02({ route, navigation }) {
         />
       )}
 
-      {/* Gênero */}
       <Text style={styles.text}>Gênero</Text>
       <TouchableOpacity style={styles.input} onPress={() => setShowGenderModal(true)}>
         <Text style={{ color: genero ? '#000' : '#aaa' }}>
@@ -101,10 +107,8 @@ export default function CriarConta02({ route, navigation }) {
         </View>
       </Modal>
 
-      {/* Mensagem de erro */}
-      {espaco ? <Text style={styles.errorText}>{espaco}</Text> : null}
+      <Text style={{fontSize: 11, color: 'red'}}>{espaco}</Text>
 
-      {/* Botão Criar Conta */}
       <TouchableOpacity style={styles.button} onPress={criar2}>
         <Text style={styles.buttonText}>Criar Conta</Text>
       </TouchableOpacity>

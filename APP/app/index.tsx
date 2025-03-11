@@ -6,7 +6,7 @@ import Selecao from "@/components/IniciarCriar/Selecao";
 import IniciarSessao from "@/components/IniciarCriar/IniciarSessao";
 import CriarConta01 from "@/components/IniciarCriar/Paciente/CriarConta01";
 import CriarConta02 from "@/components/IniciarCriar/Paciente/CriarConta02";
-import Navegacao from "@/components/Navegacao";
+import Navegacao1 from "@/components/Paciente/Navegacao1";
 import EditarPerfil from "@/components/Paciente/Perfil/EditarPerfil";
 import Perfil01 from "@/components/Paciente/Perfil/Perfil01";
 import React from "react";
@@ -22,7 +22,7 @@ export default function HomeScreen() {
       <Stack.Screen name="IniciarSessao" component={IniciarSessao} options={{ headerShown: false }}/>
       <Stack.Screen name="CriarConta01" component={CriarConta01} options={{ headerShown: false }}/>
       <Stack.Screen name="CriarConta02" component={CriarConta02} options={{ headerShown: false }}/>
-      <Stack.Screen name="Navegacao" component={Navegacao} options={{ headerShown: false }}/>
+      <Stack.Screen name="Navegacao1" component={Navegacao1} options={{ headerShown: false }}/>
       <Stack.Screen name="EditarPerfil" component={EditarPerfil} options={{ headerShown: false }}/>
       <Stack.Screen name="Perfil01" component={Perfil01} options={{ headerShown: false }}/>
     </Stack.Navigator>

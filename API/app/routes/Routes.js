@@ -7,6 +7,7 @@ const router = express.Router();
 router.get("/users", Controller.getAllUsuario);
 router.post("/users", Controller.createUsuario);
 router.get("/users/:id", Controller.getUsuarioById);
+router.post("/users/login", Controller.getUsuarioByLogin);
 router.put("/users/:id", Controller.uptadeUsuario);
 router.delete("/users/:id", Controller.deleteUsuario);
 
@@ -14,6 +15,7 @@ router.delete("/users/:id", Controller.deleteUsuario);
 router.get("/pacientes", Controller.getAllPacientes);
 router.post("/pacientes", Controller.createPaciente);
 router.get("/pacientes/:id", Controller.getPacienteById);
+router.get("/pacientes/iduser/:iduser", Controller.getPacienteByfk);
 router.put("/pacientes/:id", Controller.updatePaciente);
 router.delete("/pacientes/:id", Controller.deletePaciente);
 

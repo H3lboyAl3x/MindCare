@@ -13,6 +13,10 @@ export const getUsuarioById = async (id) => {
     return await Repository.getUsuarioById(id);
 };
 
+export const getUsuarioByLogin = async (nome, password) => {
+    return await Repository.getUsuarioByLogin(nome, password);
+};
+
 export const uptadeUsuario = async (id, userData) => {
     return await Repository.uptadeUsuario(id, userData);
 };
@@ -32,6 +36,9 @@ export const getAllPacientes = async(pacData) => {
 export const getPacienteById = async(pacData) => {
     return await Repository.getPacienteById(pacData);
 };
+export const getPacienteByfk = async (iduser) => {
+    return await Repository.getPacienteByfk(iduser);
+}
 export const updatePaciente = async(id, pacienteData) => {
     return await Repository.updatePaciente(id, pacienteData);
 };

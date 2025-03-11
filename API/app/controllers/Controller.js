@@ -33,6 +33,21 @@ export const getUsuarioById = async (req, res) => {
     }
 };
 
+export const getUsuarioByLogin = async (req, res) => {
+    try {
+        const { nome, password } = req.body;
+        const user = await Services.getUsuarioByLogin(nome, password);
+        if (!user) {
+            return res.status(404).json({ message: `Usuário não encontrado com nome: ${nome}` });
+        }
+        
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+
 export const uptadeUsuario = async (req, res) => {
     try {
         const updateUser = await Services.uptadeUsuario(req.params.id, req.body);
@@ -81,6 +96,19 @@ export const getPacienteById = async (req, res) => {
         const paciente = await Services.getPacienteById(req.params.id);
         if (!paciente) {
             return res.status(404).json({ message: 'Paciente nao encontrado de id:' + req.params.id });
+        }
+        res.status(200).json(paciente);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+export const getPacienteByfk = async (req, res) => {
+    try {
+        const { iduser } = req.params;
+        const paciente = await Services.getPacienteByfk(iduser);
+        if (!paciente) {
+            return res.status(404).json({ message: 'Paciente nao encontrado de id:' + iduser });
         }
         res.status(200).json(paciente);
     } catch (error) {

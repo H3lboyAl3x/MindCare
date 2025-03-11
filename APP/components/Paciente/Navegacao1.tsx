@@ -1,14 +1,14 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
-import Conversa from './Paciente/Conversa/Conversa';
-import Profissionais from './Paciente/Profissionais/Profissionais';
-import Perfil01 from './Paciente/Perfil/Perfil01';
-import Consulta from './Paciente/Consulta/Consulta';
+import Conversa from './Conversa/Conversa';
+import Profissionais from './Profissionais/Profissionais';
+import Perfil01 from './Perfil/Perfil01';
+import Consulta from './Consulta/Consulta';
 
 const Tab = createBottomTabNavigator();
 
-export default function Navegacao() {
+export default function Navegacao1() {
 return (
     <Tab.Navigator 
       screenOptions={{

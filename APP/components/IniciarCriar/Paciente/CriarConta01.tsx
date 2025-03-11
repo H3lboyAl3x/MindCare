@@ -15,7 +15,7 @@ export default function CriarConta01({navigation}) {
   const criar1 = () => {
     if(!nome || !telefone || !email || !password || !confirmarp)
     {
-      setespaco("Algum espaco vazio");
+      setespaco("Preencha todos os campos antes de continuar.");
     }
     if(password !== confirmarp)
     {
@@ -51,7 +51,7 @@ export default function CriarConta01({navigation}) {
         <TextInput style={styles.textbox} secureTextEntry={true} value={password} onChangeText={setPassword} />
         <Text style={styles.text}>Confirmar Password</Text>
         <TextInput style={styles.textbox} secureTextEntry={true} value={confirmarp} onChangeText={setconfirmarp}/>
-        <Text style={{fontSize: 11}}>{espaco}</Text>
+        <Text style={{fontSize: 11, color: 'red'}}>{espaco}</Text>
         <TouchableOpacity style={styles.button} onPress={criar1}>
           <Text style={styles.buttonText}>Criar conta</Text>
         </TouchableOpacity>

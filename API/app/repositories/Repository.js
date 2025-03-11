@@ -26,8 +26,11 @@ export const getUsuarioById = async (id) => {
     return await Usuario.findByPk(id);
 };
 
-//Buscar um usuario por Nome(analise)
 //buscar um usuario por Nome e Password(Login)
+export const getUsuarioByLogin = async (nome, password) => {
+    return await Usuario.findOne({ where: { nome, password } });
+};
+
 
 //atualizar usuario
 export const uptadeUsuario = async (id, updates) => {
@@ -60,6 +63,12 @@ export const getAllPacientes = async () => {
 export const getPacienteById = async (id) => {
     return await Pacientes.findByPk(id);
 };
+
+// buscar um pacinete por chave estrangeira
+export const getPacienteByfk = async (iduser) => {
+    return await Pacientes.findOne({where: {iduser}})
+}
+
 // atualizar paciente
 export const updatePaciente = async (id, updates) => {
     const paciente = await Pacientes.findByPk(id);
