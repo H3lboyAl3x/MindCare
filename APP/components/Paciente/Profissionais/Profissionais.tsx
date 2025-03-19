@@ -5,7 +5,6 @@ import {
 } from "react-native";
 import axios from "axios";
 
-// Tipos das interfaces
 interface Profissional {
   id: number;
   tempoexperiencia: number;
@@ -70,7 +69,6 @@ export default function Profissionais() {
 
   return (
     <View style={styles.container}>
-  {/* Título */}
   <Text style={styles.titulo}>Profissionais</Text>
 
   {/* Especialidades */}
