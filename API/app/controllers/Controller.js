@@ -195,61 +195,6 @@ export const deleteProfissional = async (req, res) => {
     }
 };
 
-//PARA A EXPERIENCIA___________________________________________
-export const getAllExperiencias = async (req, res) => {
-    try {
-        const experiencias = await Services.getAllExperiencias();
-        res.status(200).json(experiencias);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-};
-
-export const createExperiencia = async (req, res) => {
-    try {
-        const newExperiencia = await Services.createExperiencia(req.body);
-        res.status(201).json(newExperiencia);
-    } catch (error) {
-        res.status(400).json({ error: error.message });
-    }
-};
-
-export const getExperienciaById = async (req, res) => {
-    try {
-        const experiencia = await Services.getExperienciaById(req.params.id);
-        if (!experiencia) {
-            return res.status(404).json({ message: 'Experiencia nao encontrada de id:' + req.params.id });
-        }
-        res.status(200).json(experiencia);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-};
-
-export const updateExperiencia = async (req, res) => {
-    try {
-        const updateExperiencia = await Services.updateExperiencia(req.params.id, req.body);
-        if (!updateExperiencia) {
-            return res.status(404).json({ message: 'Experiencia nao encontrada' });
-        }
-        res.status(200).json(updateExperiencia);
-    } catch (error) {
-        res.status(400).json({ error: error.message });
-    }
-};
-
-export const deleteExperiencia = async (req, res) => {
-    try {
-        const deleted = await Services.deleteExperiencia(req.params.id);
-        if (!deleted) {
-            return res.status(404).json({ message: 'Experiencia nao encontrada' });
-        }
-        res.status(204).json();
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-};
-
 //PARA O HORARIO_______________________________________________
 export const getAllHorarios = async (req, res) => {
     try {
@@ -683,61 +628,6 @@ export const deleteHorarioProf = async (req, res) => {
         const deleted = await Services.deleteHorarioProf(req.params.id);
         if (!deleted) {
             return res.status(404).json({ message: 'eHorarioProf nao encontrada' });
-        }
-        res.status(204).json();
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-};
-
-//PARA A ExperienciaProf______________________________________________
-export const getAllExperienciaProf = async (req, res) => {
-    try {
-        const experienciaprof = await Services.getAllExperienciaProf();
-        res.status(200).json(experienciaprof);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-};
-
-export const createExperienciaProf = async (req, res) => {
-    try {
-        const newExperienciaProf = await Services.createExperienciaProf(req.body);
-        res.status(201).json(newExperienciaProf);
-    } catch (error) {
-        res.status(400).json({ error: error.message });
-    }
-};
-
-export const getExperienciaProfById = async (req, res) => {
-    try {
-        const experienciaprof = await Services.getExperienciaProfById(req.params.id);
-        if (!experienciaprof) {
-            return res.status(404).json({ message: 'ExperienciaProf nao encontrada de id:' + req.params.id });
-        }
-        res.status(200).json(experienciaprof);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-};
-
-export const updateExperienciaProf = async (req, res) => {
-    try {
-        const updateExperienciaProf = await Services.updateExperienciaProf(req.params.id, req.body);
-        if (!updateExperienciaProf) {
-            return res.status(404).json({ message: 'ExperienciaProf nao encontrada' });
-        }
-        res.status(200).json(updateExperienciaProf);
-    } catch (error) {
-        res.status(400).json({ error: error.message });
-    }
-};
-
-export const deleteExperienciaProf = async (req, res) => {
-    try {
-        const deleted = await Services.deleteExperienciaProf(req.params.id);
-        if (!deleted) {
-            return res.status(404).json({ message: 'ExperienciaProf nao encontrada' });
         }
         res.status(204).json();
     } catch (error) {

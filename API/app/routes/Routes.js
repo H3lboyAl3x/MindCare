@@ -26,13 +26,6 @@ router.get("/profissionais/:id", Controller.getProfissionalById);
 router.put("/profissionais/:id", Controller.updateProfissional);
 router.delete("/profissionais/:id", Controller.deleteProfissional);
 
-//PARA A EXPERIENCIA______________________________________
-router.get("/experiencias", Controller.getAllExperiencias);
-router.post("/experiencias", Controller.createExperiencia);
-router.get("/experiencias/:id", Controller.getExperienciaById);
-router.put("/experiencias/:id", Controller.updateExperiencia);
-router.delete("/experiencias/:id", Controller.deleteExperiencia);
-
 //PARA O HORARIO__________________________________________
 router.get("/horarios", Controller.getAllHorarios);
 router.post("/horarios", Controller.createHorario);
@@ -88,13 +81,6 @@ router.post("/horarioprof", Controller.createHorarioProf);
 router.get("/horarioprof/:id", Controller.getHorarioProfById);
 router.put("/horarioprof/:id", Controller.updateHorarioProf);
 router.delete("/horarioprof/:id", Controller.deleteHorarioProf);
-
-//PARA A ExperienciaProf________________________________________
-router.get("/experienciaprof", Controller.getAllExperienciaProf);
-router.post("/experienciaprof", Controller.createExperienciaProf);
-router.get("/experienciaprof/:id", Controller.getExperienciaProfById);
-router.put("/experienciaprof/:id", Controller.updateExperienciaProf);
-router.delete("/experienciaprof/:id", Controller.deleteExperienciaProf);
 
 //PARA O CHAT_____________________________________________
 router.get("/areatrabalho", Controller.getAllAreaTrabalho);

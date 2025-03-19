@@ -68,28 +68,6 @@ export const deleteProfissional = async (id) => {
     return await Repository.deleteProfissional(id);
 };
 
-//PARA A EXPERIENCIA___________________________________________
-// adicionar experiencia
-export const createExperiencia = async (expData) => {
-    return await Repository.createExperiencia(expData);
-};
-// buscar todas as experiencias
-export const getAllExperiencias = async () => {
-    return await Repository.getAllExperiencias();
-};
-// buscar uma experiencia por id
-export const getExperienciaById = async (id) => {
-    return await Repository.getExperienciaById(id);
-};
-// atualizar experiencia
-export const updateExperiencia = async (id, expData) => {
-    return await Repository.updateExperiencia(id, expData);
-};
-// apagar experiencia
-export const deleteExperiencia = async (id) => {
-    return await Repository.deleteExperiencia(id);
-};
-
 //PARA O HORARIO_______________________________________________
 // adicionar horario
 export const createHorario = async (horarioData) => {
@@ -264,28 +242,6 @@ export const updateHorarioProf = async (id, HorarioProfData) => {
 // apagar HorarioProf
 export const deleteHorarioProf = async (id) => {
     return await Repository.deleteHorarioProf(id);
-};
-
-//PARA A ExperienciaProf____________________________________________
-// adicionar ExperienciaProf
-export const createExperienciaProf = async (ExperienciaProfData) => {
-    return await Repository.createExperienciaProf(ExperienciaProfData);
-};
-// buscar todas as ExperienciaProf
-export const getAllExperienciaProf = async () => {
-    return await Repository.getAllExperienciaProf();
-};
-// buscar uma ExperienciaProf por id
-export const getExperienciaProfById = async (id) => {
-    return await Repository.getExperienciaProfById(id);
-};
-// atualizar ExperienciaProf
-export const updateExperienciaProf = async (id, ExperienciaProfData) => {
-    return await Repository.updateExperienciaProf(id, ExperienciaProfData);
-};
-// apagar ExperienciaProf
-export const deleteExperienciaProf = async (id) => {
-    return await Repository.deleteExperienciaProf(id);
 };
 
 //PARA A AreaTrabalho____________________________________________
