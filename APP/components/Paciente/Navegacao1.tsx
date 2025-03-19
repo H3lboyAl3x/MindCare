@@ -8,7 +8,8 @@ import Consulta from './Consulta/Consulta';
 
 const Tab = createBottomTabNavigator();
 
-export default function Navegacao1() {
+export default function Navegacao1({route}) {
+  const {id, idp, nome, telefone, email, password, datanascimento, genero} = route.params;
 return (
     <Tab.Navigator 
       screenOptions={{
@@ -21,6 +22,7 @@ return (
         <Tab.Screen
           name="Conversas"
           component={Conversa}
+          initialParams={{id, idp}}
           options={{
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="chatbox-outline" size={size} color={color} />

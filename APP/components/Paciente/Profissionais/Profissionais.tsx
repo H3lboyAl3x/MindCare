@@ -29,7 +29,7 @@ export default function Profissionais() {
   const Listafuncionario = async () => {
     try {
       // Buscar a lista de profissionais
-      const response = await axios.get<Profissional[]>("http://192.168.1.219:3000/MindCare/API/profissionais");
+      const response = await axios.get<Profissional[]>("http://192.168.59.121:3000/MindCare/API/profissionais");
       const listaProfissionais = response.data;
 
       // Buscar os nomes dos usuários relacionados
@@ -37,7 +37,7 @@ export default function Profissionais() {
         listaProfissionais.map(async (profissional) => {
           try {
             const userResponse = await axios.get<Usuario>(
-              "http://192.168.1.219:3000/MindCare/API/users/"+profissional.iduser
+              "http://192.168.59.121:3000/MindCare/API/users/"+profissional.iduser
             );
             return {
               id: profissional.id,

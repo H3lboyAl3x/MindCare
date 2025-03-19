@@ -6,6 +6,7 @@ import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/dat
 export default function CriarConta02({ route, navigation }) {
   const { nome, telefone, email, password } = route.params;
   const [id, setid] = useState(null);
+  const [idp, setidp] = useState(null)
 
   const [datanascimento, setDatan] = useState<Date | null>(null);
   const [genero, setGenero] = useState('');
@@ -22,7 +23,7 @@ export default function CriarConta02({ route, navigation }) {
     const formattedDate = datanascimento.toISOString().split('T')[0];
   
     try {
-      const response = await axios.post("http://192.168.1.219:3000/MindCare/API/users", {
+      const response = await axios.post("http://192.168.59.121:3000/MindCare/API/users", {
         nome,
         telefone,
         email,
@@ -34,11 +35,14 @@ export default function CriarConta02({ route, navigation }) {
       const userId = Usuario.id;
       setid(userId);
 
-      await axios.post("http://192.168.1.219:3000/MindCare/API/pacientes", {
+      const response1 = await axios.post("http://192.168.59.121:3000/MindCare/API/pacientes", {
         iduser: userId
       });
+      const Paciente = response1.data;
+      const idpac = Paciente.id;
+      setidp(idpac);
 
-      navigation.navigate("Navegacao1", {id: userId, nome, telefone, email, password, datanascimento: formattedDate, genero });
+      navigation.navigate("Navegacao1", {id: userId, idp: idpac, nome, telefone, email, password, datanascimento: formattedDate, genero });
     } catch (error) {
       Alert.alert("Erro ao cadastrar", "Tente novamente mais tarde.");
     }

@@ -1,8 +1,12 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { useState } from "react";
+import axios from "axios";
 
-export default function Conversa()
-{
+export default function Conversa({navigation, route}){
+    const {id, idp} = route.params;
+    
+
     return(
         <View style={styles.container}>
             <View style={styles.barraT}>

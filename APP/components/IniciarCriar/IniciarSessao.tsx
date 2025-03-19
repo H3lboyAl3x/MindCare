@@ -6,7 +6,8 @@ import axios from 'axios';
 export default function IniciarSessao({navigation}) {
   const [nome, setnome] = useState("");
   const [password, setpassword] = useState("");
-  const [id, setid] = useState(null)
+  const [id, setid] = useState(null);
+  const [idp, setidp] = useState(null);
   const [telefone, settelefone] = useState(null);
   const [email, setemail] = useState(null);
   const [datanascimento, setDatan] = useState<Date | null>(null);
@@ -19,7 +20,7 @@ export default function IniciarSessao({navigation}) {
       setespaco("Preencha todos os campos antes de continuar.");
     }
     try {
-      const response = await axios.post("http://192.168.1.219:3000/MindCare/API/users/login",{
+      const response = await axios.post("http://192.168.59.121:3000/MindCare/API/users/login",{
         nome,
         password,
       });
@@ -33,8 +34,11 @@ export default function IniciarSessao({navigation}) {
       const formattedDate = Usuario.datanascimento ? new Date(Usuario.datanascimento).toISOString().split('T')[0] : null;
 
       try{
-        await axios.get("http://192.168.1.219:3000/MindCare/API/pacientes/iduser/" + Usuario.id);
-        navigation.navigate("Navegacao1", {id, nome, telefone, email, password, datanascimento: formattedDate, genero });
+        const response1 = await axios.get("http://192.168.59.121:3000/MindCare/API/pacientes/iduser/" + Usuario.id);
+        const Paciente = response1.data;
+        setidp(Paciente.id || null);
+
+        navigation.navigate("Navegacao1", {id, idp, nome, telefone, email, password, datanascimento: formattedDate, genero });
       }catch(error){
         Alert.alert("nao e paciente")
       }
