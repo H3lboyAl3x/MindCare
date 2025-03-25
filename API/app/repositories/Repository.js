@@ -1,16 +1,13 @@
 import Usuarios from "../models/Usuarios.js";
 import Pacientes from "../models/Pacientes.js";
 import Profissionais from "../models/Profissionais.js";
-import Horarios from "../models/Horarios.js";
-import Semanas from "../models/Semanas.js";
 import Consultas from "../models/Consultas.js";
 import chats from "../models/Chats.js";
 import Mensagem from "../models/Mensagem.js";
 import NumeroP from "../models/NumeroP.js";
-import SemanasProf from "../models/SemanaProf.js";
-import HorarioProf from "../models/HorarioProf.js";
 import AreaTrabalho from "../models/AreTrabalho.js";
 import AreaProf from "../models/AreaProf.js";
+import { where } from "sequelize";
  
 //PARA O USUARIO_____________________________________________________________________
 //adicionar usurio
@@ -101,6 +98,10 @@ export const getAllProfissionais = async () => {
 export const getProfissionalById = async (id) => {
     return await Profissionais.findByPk(id);
 };
+// buscar um profissional por chave estrangeira
+export const getProfissionalByfk = async (iduser) => {
+    return await profissional.findOne({where: {iduser}})
+};
 // atualizar profissional
 export const updateProfissional = async (id, updates) => {
     const profissional = await Profissionais.findByPk(id);
@@ -118,69 +119,6 @@ export const deleteProfissional = async (id) => {
     await profissional.destroy();
     return true;
 };
-
-//PARAHORARIOS_______________________________________________
-// adicionar horario
-export const createHorario = async (horarioData) => {
-    return await Horarios.create(horarioData);
-};
-// buscar todos os horarios
-export const getAllHorarios = async () => {
-    return await Horarios.findAll();
-};
-// buscar um horario por id
-export const getHorarioById = async (id) => {
-    return await Horarios.findByPk(id);
-};
-// atualizar horario
-export const updateHorario = async (id, updates) => {
-    const horario = await Horarios.findByPk(id);
-    if (!horario) {
-        return null;
-    }
-    return await horario.update(updates);
-};
-// apagar horario
-export const deleteHorario = async (id) => {
-    const horario = await Horarios.findByPk(id);
-    if (!horario) {
-        return null
-    }
-    await horario.destroy();
-    return true;
-};
-
-//PARASEMANAS_______________________________________________
-// adicionar semana
-export const createSemana = async (semanaData) => {
-    return await Semanas.create(semanaData);
-};
-// buscar todas as semanas
-export const getAllSemanas = async () => {
-    return await Semanas.findAll();
-};
-// buscar uma semana por id
-export const getSemanaById = async (id) => {
-    return await Semanas.findByPk(id);
-};
-// atualizar semana
-export const updateSemana = async (id, updates) => {
-    const semana = await Semanas.findByPk(id);
-    if (!semana) {
-        return null;
-    }
-    return await semana.update(updates);
-};
-// apagar semana
-export const deleteSemana = async (id) => {
-    const semana = await Semanas.findByPk(id);
-    if (!semana) {
-        return null
-    }
-    await semana.destroy();
-    return true;
-};
-
 
 //PARACONSULTAS______________________________________________
 // adicionar consulta
@@ -306,68 +244,6 @@ export const deleteNumeroP = async (id) => {
     return true;
 };
 
-//PARASEMANASPROF______________________________________________
-// adicionar SemanasProf
-export const createSemanasProf = async (semanasProfData) => {
-    return await SemanasProf.create(semanasProfData);
-};
-// buscar todas as SemanasProf
-export const getAllSemanasProf = async () => {
-    return await SemanasProf.findAll();
-};
-// buscar uma SemanasProf por id
-export const getSemanasProfById = async (id) => {
-    return await SemanasProf.findByPk(id);
-};
-// atualizar SemanasProf
-export const updateSemanasProf = async (id, updates) => {
-    const semanasprof = await SemanasProf.findByPk(id);
-    if (!semanasprof) {
-        return null;
-    }
-    return await semanasprof.update(updates);
-};
-// apagar SemanasProf
-export const deleteSemanasProf = async (id) => {
-    const semanasprof = await SemanasProf.findByPk(id);
-    if (!semanassrof) {
-        return null
-    }
-    await semanasprof.destroy();
-    return true;
-};
-
-//PARAHORARIOPROF______________________________________________
-// adicionar HorarioProf
-export const createHorarioProf = async (HorarioProfData) => {
-    return await HorarioProf.create(HorarioProfData);
-};
-// buscar todas as HorarioProf
-export const getAllHorarioProf= async () => {
-    return await HorarioProf.findAll();
-};
-// buscar uma HorarioProf por id
-export const getHorarioProfById = async (id) => {
-    return await HorarioProf.findByPk(id);
-};
-// atualizar HorarioProf
-export const updateHorarioProf = async (id, updates) => {
-    const horarioprof = await HorarioProf.findByPk(id);
-    if (!horarioprof) {
-        return null;
-    }
-    return await horarioprof.update(updates);
-};
-// apagar HorarioProf
-export const deleteHorarioProf = async (id) => {
-    const horarioprof = await HorarioProf.findByPk(id);
-    if (!horarioprof) {
-        return null
-    }
-    await horarioprof.destroy();
-    return true;
-};
-
 // adicionar AreaTrabalho
 export const createAreaTrabalho = async (AreaTrabalhoData) => {
     return await AreaTrabalho.create(AreaTrabalhoData);
@@ -403,12 +279,16 @@ export const createAreaProf = async (AreaProfData) => {
     return await AreaProf.create(AreaProfData);
 };
 // buscar todas as AreaProf
-export const getAllAreaProf= async () => {
+export const getAllAreaProf = async () => {
     return await AreaProf.findAll();
 };
 // buscar uma AreaProf por id
 export const getAreaProfById = async (id) => {
     return await AreaProf.findByPk(id);
+};
+// buscar uma AreaProf por fk
+export const getAreaProfByfk = async (idpro) => {
+    return await AreaProf.findOne({where: {idpro}});
 };
 // atualizar AreaProf
 export const updateAreaProf = async (id, updates) => {

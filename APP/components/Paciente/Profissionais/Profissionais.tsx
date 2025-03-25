@@ -4,6 +4,7 @@ import {
   TouchableOpacity, ActivityIndicator 
 } from "react-native";
 import axios from "axios";
+import { getUrl } from "@/app/utils/url";
 
 interface Profissional {
   id: number;
@@ -22,23 +23,41 @@ interface ProfissionalComNome {
   tempoexperiencia: number;
 }
 
+interface AreaTrabalho{
+  id: number;
+  area: string;
+}
+
+interface Especialidades {
+  id: number;
+  area: string;
+}
+
 export default function Profissionais() {
   const [profissionais, setProfissionais] = useState<ProfissionalComNome[]>([]);
+  const [especialidades, setespecialidades] = useState<Especialidades[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   const Listafuncionario = async () => {
     try {
       // Buscar a lista de profissionais
-      const response = await axios.get<Profissional[]>("http://192.168.59.121:3000/MindCare/API/profissionais");
+      const response = await axios.get<Profissional[]>(`${getUrl()}/MindCare/API/profissionais`);
       const listaProfissionais = response.data;
+
+       // Buscar todas as áreas de trabalho
+      const response1 = await axios.get<AreaTrabalho[]>(`${getUrl()}/MindCare/API/areatrabalho`);
+      const listaEspecialidades = response1.data;
+
+      // Atualizar o estado com as especialidades
+      setespecialidades(listaEspecialidades);
+
 
       // Buscar os nomes dos usuários relacionados
       const profissionaisComNomes: ProfissionalComNome[] = await Promise.all(
         listaProfissionais.map(async (profissional) => {
           try {
             const userResponse = await axios.get<Usuario>(
-              "http://192.168.59.121:3000/MindCare/API/users/"+profissional.iduser
-            );
+              getUrl()+"/MindCare/API/users/"+profissional.iduser);
             return {
               id: profissional.id,
               nome: userResponse.data.nome,
@@ -73,14 +92,20 @@ export default function Profissionais() {
 
   {/* Especialidades */}
   <Text style={styles.especialidades}>Especialidades</Text>
-  <ScrollView horizontal style={styles.scrollEspecialidades}>
-    {[...Array(4)].map((_, index) => (
-      <View key={index} style={styles.bolinhaContainer}>
-        <View style={styles.bolinha} />
-        <Text style={styles.textoEspecialidade}>Psicologia Educacional</Text>
-      </View>
-    ))}
-  </ScrollView>
+  <View style={styles.especi}>
+    <ScrollView horizontal style={styles.scrollEspecialidades}>
+      <FlatList data={especialidades} keyExtractor={(item) => item.id.toString()} renderItem={({ item }) => (
+        <TouchableOpacity style={styles.bolinhaContainer}>
+          <View style={styles.bolinha} />
+          <Text style={styles.textoEspecialidade}>{item.area}</Text>
+        </TouchableOpacity>
+      )}
+      horizontal={true}
+      contentContainerStyle={{ paddingHorizontal: 10 }} 
+      />
+    </ScrollView>
+  </View>
+  
 
   {/* Profissionais que já acompanham */}
   <Text style={styles.Textpro}>Profissionais que já o acompanham</Text>
@@ -95,10 +120,10 @@ export default function Profissionais() {
       data={profissionais}
       keyExtractor={(item) => item.id.toString()}
       renderItem={({ item }) => (
-        <View style={styles.card}>
+        <TouchableOpacity style={styles.card}>
           <Text style={styles.nome}>{item.nome}</Text>
           <Text>Experiência: {item.tempoexperiencia} anos</Text>
-        </View>
+        </TouchableOpacity>
       )}
     />
   )}
@@ -122,6 +147,9 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: "#c0c0c0",
     marginBottom: 5,
+  },
+  especi: {
+    height: 80,
   },
   scrollEspecialidades: {
     flexDirection: "row",

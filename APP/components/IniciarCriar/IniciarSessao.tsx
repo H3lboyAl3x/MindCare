@@ -1,63 +1,82 @@
-import React from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, TextInput, Alert } from 'react-native';
-import { useState } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import { View, Text, TextInput, Alert, StyleSheet, TouchableOpacity } from "react-native";
+import axios from "axios";
+import { getUrl } from "@/app/utils/url";
 
-export default function IniciarSessao({navigation}) {
-  const [nome, setnome] = useState("");
-  const [password, setpassword] = useState("");
-  const [id, setid] = useState(null);
-  const [idp, setidp] = useState(null);
-  const [telefone, settelefone] = useState(null);
-  const [email, setemail] = useState(null);
+export default function IniciarSessao({ navigation }) {
+  const [nome, setNome] = useState("");
+  const [password, setPassword] = useState("");
+  const [id, setId] = useState(null);
+  const [idp, setIdp] = useState(null);
+  const [idpro, setidpro] = useState(null);
+  const [idap, setidap] = useState(null);
+  const [idat, setidat] = useState(null);
+  const [expe, setexpe] = useState(null);
+  const [telefone, setTelefone] = useState(null);
+  const [email, setEmail] = useState(null);
   const [datanascimento, setDatan] = useState<Date | null>(null);
-  const [genero, setgenero] = useState(null);
+  const [genero, setGenero] = useState(null);
+  const [espaco, setEspaco] = useState("");
 
-  const [espaco, setespaco] = useState("");
+  
 
   const iniciar = async () => {
-    if(!nome || !password){
-      setespaco("Preencha todos os campos antes de continuar.");
+    if (!nome || !password) {
+      setEspaco("Preencha todos os campos antes de continuar.");
+      return;
     }
+
+
     try {
-      const response = await axios.post("http://192.168.59.121:3000/MindCare/API/users/login",{
-        nome,
-        password,
-      });
-      const Usuario = response.data;
-      setid(Usuario.id || null);
-      settelefone(Usuario.telefone || null);
-      setemail(Usuario.email || null);
-      setDatan(Usuario.datanascimento ? new Date(Usuario.datanascimento) : null);
-      setgenero(Usuario.genero || null);
+      const response = await axios.post(`${getUrl()}/MindCare/API/users/login`, { nome, password });
+      const usuario = response.data;
+      setId(usuario.id || null);
+      setTelefone(usuario.telefone || null);
+      setEmail(usuario.email || null);
+      setDatan(usuario.datanascimento ? new Date(usuario.datanascimento) : null);
+      setGenero(usuario.genero || null);
 
-      const formattedDate = Usuario.datanascimento ? new Date(Usuario.datanascimento).toISOString().split('T')[0] : null;
+      const formattedDate = usuario.datanascimento ? new Date(usuario.datanascimento).toISOString().split("T")[0] : null;
 
-      try{
-        const response1 = await axios.get("http://192.168.59.121:3000/MindCare/API/pacientes/iduser/" + Usuario.id);
-        const Paciente = response1.data;
-        setidp(Paciente.id || null);
+      try {
+        const response1 = await axios.get(`${getUrl()}/MindCare/API/pacientes/iduser/${usuario.id}`);
+        const paciente = response1.data;
+        setIdp(paciente.id || null);
 
-        navigation.navigate("Navegacao1", {id, idp, nome, telefone, email, password, datanascimento: formattedDate, genero });
-      }catch(error){
-        Alert.alert("nao e paciente")
+        navigation.navigate("Navegacao1", { id, idp, nome, telefone, email, password, datanascimento: formattedDate, genero });
+      } catch (error) {
+        try {
+          const response2 = await axios.get(`${getUrl()}/MindCare/API/profissionais/iduser/${usuario.id}`);
+          const profissional = response2.data;
+          setidpro(profissional.id || null);
+          const response3 = await axios.get(`${getUrl}//MindCare/API/AreaPro/idpro/${profissional.id}`);
+          const AreaPro = response3.data;
+          setidap(AreaPro.id || null);
+          const response4 = await axios.get(`${getUrl}/MindCare/API/areatrabalho/${AreaPro.idarea}`);
+          const AreaTrabalho = response4.data;
+          setidat(AreaTrabalho || null);
+          setexpe(AreaTrabalho.area || null);
+          
+          navigation.navigate("Navegacao2", { id, idpro, idat, idap, nome, telefone, email, password, datanascimento: formattedDate, genero, expe });
+
+        }catch (error) {
+          Alert.alert("ND por aq")
+        }
       }
-
-      
     } catch (error) {
-      setespaco("Senha ou password incorreta.");
-    } 
-  }
+      setEspaco("Senha ou nome incorretos.");
+    }
+  };
 
   return (
     <View style={styles.container}>
-      <Text style={[styles.welcomeText, { fontWeight: 'bold' }]}>Iniciar Sessão</Text>
+      <Text style={[styles.welcomeText, { fontWeight: "bold" }]}>Iniciar Sessão</Text>
       <Text style={styles.text}>Username</Text>
-      <TextInput style={styles.textbox} value={nome} onChangeText={setnome}/>
+      <TextInput style={styles.textbox} value={nome} onChangeText={setNome} />
       <Text style={styles.text}>Password</Text>
-      <TextInput style={styles.textbox} secureTextEntry={true} value={password} onChangeText={setpassword}/>
+      <TextInput style={styles.textbox} secureTextEntry={true} value={password} onChangeText={setPassword} />
       <Text style={styles.esqueci}>Esqueci a password!</Text>
-      <Text style={{fontSize: 11, color: 'red'}}>{espaco}</Text>
+      <Text style={{ fontSize: 11, color: "red" }}>{espaco}</Text>
       <TouchableOpacity style={styles.button} onPress={iniciar}>
         <Text style={styles.buttonText}>Iniciar Sessão</Text>
       </TouchableOpacity>
@@ -68,44 +87,43 @@ export default function IniciarSessao({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    backgroundColor: '#fff',
+    alignItems: "center",
+    backgroundColor: "#fff",
   },
   welcomeText: {
     fontSize: 24,
-    color: '#000',
-    textAlign: 'center',
-    fontFamily: 'sans-serif',
+    color: "#000",
+    textAlign: "center",
     marginTop: 100,
   },
   text: {
     marginTop: 50,
-    color: '#D2D2D2',
+    color: "#D2D2D2",
     fontSize: 15,
   },
   textbox: {
-    width:300,
+    width: 300,
     height: 40,
     borderWidth: 1,
-    borderColor: '#D2D2D2',
+    borderColor: "#D2D2D2",
     borderRadius: 10,
   },
   esqueci: {
-    color: '#5BD654',
+    color: "#5BD654",
     marginRight: 150,
   },
   button: {
     width: 200,
     height: 56,
-    backgroundColor: '#14AE5C',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "#14AE5C",
+    justifyContent: "center",
+    alignItems: "center",
     borderRadius: 50,
     marginTop: 300,
   },
   buttonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });

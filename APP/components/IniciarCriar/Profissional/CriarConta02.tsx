@@ -4,15 +4,22 @@ import { View, Text, TouchableOpacity, StyleSheet, Modal, FlatList, Alert, Platf
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { getUrl } from '@/app/utils/url';
 
-export default function CriarConta02({ route, navigation }) {
+export default function CriarConta02p({ route, navigation }) {
   const { nome, telefone, email, password} = route.params;
   const [id, setid] = useState(null);
   const [idp, setidp] = useState(null);
 
-  const [datanascimento, setDatan] = useState<Date | null>(null);
+  const [idat, setidat] = useState(null);
+  const [idap, setidap] = useState(null);
   const [genero, setGenero] = useState('');
+  const [experienxia, setexperiencia] = useState('');
+  const [trabalho, settrabalho] = useState('');
+
+  const [datanascimento, setDatan] = useState<Date | null>(null);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showGenderModal, setShowGenderModal] = useState(false);
+  const [showexperiencia, setshowexperiencia] = useState(false);
+  const [showtrabalho, setshowtrabalho] = useState(false);
   const [espaco, setespaco] = useState("");
 
   const criar2 = async () => {
@@ -36,14 +43,32 @@ export default function CriarConta02({ route, navigation }) {
       const userId = Usuario.id;
       setid(userId);
 
-      const response1 = await axios.post(`${getUrl()}/MindCare/API/pacientes`, {
+      const response1 = await axios.post(`${getUrl()}/MindCare/API/profissionais`, {
+        tempoexperiencia: experienxia,
         iduser: userId
       });
-      const Paciente = response1.data;
-      const idpac = Paciente.id;
+      const Profissional = response1.data;
+      const idpac = Profissional.id;
       setidp(idpac);
 
-      navigation.navigate("Navegacao1", {id: userId, idp: idpac, nome, telefone, email, password, datanascimento: formattedDate, genero});
+      const response2 = await axios.post(`${getUrl()}/MindCare/API/areatrabalho`, {
+        area: trabalho
+      });
+      const AreaTrabalho = response2.data;
+      const idAT = AreaTrabalho.id;
+      setidat(idAT);
+
+      const response3 = await axios.post(`${getUrl()}/MindCare/API/areaprof`, {
+        idarea: Profissional.id,
+        idpro: AreaTrabalho.id
+      });
+      const AreaProf = response2.data;
+      const idAP = AreaProf.id;
+      setidap(idAP);
+
+
+
+      navigation.navigate("Navegacao2", {id: userId, idp: idpac, idat: idAT, idap: idAP, nome, telefone, email, password, datanascimento: formattedDate, genero, trabalho, experienxia});
     } catch (error) {
       Alert.alert("Erro ao cadastrar", "Tente novamente mais tarde.");
     }
@@ -51,6 +76,9 @@ export default function CriarConta02({ route, navigation }) {
   
 
   const genders = ['Masculino', 'Feminino', 'Não incluir'];
+  const experent = ['1', '2', '3', '4', '5 ou mais'];
+  const work = ['Psicologia clínica', 'Psicologia Educacional', 'Terapeuta holístico', 'Terapeuta de Renascimento'];
+
   const minimumDate = new Date(1900, 0, 1);
   const maximumDate = new Date();
   maximumDate.setFullYear(maximumDate.getFullYear() - 10);
@@ -111,6 +139,56 @@ export default function CriarConta02({ route, navigation }) {
           </View>
         </View>
       </Modal>
+
+      <Text style={styles.text}>Experiencia</Text>
+      <TouchableOpacity style={styles.input} onPress={() => setshowexperiencia(true)}>
+        <Text style={{ color: experienxia ? '#000' : '#aaa' }}>
+          {experienxia || 'Selecione conforme a tua experiencia'}
+        </Text>
+      </TouchableOpacity>
+
+      <Modal visible={showexperiencia} transparent={true} animationType="slide" onRequestClose={() => setshowexperiencia(false)}>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Selecione a experiencia-ano</Text>
+            <FlatList
+              data={experent}
+              keyExtractor={(item) => item}
+              renderItem={({ item }) => (
+                <TouchableOpacity style={styles.modalItem} onPress={() => { setexperiencia(item); setshowexperiencia(false); }}>
+                  <Text style={styles.modalText}>{item}</Text>
+                </TouchableOpacity>
+              )}
+            />
+          </View>
+        </View>
+      </Modal>
+
+      <Text style={styles.text}>Area de Trabalho</Text>
+      <TouchableOpacity style={styles.input} onPress={() => setshowtrabalho(true)}>
+        <Text style={{ color: trabalho ? '#000' : '#aaa' }}>
+          {trabalho || 'Selecione a sua Area de trabalho'}
+        </Text>
+      </TouchableOpacity>
+
+      <Modal visible={showtrabalho} transparent={true} animationType="slide" onRequestClose={() => setshowtrabalho(false)}>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Selecione a sua Area de Trabalho</Text>
+            <FlatList
+              data={work}
+              keyExtractor={(item) => item}
+              renderItem={({ item }) => (
+                <TouchableOpacity style={styles.modalItem} onPress={() => { settrabalho(item); setshowtrabalho(false); }}>
+                  <Text style={styles.modalText}>{item}</Text>
+                </TouchableOpacity>
+              )}
+            />
+          </View>
+        </View>
+      </Modal>
+
+      
 
       <Text style={{fontSize: 11, color: 'red'}}>{espaco}</Text>
 

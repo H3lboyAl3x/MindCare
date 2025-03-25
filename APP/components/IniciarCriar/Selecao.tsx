@@ -18,7 +18,7 @@ export default function Selecao({navigation}) {
       <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('CriarConta01')}>
         <Text style={styles.buttonText}>Paciente</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button}> 
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('CriarConta01p')}> 
         <Text style={styles.buttonText}>Profissional</Text>
       </TouchableOpacity>
     </View>

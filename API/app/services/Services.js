@@ -59,6 +59,9 @@ export const getAllProfissionais = async () => {
 export const getProfissionalById = async (id) => {
     return await Repository.getProfissionalById(id);
 };
+export const getProfissionalByfk = async (iduser) => {
+    return await Repository.getProfissionalByfk(iduser);
+};
 // atualizar profissional
 export const updateProfissional = async (id, profissionalData) => {
     return await Repository.updateProfissional(id, profissionalData);
@@ -66,50 +69,6 @@ export const updateProfissional = async (id, profissionalData) => {
 // apagar profissional
 export const deleteProfissional = async (id) => {
     return await Repository.deleteProfissional(id);
-};
-
-//PARA O HORARIO_______________________________________________
-// adicionar horario
-export const createHorario = async (horarioData) => {
-    return await Repository.createHorario(horarioData);
-};
-// buscar todos os horarios
-export const getAllHorarios = async () => {
-    return await Repository.getAllHorarios();
-};
-// buscar um horario por id
-export const getHorarioById = async (id) => {
-    return await Repository.getHorarioById(id);
-};
-// atualizar horario
-export const updateHorario = async (id, horarioData) => {
-    return await Repository.updateHorario(id, horarioData);
-};
-// apagar horario
-export const deleteHorario = async (id) => {
-    return await Repository.deleteHorario(id);
-};
-
-//PARA A SEMANA________________________________________________
-// adicionar semana
-export const createSemana = async (semanaData) => {
-    return await Repository.createSemana(semanaData);
-};
-// buscar todas as semanas
-export const getAllSemanas = async () => {
-    return await Repository.getAllSemanas();
-};
-// buscar uma semana por id
-export const getSemanaById = async (id) => {
-    return await Repository.getSemanaById(id);
-};
-// atualizar semana
-export const updateSemana = async (id, semanaData) => {
-    return await Repository.updateSemana(id, semanaData);
-};
-// apagar semana
-export const deleteSemana = async (id) => {
-    return await Repository.deleteSemana(id);
 };
 
 //PARA A CONSULTA______________________________________________
@@ -200,50 +159,6 @@ export const deleteNumeroP = async (id) => {
     return await Repository.deleteNumeroP(id);
 };
 
-//PARA A SemanasProf____________________________________________
-// adicionar SemanasProf
-export const createSemanasProf = async (SemanasProfData) => {
-    return await Repository.createSemanasProf(SemanasProfData);
-};
-// buscar todas as SemanasProf
-export const getAllSemanasProf = async () => {
-    return await Repository.getAllSemanasProf();
-};
-// buscar uma SemanasProf por id
-export const getSemanasProfById = async (id) => {
-    return await Repository.getSemanasProfById(id);
-};
-// atualizar SemanasProf
-export const updateSemanasProf = async (id, SemanasProfData) => {
-    return await Repository.updateSemanasProf(id, SemanasProfData);
-};
-// apagar SemanasProf
-export const deleteSemanasProf = async (id) => {
-    return await Repository.deleteSemanasProf(id);
-};
-
-//PARA A HorarioProf____________________________________________
-// adicionar HorarioProf
-export const createHorarioProf = async (HorarioProfData) => {
-    return await Repository.createHorarioProf(HorarioProfData);
-};
-// buscar todas as HorarioProf
-export const getAllHorarioProf = async () => {
-    return await Repository.getAllHorarioProf();
-};
-// buscar uma HorarioProf por id
-export const getHorarioProfById = async (id) => {
-    return await Repository.getHorarioProfById(id);
-};
-// atualizar HorarioProf
-export const updateHorarioProf = async (id, HorarioProfData) => {
-    return await Repository.updateHorarioProf(id, HorarioProfData);
-};
-// apagar HorarioProf
-export const deleteHorarioProf = async (id) => {
-    return await Repository.deleteHorarioProf(id);
-};
-
 //PARA A AreaTrabalho____________________________________________
 // adicionar AreaTrabalho
 export const createAreaTrabalho = async (AreaTrabalhoData) => {
@@ -278,6 +193,10 @@ export const getAllAreaProf = async () => {
 // buscar uma AreaProf por id
 export const getAreaProfById = async (id) => {
     return await Repository.getAreaProfById(id);
+};
+// buscar uma AreaProf por idpro
+export const getAreaProfByfk = async (idpro) => {
+    return await Repository.getAreaProfByfk(idpro);
 };
 // atualizar AreaProf
 export const updateAreaProf = async (id, AreaProfData) => {

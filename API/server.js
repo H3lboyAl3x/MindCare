@@ -7,7 +7,6 @@ import { errorHandler } from "./app/middlewares/errorHandler.js";
 dotenv.config();
 
 const app = express();
-
 const PORT = process.env.PORT || 3000;
 
 // Middleware para JSON
@@ -24,7 +23,12 @@ app.use(errorHandler);
   try {
     await sequelize.authenticate();
     console.log("Banco conectado com sucesso!");
-    server.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
+
+    // 🔥 Correção: Definir `server` antes de usá-lo
+    const server = app.listen(PORT, () => 
+      console.log(`Servidor rodando na porta ${PORT}`)
+    );
+
   } catch (error) {
     console.error("Falha ao conectar com o banco de dados:", error);
   }
