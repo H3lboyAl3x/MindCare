@@ -10,6 +10,7 @@ const Tab = createBottomTabNavigator();
 
 export default function Navegacao1({route}) {
   const {id, idp, nome, telefone, email, password, datanascimento, genero} = route.params;
+  console.log(route.params);
 return (
     <Tab.Navigator 
       screenOptions={{

@@ -294,6 +294,19 @@ export const getChatById = async (req, res) => {
     }
 };
 
+export const getChatByfk = async (req, res) => {
+    try {
+        const { idpaci } = req.params;
+        const chat = await Services.getChatByfk(idpaci);
+        if (!chat) {
+            return res.status(401).json({ message: 'Chat nao encontrado de id:' + idpaci });
+        }
+        res.status(200).json(chat);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
 export const updateChat = async (req, res) => {
     try {
         const updateChat = await Services.updateChat(req.params.id, req.body);
@@ -337,6 +350,18 @@ export const createMensagem = async (req, res) => {
     }
 };
 
+export const getMensagemByfk = async (req, res) => {
+    try {
+        const {idchat} = req.params
+        const mensagem = await Services.getMensagemByfk(idchat);
+        if (!mensagem) {
+            return res.status(404).json({ message: 'Mensagem nao encontrada de id:' + idchat});
+        }
+        res.status(200).json(mensagem);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
 export const getMensagemById = async (req, res) => {
     try {
         const mensagem = await Services.getMensagemById(req.params.id);
@@ -514,12 +539,25 @@ export const getAreaProfById = async (req, res) => {
     }
 };
 
-export const getAreaProfByfk = async (req, res) => {
+export const getAreaProfByfk1 = async (req, res) => {
     try {
         const { idpro } = req.params;
-        const areaProf = await Services.getAreaProfByfk(idpro);
+        const areaProf = await Services.getAreaProfByfk1(idpro);
         if (!areaProf) {
             return res.status(404).json({ message: 'AreaPro nao encontrado de id:' + idpro });
+        }
+        res.status(200).json(areaProf);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+export const getAreaProfByfk2 = async (req, res) => {
+    try {
+        const { idarea } = req.params;
+        const areaProf = await Services.getAreaProfByfk2(idarea);
+        if (!areaProf) {
+            return res.status(404).json({ message: 'AreaPro nao encontrado de id:' + idarea });
         }
         res.status(200).json(areaProf);
     } catch (error) {

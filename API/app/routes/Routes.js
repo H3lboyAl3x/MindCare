@@ -38,6 +38,7 @@ router.delete("/consultas/:id", Controller.deleteConsulta);
 router.get("/chats", Controller.getAllChats);
 router.post("/chats", Controller.createChat);
 router.get("/chats/:id", Controller.getChatById);
+router.get("/chats/idpaci/:idpaci", Controller.getChatByfk);
 router.put("/chats/:id", Controller.updateChat);
 router.delete("/chats/:id", Controller.deleteChat);
 
@@ -45,6 +46,7 @@ router.delete("/chats/:id", Controller.deleteChat);
 router.get("/mensagens", Controller.getAllMensagens);
 router.post("/mensagens", Controller.createMensagem);
 router.get("/mensagens/:id", Controller.getMensagemById);
+router.get("/mensagens/idchat/:idchat", Controller.getMensagemByfk);
 router.put("/mensagens/:id", Controller.updateMensagem);
 router.delete("/mensagens/:id", Controller.deleteMensagem);
 
@@ -66,7 +68,8 @@ router.delete("/areatrabalho/:id", Controller.deleteAreaTrabalho);
 router.get("/areaprof", Controller.getAllAreaProf);
 router.post("/areaprof", Controller.createAreaProf);
 router.get("/areaprof/:id", Controller.getAreaProfById);
-router.get("/areaprof/idpro/:idpro", Controller.getAreaProfByfk);
+router.get("/areaprof/idpro/:idpro", Controller.getAreaProfByfk1);
+router.get("/areaprof/idarea/:idarea", Controller.getAreaProfByfk2);
 router.put("/areaprof/:id", Controller.updadeAreaProf);
 router.delete("/areaprof/:id", Controller.deleteAreaProf);
 

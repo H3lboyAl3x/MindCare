@@ -164,6 +164,10 @@ export const getAllChats = async () => {
 export const getChatById = async (id) => {
     return await chats.findByPk(id);
 };
+// buscar um chat por fk
+export const getChatByfk = async (idpaci) => {
+    return await chats.findAll({where: {idpaci}});
+};
 // atualizar chat
 export const updateChat = async (id, updates) => {
     const chat = await chats.findByPk(id);
@@ -194,6 +198,10 @@ export const getAllMensagens = async () => {
 // buscar uma mensagem por id
 export const getMensagemById = async (id) => {
     return await Mensagem.findByPk(id);
+};
+// buscar uma mensagem por fk
+export const getMensagemByfk = async (idchat) => {
+    return await Mensagem.findAll({where: {idchat}});
 };
 // atualizar mensagem
 export const updateMensagem = async (id, updates) => {
@@ -286,9 +294,13 @@ export const getAllAreaProf = async () => {
 export const getAreaProfById = async (id) => {
     return await AreaProf.findByPk(id);
 };
-// buscar uma AreaProf por fk
-export const getAreaProfByfk = async (idpro) => {
+// buscar uma AreaProf por fk1
+export const getAreaProfByfk1 = async (idpro) => {
     return await AreaProf.findOne({where: {idpro}});
+};
+// buscar uma AreaProf por fk2
+export const getAreaProfByfk2 = async (idarea) => {
+    return await AreaProf.findOne({where: {idarea}});
 };
 // atualizar AreaProf
 export const updateAreaProf = async (id, updates) => {

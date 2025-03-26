@@ -43,7 +43,16 @@ export default function IniciarSessao({ navigation }) {
         const paciente = response1.data;
         setIdp(paciente.id || null);
 
-        navigation.navigate("Navegacao1", { id, idp, nome, telefone, email, password, datanascimento: formattedDate, genero });
+        navigation.navigate("Navegacao1", { 
+          id: usuario.id, 
+          idp: paciente.id, 
+          nome, 
+          telefone, 
+          email, 
+          password, 
+          datanascimento: formattedDate, 
+          genero 
+        });
       } catch (error) {
         try {
           const response2 = await axios.get(`${getUrl()}/MindCare/API/profissionais/iduser/${usuario.id}`);
@@ -57,7 +66,17 @@ export default function IniciarSessao({ navigation }) {
           setidat(AreaTrabalho || null);
           setexpe(AreaTrabalho.area || null);
           
-          navigation.navigate("Navegacao2", { id, idpro, idat, idap, nome, telefone, email, password, datanascimento: formattedDate, genero, expe });
+          navigation.navigate("Navegacao2",{ 
+            id: usuario.id, 
+            idp: profissional.id, 
+            nome, 
+            telefone, 
+            email, 
+            password, 
+            datanascimento: formattedDate, 
+            genero ,
+            expe
+          });
 
         }catch (error) {
           Alert.alert("ND por aq")
