@@ -42,13 +42,12 @@ export default function Conversa({navigation, route}) {
     const {id, idp} = route.params;
     const [conversas, setConversas] = useState<ConversaItem[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-    const userId = idp; // Substitua pelo ID real do usuário logado
+    const userId = idp;
+    const [idchats, setidchats] = useState(null);
+    const [nome, setnome] = useState(null);
 
     const fetchConversas = async () => {
         try {
-            setLoading(true);
-            console.log("Buscando conversas para o usuário:", userId);
-    
             const response = await axios.get(`${getUrl()}/MindCare/API/chats/idpaci/${userId}`);
     
             if (!response.data || !Array.isArray(response.data)) {
@@ -58,7 +57,6 @@ export default function Conversa({navigation, route}) {
             }
     
             const chats = response.data;
-            console.log("Chats encontrados:", chats);
     
             const conversasFormatadas = await Promise.all(
                 chats.map(async (chat) => {
@@ -71,9 +69,9 @@ export default function Conversa({navigation, route}) {
     
                         const mensagemResponse = await axios.get(`${getUrl()}/MindCare/API/mensagens/idchat/${chat.id}`);
                         const mensagens = mensagemResponse.data;
-                        console.log("Mensagens do chat:", mensagens);
                         const ultimaMensagem = mensagens.length > 0 ? mensagens[mensagens.length - 1] : null;
-                        console.log("Última mensagem:", ultimaMensagem);
+                        setidchats(chat.id);
+                        setnome(usuario.nome);
                         return {
                             id: chat.id,
                             nome: usuario.nome,
@@ -97,36 +95,32 @@ export default function Conversa({navigation, route}) {
         } catch (error) {
             console.error("Erro ao buscar conversas:", error);
         } finally {
-            setLoading(false);
         }
     };
     
 
     useEffect(() => {
         fetchConversas();
-    }, []);
+        const intervalo = setInterval(fetchConversas, 1000);
+        return () => clearInterval(intervalo);
+    }, [id]);
 
     return (
         <View style={styles.container}>
             <Text style={styles.titulo}>Conversas</Text>
-
-            {loading ? (
-                <ActivityIndicator size="large" color="#34C759" />
-            ) : (
-                <FlatList
-                    data={conversas}
-                    keyExtractor={(item) => item.id.toString()}
-                    renderItem={({ item }) => (
-                        <TouchableOpacity style={styles.pessoa}>
-                            <View>
-                                <Text style={[styles.textp, { color: "#757575" }]}>{item.nome}</Text>
-                                <Text style={[styles.textp, { color: "#B3B3B3" }]}>{item.ultimaMensagem}</Text>
-                                {item.hora && <Text style={[styles.textp, { color: "#B3B3B3", fontSize: 12, textAlign: 'right' }]}>{item.hora}</Text>}
-                            </View>
-                        </TouchableOpacity>
-                    )}
-                />
-            )}
+            <FlatList
+                data={conversas}
+                keyExtractor={(item) => item.id.toString()}
+                renderItem={({ item }) => (
+                    <TouchableOpacity style={styles.pessoa} onPress={() => navigation.navigate('Mensagem', {idchats: item.id, nome: item.nome, id})}>
+                        <View>
+                            <Text style={[styles.textp, { color: "#757575" }]}>{item.nome}</Text>
+                            <Text style={[styles.textp, { color: "#B3B3B3" }]}>{item.ultimaMensagem}</Text>
+                            {item.hora && <Text style={[styles.textp, { color: "#B3B3B3", fontSize: 12, textAlign: 'right' }]}>{item.hora}</Text>}
+                        </View>
+                    </TouchableOpacity>
+                )}
+            />
         </View>
     );
 }
@@ -140,7 +134,6 @@ const styles = StyleSheet.create({
     titulo: {
         fontSize: 30,
         fontWeight: "bold",
-        textAlign: "center",
         marginBottom: 10,
     },
     pessoa: {

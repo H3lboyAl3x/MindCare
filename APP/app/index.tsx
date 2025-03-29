@@ -12,6 +12,9 @@ import EditarPerfil from "@/components/Paciente/Perfil/EditarPerfil";
 import Perfil01 from "@/components/Paciente/Perfil/Perfil01";
 import CriarConta01p from "@/components/IniciarCriar/Profissional/CriarConta01";
 import CriarConta02p from "@/components/IniciarCriar/Profissional/CriarConta02";
+import Mensagem from "@/components/Mensagem/Mensagem";
+import Proficional from "@/components/Paciente/Profissionais/Profissional";
+import DetalhesProfissional from "@/components/Paciente/Profissionais/DetalhesProfissional";
 import React from "react";
 import * as FileSystem from "expo-file-system";
 
@@ -33,6 +36,9 @@ export default function HomeScreen() {
       <Stack.Screen name="Navegacao2" component={Navegacao2} options={{ headerShown: false }}/>
       <Stack.Screen name="EditarPerfil" component={EditarPerfil} options={{ headerShown: false }}/>
       <Stack.Screen name="Perfil01" component={Perfil01} options={{ headerShown: false }}/>
+      <Stack.Screen name="Mensagem" component={Mensagem} options={{ headerShown: false }}/>
+      <Stack.Screen name="Proficional" component={Proficional} options={{ headerShown: false }}/>
+      <Stack.Screen name="DetalhesProfissional" component={DetalhesProfissional} options={{ headerShown: false }}/>
     </Stack.Navigator>
   );
 }

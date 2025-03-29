@@ -174,12 +174,14 @@ export const getProfissionalById = async (req, res) => {
 export const getProfissionalByfk = async (req, res) => {
     try {
         const { iduser } = req.params;
-        const profissional = await Services.getPacienteByfk(iduser);
+        console.log("Buscando profissional com iduser:", iduser);
+        const profissional = await Services.getProfissionalByfk(iduser);
         if (!profissional) {
             return res.status(404).json({ message: 'Profissional nao encontrado de id:' + iduser });
         }
         res.status(200).json(profissional);
     } catch (error) {
+        console.error("Erro ao buscar profissional:", error);
         res.status(500).json({ error: error.message });
     }
 };
@@ -307,6 +309,19 @@ export const getChatByfk = async (req, res) => {
     }
 };
 
+export const getChatByfk1 = async (req, res) => {
+    try {
+        const { idpro } = req.params;
+        const chat = await Services.getChatByfk1(idpro);
+        if (!chat) {
+            return res.status(401).json({ message: 'Chat nao encontrado de id:' + idpro });
+        }
+        res.status(200).json(chat);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
 export const updateChat = async (req, res) => {
     try {
         const updateChat = await Services.updateChat(req.params.id, req.body);
@@ -410,7 +425,7 @@ export const getAllNumeroP = async (req, res) => {
 
 export const createNumeroP = async (req, res) => {
     try {
-        const newNumeroPm = await Services.createNumeroP(req.body);
+        const newNumeroP = await Services.createNumeroP(req.body);
         res.status(201).json(newNumeroP);
     } catch (error) {
         res.status(400).json({ error: error.message });
@@ -422,6 +437,32 @@ export const getNumeroPById = async (req, res) => {
         const numeroP = await Services.getNumeroPById(req.params.id);
         if (!numeroP) {
             return res.status(404).json({ message: 'NumeroP nao encontrada de id:' + req.params.id });
+        }
+        res.status(200).json(numeroP);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+export const getNumeroPByfk = async (req, res) => {
+    try {
+        const {idprof} = req.params;
+        const numeroP = await Services.getNumeroPByfk(idprof);
+        if (!numeroP) {
+            return res.status(404).json({ message: 'NumeroP nao encontrada de id:' + idprof });
+        }
+        res.status(200).json(numeroP);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+export const getNumeroPByfk1 = async (req, res) => {
+    try {
+        const {idpac} = req.params;
+        const numeroP = await Services.getNumeroPByfk1(idpac);
+        if (!numeroP) {
+            return res.status(404).json({ message: 'NumeroP nao encontrada de id:' + idpac });
         }
         res.status(200).json(numeroP);
     } catch (error) {

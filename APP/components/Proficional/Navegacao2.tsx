@@ -30,8 +30,8 @@ return (
           }}
         />
         <Tab.Screen
-          name="Profissionais"
-          component={Conversa} 
+          name="Pacientes"
+          component={Consulta} 
           options={{
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="people-outline" size={size} color={color} />

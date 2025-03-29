@@ -39,6 +39,7 @@ router.get("/chats", Controller.getAllChats);
 router.post("/chats", Controller.createChat);
 router.get("/chats/:id", Controller.getChatById);
 router.get("/chats/idpaci/:idpaci", Controller.getChatByfk);
+router.get("/chats/idpro/:idpro", Controller.getChatByfk1);
 router.put("/chats/:id", Controller.updateChat);
 router.delete("/chats/:id", Controller.deleteChat);
 
@@ -54,6 +55,8 @@ router.delete("/mensagens/:id", Controller.deleteMensagem);
 router.get("/numeroP", Controller.getAllNumeroP);
 router.post("/numeroP", Controller.createNumeroP);
 router.get("/numeroP/:id", Controller.getNumeroPById);
+router.get("/numeroP/idprof/:idprof", Controller.getNumeroPByfk);
+router.get("/numeroP/idpac/:idpac", Controller.getNumeroPByfk1);
 router.put("/numeroP/:id", Controller.updateNumeroP);
 router.delete("/numeroP/:id", Controller.deleteNumeroP);
 

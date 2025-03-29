@@ -46,22 +46,28 @@ export default function IniciarSessao({ navigation }) {
         navigation.navigate("Navegacao1", { 
           id: usuario.id, 
           idp: paciente.id, 
-          nome, 
-          telefone, 
-          email, 
-          password, 
+          nome: usuario.nome, 
+          telefone: usuario.telefone, 
+          email: usuario.email, 
+          password: usuario.password, 
           datanascimento: formattedDate, 
-          genero 
+          genero: usuario.genero 
         });
       } catch (error) {
         try {
           const response2 = await axios.get(`${getUrl()}/MindCare/API/profissionais/iduser/${usuario.id}`);
           const profissional = response2.data;
           setidpro(profissional.id || null);
-          const response3 = await axios.get(`${getUrl}//MindCare/API/AreaPro/idpro/${profissional.id}`);
+
+          console.log(`Buscando Área Profissional para o idpro: ${profissional.id}...`);
+          const response3 = await axios.get(`${getUrl()}/MindCare/API/areaprof/idpro/${profissional.id}`);
+          console.log("Resposta da API (Área Profissional):", response3.data);
           const AreaPro = response3.data;
           setidap(AreaPro.id || null);
-          const response4 = await axios.get(`${getUrl}/MindCare/API/areatrabalho/${AreaPro.idarea}`);
+
+          console.log(`Buscando Área de Trabalho para idarea: ${AreaPro.idarea}...`);
+          const response4 = await axios.get(`${getUrl()}/MindCare/API/areatrabalho/${AreaPro.idarea}`);
+          console.log("Resposta da API (Área de Trabalho):", response4.data);
           const AreaTrabalho = response4.data;
           setidat(AreaTrabalho || null);
           setexpe(AreaTrabalho.area || null);
@@ -79,7 +85,7 @@ export default function IniciarSessao({ navigation }) {
           });
 
         }catch (error) {
-          Alert.alert("ND por aq")
+          Alert.alert("ND por aq"+ error)
         }
       }
     } catch (error) {
@@ -90,9 +96,9 @@ export default function IniciarSessao({ navigation }) {
   return (
     <View style={styles.container}>
       <Text style={[styles.welcomeText, { fontWeight: "bold" }]}>Iniciar Sessão</Text>
-      <Text style={styles.text}>Username</Text>
+      <Text style={styles.text}>Nome de usuario</Text>
       <TextInput style={styles.textbox} value={nome} onChangeText={setNome} />
-      <Text style={styles.text}>Password</Text>
+      <Text style={styles.text}>Palavra Pass</Text>
       <TextInput style={styles.textbox} secureTextEntry={true} value={password} onChangeText={setPassword} />
       <Text style={styles.esqueci}>Esqueci a password!</Text>
       <Text style={{ fontSize: 11, color: "red" }}>{espaco}</Text>

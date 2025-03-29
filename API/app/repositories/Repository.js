@@ -100,7 +100,7 @@ export const getProfissionalById = async (id) => {
 };
 // buscar um profissional por chave estrangeira
 export const getProfissionalByfk = async (iduser) => {
-    return await profissional.findOne({where: {iduser}})
+    return await Profissionais.findOne({where: {iduser}})
 };
 // atualizar profissional
 export const updateProfissional = async (id, updates) => {
@@ -168,6 +168,10 @@ export const getChatById = async (id) => {
 export const getChatByfk = async (idpaci) => {
     return await chats.findAll({where: {idpaci}});
 };
+// buscar um chat por fk
+export const getChatByfk1 = async (idpro) => {
+    return await chats.findAll({where: {idpro}});
+};
 // atualizar chat
 export const updateChat = async (id, updates) => {
     const chat = await chats.findByPk(id);
@@ -233,6 +237,14 @@ export const getAllNumeroP = async () => {
 // buscar uma NumeroP por id
 export const getNumeroPById = async (id) => {
     return await NumeroP.findByPk(id);
+};
+// buscar uma NumeroP por fk
+export const getNumeroPByfk = async (idprof) => {
+    return await NumeroP.findAll({where: {idprof}});
+};
+// buscar uma NumeroP por fk
+export const getNumeroPByfk1 = async (idpac) => {
+    return await NumeroP.findAll({where: {idpac}});
 };
 // atualizar NumeroP
 export const updateNumeroP = async (id, updates) => {

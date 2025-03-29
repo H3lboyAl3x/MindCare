@@ -10,7 +10,6 @@ const Tab = createBottomTabNavigator();
 
 export default function Navegacao1({route}) {
   const {id, idp, nome, telefone, email, password, datanascimento, genero} = route.params;
-  console.log(route.params);
 return (
     <Tab.Navigator 
       screenOptions={{
@@ -23,7 +22,7 @@ return (
         <Tab.Screen
           name="Conversas"
           component={Conversa}
-          initialParams={{id, idp}}
+          initialParams={{id: id, idp: idp}}
           options={{
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="chatbox-outline" size={size} color={color} />
@@ -34,6 +33,7 @@ return (
         <Tab.Screen
           name="Profissionais"
           component={Profissionais} 
+          initialParams={{idp: idp, idu: id}}
           options={{
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="people-outline" size={size} color={color} />

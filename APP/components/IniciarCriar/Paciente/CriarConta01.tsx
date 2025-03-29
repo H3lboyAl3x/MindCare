@@ -41,15 +41,15 @@ export default function CriarConta01({navigation}) {
       style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <ScrollView contentContainerStyle={styles.scrollView} keyboardShouldPersistTaps="handled">
         <Text style={[styles.welcomeText, { fontWeight: 'bold' }]}>Criar Conta</Text>
-        <Text style={styles.text}>Username</Text>
+        <Text style={styles.text}>Nome de Usuario</Text>
         <TextInput style={styles.textbox} value={nome} onChangeText={setnome} />
         <Text style={styles.text}>Telefone</Text>
         <TextInput style={styles.textbox} keyboardType="phone-pad" value={telefone} onChangeText={settelefone} />
         <Text style={styles.text}>Email</Text>
         <TextInput style={styles.textbox} keyboardType="email-address" value={email} onChangeText={setEmail} />
-        <Text style={styles.text}>Password</Text>
+        <Text style={styles.text}>Palavra Pass</Text>
         <TextInput style={styles.textbox} secureTextEntry={true} value={password} onChangeText={setPassword} />
-        <Text style={styles.text}>Confirmar Password</Text>
+        <Text style={styles.text}>Confirmar Palavra Pass</Text>
         <TextInput style={styles.textbox} secureTextEntry={true} value={confirmarp} onChangeText={setconfirmarp}/>
         <Text style={{fontSize: 11, color: 'red'}}>{espaco}</Text>
         <TouchableOpacity style={styles.button} onPress={criar1}>

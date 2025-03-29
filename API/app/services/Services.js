@@ -59,6 +59,7 @@ export const getAllProfissionais = async () => {
 export const getProfissionalById = async (id) => {
     return await Repository.getProfissionalById(id);
 };
+// buscar um profissional por fk
 export const getProfissionalByfk = async (iduser) => {
     return await Repository.getProfissionalByfk(iduser);
 };
@@ -110,6 +111,10 @@ export const getChatById = async (id) => {
 export const getChatByfk = async (idpaci) => {
     return await Repository.getChatByfk(idpaci);
 };
+// buscar um chat por fk
+export const getChatByfk1 = async (idpro) => {
+    return await Repository.getChatByfk1(idpro);
+};
 // atualizar chat
 export const updateChat = async (id, chatData) => {
     return await Repository.updateChat(id, chatData);
@@ -157,6 +162,14 @@ export const getAllNumeroP = async () => {
 // buscar uma NumeroP por id
 export const getNumeroPById = async (id) => {
     return await Repository.getNumeroPById(id);
+};
+// buscar uma NumeroP por fk
+export const getNumeroPByfk = async (idprof) => {
+    return await Repository.getNumeroPByfk(idprof);
+};
+// buscar uma NumeroP por fk
+export const getNumeroPByfk1 = async (idpac) => {
+    return await Repository.getNumeroPByfk1(idpac);
 };
 // atualizar NumeroP
 export const updateNumeroP = async (id, NumeroPData) => {
