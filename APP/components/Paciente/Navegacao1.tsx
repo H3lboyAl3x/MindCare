@@ -52,6 +52,7 @@ return (
         <Tab.Screen
           name="Consulta"
           component={Consulta} 
+          initialParams={{idp}}
           options={{
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="videocam-outline" size={size} color={color} />

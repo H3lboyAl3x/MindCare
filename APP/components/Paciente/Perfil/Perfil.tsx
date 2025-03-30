@@ -66,9 +66,7 @@ export default function Perfil01({navigation, route}){
         try {
             const consultaResponde = await axios.get<Consultas[]>(`${getUrl()}/MindCare/API/consultas`);
             const listaconsulta = consultaResponde.data;
-            const consultasUnicas = listaconsulta.filter((item, index, self) =>
-                index === self.findIndex((t) => t.idpaci === idp)
-            );
+            const consultasUnicas = listaconsulta.filter((consulta) => consulta.idpaci === idp);
             setconsultas(consultasUnicas);
 
             const NP = await axios.get<NumeroP[]>(`${getUrl()}/MindCare/API/numeroP/idpac/${idp}`);
@@ -168,32 +166,28 @@ export default function Perfil01({navigation, route}){
             </View>
             {/* Exibir Conteúdo da seleção */}
             {opcaoSelecionada === "consulta" && (
-                <View>
-                    <FlatList
-                    data={consultas}
-                    keyExtractor={(item) => item.id.toString()}
-                    renderItem={({ item }) => (
-                        <View style={styles.card}>
-                            <Text style={styles.nome}>Consulta: {item.id}</Text>
-                            <Text>{item.data.toString().split("T")[0]}</Text>
-                            <Text>Estado: {item.status}</Text>
-                        </View>
-                    )}/>
-                </View>
+                <FlatList
+                data={consultas}
+                keyExtractor={(item) => item.id.toString()}
+                renderItem={({ item }) => (
+                    <View style={styles.card}>
+                        <Text style={styles.nome}>Consulta: {item.id}</Text>
+                        <Text>{item.data.toString().split("T")[0]}</Text>
+                        <Text>Estado: {item.status}</Text>
+                    </View>
+                )}/>
             )}
             {opcaoSelecionada === "profissional" && (
-                <View>
-                    <FlatList
-                    data={profissionaisC}
-                    keyExtractor={(item) => item.id.toString()}
-                    renderItem={({ item }) => (
-                        <View style={styles.card}>
-                            <Text style={styles.nome}>{item.nome}</Text>
-                            <Text>{item.areaT}</Text>
-                            <Text>Estado: {item.tempoexperiencia}</Text>
-                        </View>
-                    )}/>
-                </View>
+                <FlatList
+                data={profissionaisC}
+                keyExtractor={(item) => item.id.toString()}
+                renderItem={({ item }) => (
+                    <View style={styles.card}>
+                        <Text style={styles.nome}>{item.nome}</Text>
+                        <Text>{item.areaT}</Text>
+                        <Text>Estado: {item.tempoexperiencia}</Text>
+                    </View>
+                )}/>
             )}
         </View>
     );

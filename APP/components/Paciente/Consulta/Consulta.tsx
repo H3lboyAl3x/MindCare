@@ -1,104 +1,90 @@
 import { Ionicons } from "@expo/vector-icons";
-import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, Text, StyleSheet, FlatList, TouchableOpacity } from "react-native";
+import { getUrl } from "@/app/utils/url";
+import axios from "axios";
 
-export default function Consulta()
-{
-    return(
+type Consulta = {
+    id: number;
+    data: string;
+    hora: string;
+    idpaci: number;
+    idpro: number;
+    status: string;
+};
+
+export default function Consulta({navigation, route}) {
+    const {idp} = route.params;
+    const [consultas, setConsultas] = useState<Consulta[]>([]);
+    
+    const buscarConsultas = async () => {
+        try {
+            const responde = await axios.get<Consulta[]>(`${getUrl()}/MindCare/API/consultas`);
+            const consultasseparada = responde.data;
+            const consultasfiltrada = consultasseparada.filter((consulta) => consulta.idpaci === idp && consulta.status === "Pendente");
+            setConsultas(consultasfiltrada);
+
+        } catch (error) {
+            console.error("Erro ao buscar consultas:", error);
+        }
+    };
+
+
+    useEffect(() => {
+        buscarConsultas();
+        const intervalo = setInterval(buscarConsultas, 1000);
+        return () => clearInterval(intervalo);
+    }, [idp]);
+    return (
         <View style={styles.container}>
-            <View style={styles.barra}>
-                <Text style={styles.titulo}>Consulta</Text>
-                <TouchableOpacity style={styles.encrenagem}>
-                    <Ionicons name="add-circle-outline" size={40} color={'black'} />
-                </TouchableOpacity>
-            </View>
-            <View style={styles.logoContainer}>
-                <View style={styles.circle}>
-                    <Image
-                        source={{ uri: 'https://img.freepik.com/vetores-premium/trevo-com-quatro-folhas-isoladas-no-fundo-branco-conceito-da-sorte-no-estilo-cartoon-realista_302536-46.jpg' }}
-                        style={styles.logo}/>
-                </View>
-            </View>
-            <Text style={styles.consultatext}>Consulta01</Text>
-            <Text style={styles.datatext}>DATA</Text>
-            <View style={styles.opcao}>
-                <TouchableOpacity style={[styles.botao, {backgroundColor: '#14AE5C'}]}>
-                    <Text style={styles.text}>Entrar</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={[styles.botao, {backgroundColor: '#EC221F'}]}>
-                    <Text style={styles.text}>Cancelar</Text>
-                </TouchableOpacity>
-            </View>
+            <Text style={styles.titulo}>Consultas</Text>
+            <FlatList
+                style={styles.Inf}
+                data={consultas}
+                keyExtractor={(item) => item.id.toString()}
+                renderItem={({ item }) => (
+                    <TouchableOpacity style={styles.card}>
+                        <View>
+                            <Text style={styles.consultaText}>Consulta {item.id}</Text>
+                            <Text style={styles.consultaText}>Data: {item.data ? item.data.toString().split("T")[0] : ""}</Text>
+                            <Text style={styles.consultaText}>Hora: {item.hora}</Text>
+                            <Text style={styles.consultaText}>Status: {item.status}</Text>
+                        </View>
+                    </TouchableOpacity>
+                )}
+            />
         </View>
     );
 }
+
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      backgroundColor: '#fff',
-    },
-    barra: {
-        flexDirection: 'row', 
-        alignItems: "center", 
-        justifyContent: "space-between"
+        flex: 1,
+        backgroundColor: "#37C231",
     },
     titulo: {
-        fontSize: 30,
-        fontWeight: 'bold',
+        fontSize: 25,
+        marginBottom: 10,
+        backgroundColor: '#37C231',
+        color: '#fff',
+        height: 40,
+        textAlign: 'center'
     },
-    encrenagem: {
-        marginRight: 10,
+    card: {
+        padding: 15,
+        backgroundColor: "#f0f0f0",
+        height: 100,
+        borderRadius: 20,
+        marginTop: 5,
+        marginHorizontal: 5,
     },
-    logoContainer: {
-      justifyContent: 'center',
-      alignItems: 'center',
-      margin: 10,
-      marginTop:50,
-      borderRadius: 200,
-      borderWidth: 2,
-      borderColor: '#34C759',
-      width: '95%',
-      height: 395
+    consultaText: {
+        fontSize: 14,
+        color: "#000",
     },
-    circle: {
-      width: '80%',
-      height: 310,
-      borderRadius: 200,
-      borderWidth: 2,
-      borderColor: '#40C900',
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    logo: {
-      width: '95%',
-      height: '95%',
-      borderRadius: 200,
-    },
-    consultatext: {
-        fontSize: 20,
-        textAlign: 'center',
-    },
-    datatext: {
-        fontSize: 15,
-        textAlign: 'center',
-        marginTop: 10,
-    },
-    opcao: {
-        flexDirection: 'row', 
-        alignItems: "center", 
-        justifyContent: "space-between"
-    },
-    botao: {
-        width: 130,
-        height: 50,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginHorizontal: 20,
-        borderRadius: 25,
-        marginTop: 40,
-    },
-    text: {
-        fontSize: 15,
-        color: 'white',
+    Inf: {
+        borderTopLeftRadius: 25,
+        borderTopRightRadius: 25,
+        backgroundColor: '#fff'
     },
 });

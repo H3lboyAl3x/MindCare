@@ -8,7 +8,6 @@ import { View, Text, TouchableOpacity, StyleSheet, Alert, Platform, Modal, FlatL
 
 export default function EditarPerfil({navigation,route}){
     const {ide, idpe, nomee, telefonee, emaile, passworde, datanascimentoe, generoe} = route.params;
-    console.log(route.params);
     const [Nome, setnome] = useState(nomee);
     const [Telefone, settelefone] = useState(telefonee);
     const [Email, setemail] = useState(emaile);
@@ -34,7 +33,6 @@ export default function EditarPerfil({navigation,route}){
             genero: genero,
         });
         const user = response.data
-        console.log(user)
         navigation.navigate("Navegacao1", { 
                 id: user.id, 
                 idp: idpe, 

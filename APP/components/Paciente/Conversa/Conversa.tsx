@@ -109,7 +109,7 @@ export default function Conversa({navigation, route}) {
         <View style={styles.container}>
             <Text style={styles.titulo}>Conversas</Text>
             <FlatList
-            style={styles.Inf}
+                style={styles.Inf}
                 data={conversas}
                 keyExtractor={(item) => item.id.toString()}
                 renderItem={({ item }) => (
@@ -142,9 +142,9 @@ const styles = StyleSheet.create({
     pessoa: {
         padding: 15,
         backgroundColor: "#f0f0f0",
-        height: "90%",
+        height: 80,
         borderRadius: 20,
-        marginBottom: 5,
+        marginTop: 5,
         marginHorizontal: 5,
     },
     textp: {
@@ -156,4 +156,3 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff'
     },
 });
-

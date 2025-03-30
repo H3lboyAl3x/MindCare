@@ -28,7 +28,6 @@ export default function Proficional({navigation, route}){
             const chatExistente = chats.find((chat: Chat) => chat.idpaci === idp && chat.idpro === id);
 
             if (chatExistente) {
-                console.log("Chat já existente:", chatExistente);
                 navigation.navigate('Mensagem', {
                     idchats: chatExistente.id,
                     nome: nome,
@@ -43,7 +42,6 @@ export default function Proficional({navigation, route}){
                     idprof: id,
                     idpac: idp
                 })
-                console.log("Novo chat criado:", response.data);
                 navigation.navigate('Mensagem', {
                 idchats: response.data.id,
                 nome: nome,
@@ -54,13 +52,14 @@ export default function Proficional({navigation, route}){
             console.error("Erro ao criar ou buscar chat:", error);
         }
     };
+    const CriarConsulta =  async () => {
+        navigation.navigate('MarcarConsulta',{
+            idpaci: idp,
+            idpro: id,
+        } )
+    }
     return(
         <View style={styles.container}>
-            <View style={styles.barra}>
-                <Text style={styles.titulo}>Perfil do Profissional</Text> 
-            </View>
-            <View>
-            </View>
             <View style={{height: '85%'}}>
             <View style={styles.quadro}/>
             <View style={styles.bfoto}>
@@ -75,7 +74,7 @@ export default function Proficional({navigation, route}){
                     experiencia: experiencia,
                     areaTrabalho: areaTrabalho
                 })}>
-                    <Ionicons name="ellipsis-horizontal-circle-outline" size={40} color={'black'} />
+                    <Ionicons style={{backgroundColor: 'white', borderRadius: 50}} name="ellipsis-horizontal-circle-outline" size={40} color={'black'} />
                 </TouchableOpacity>
                 <Text style={styles.textA}>Expecialidade</Text>
                 <Text style={styles.textB}>{areaTrabalho}</Text>
@@ -93,7 +92,7 @@ export default function Proficional({navigation, route}){
             </View>
             <View style={styles.Botoes}>
                 <TouchableOpacity style={[styles.botao, {alignSelf: 'flex-start'}]} onPress={() => CriarConversa()}><Text style={styles.btext}>Enviar Mensagem</Text></TouchableOpacity>
-                <TouchableOpacity style={[styles.botao, {alignSelf: 'flex-end'}]}><Text style={styles.btext}>Marcar Consulta</Text></TouchableOpacity>
+                <TouchableOpacity style={[styles.botao, {alignSelf: 'flex-end'}]} onPress={() => CriarConsulta()}><Text style={styles.btext}>Marcar Consulta</Text></TouchableOpacity>
             </View>
         </View>
     );
@@ -103,26 +102,23 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
     },
-    barra: {
-        flexDirection: 'row', 
-        alignItems: "center", 
-        justifyContent: "space-between"
-    },
-    titulo: {
-        fontSize: 25,
-        fontWeight: 'bold',
-    },
     quadro: {
-        backgroundColor: '#D9D9D9',
-        width: '100%',
+        marginTop: 40,
+        backgroundColor: '#37C231',
+        width: '95%',
         height: 200,
+        alignSelf: 'center',
+        borderRadius: 25,
     },
     bfoto: {
         position: "absolute", 
-        top: 150,
-        alignSelf: "center",
-        width: 110,
-        borderColor: 'white',
+        top: 180,
+        left: 140,
+        width: 115,
+        height: 115,
+        borderColor: '#37C231',
+        borderWidth: 2,
+        borderRadius: 60,
     },
     foto: {
         width: 110,
@@ -133,12 +129,12 @@ const styles = StyleSheet.create({
         backgroundColor: 'white'
     },
     encrenagem: {
-        position: 'relative',
-        bottom: 100,
-        left: 140,
-        backgroundColor: 'white',
-        width: 40,
+        position: "absolute", 
+        top: 35,
+        left: 130,
         borderRadius: 25,
+        borderWidth: 2,
+        borderColor: '#37C231'
     },
     Menu: {
         marginTop: 130,
@@ -213,7 +209,7 @@ const styles = StyleSheet.create({
     },
     botao: {
       backgroundColor: '#14AE5C',
-      width: 100,
+      width: 180,
       height: 50,
       borderRadius: 25,
       alignItems: 'center',
@@ -221,6 +217,7 @@ const styles = StyleSheet.create({
     },
     btext: {
       fontSize: 15,
-      textAlign: 'center'
+      textAlign: 'center',
+      color: 'white',
     }
 });

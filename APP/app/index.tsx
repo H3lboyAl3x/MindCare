@@ -17,13 +17,15 @@ import Proficional from "@/components/Paciente/Profissionais/Profissional";
 import DetalhesProfissional from "@/components/Paciente/Profissionais/DetalhesProfissional";
 import ExibirInformacao from "@/components/Paciente/Perfil/ExibirInformacao";
 import EditarSenha from "@/components/Paciente/Perfil/EditarSenha";
-import React from "react";
+import MarcarConsulta from "@/components/Paciente/Consulta/MarcarConsulta";
+import Consulta from "@/components/Paciente/Consulta/Consulta";
+import React, { useEffect } from "react";
 import * as FileSystem from "expo-file-system";
+import * as Device from "expo-device";
 
 const Stack = createStackNavigator();
 
 export default function HomeScreen() {
-  console.log("Expo Document Directory:", FileSystem.documentDirectory);
   return(
     <Stack.Navigator initialRouteName='TelaInicio01'>
       <Stack.Screen name="TelaInicio01" component={TelaInicio01} options={{ headerShown: false }}/>
@@ -43,6 +45,7 @@ export default function HomeScreen() {
       <Stack.Screen name="DetalhesProfissional" component={DetalhesProfissional} options={{ headerShown: false }}/>
       <Stack.Screen name="ExibirInformacao" component={ExibirInformacao} options={{ headerShown: false }}/>
       <Stack.Screen name="EditarSenha" component={EditarSenha} options={{ headerShown: false }}/>
+      <Stack.Screen name="MarcarConsulta" component={MarcarConsulta} options={{ headerShown: false }}/>
     </Stack.Navigator>
   );
 }

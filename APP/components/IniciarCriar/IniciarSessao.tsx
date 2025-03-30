@@ -3,6 +3,16 @@ import { View, Text, TextInput, Alert, StyleSheet, TouchableOpacity } from "reac
 import axios from "axios";
 import { getUrl } from "@/app/utils/url";
 
+interface Usuario {
+  id: number;
+  nome: string;
+  email: string;
+  telefone: string;
+  password: string;
+  datanascimento: string;
+  genero: string;
+}
+
 export default function IniciarSessao({ navigation }) {
   const [nome, setNome] = useState("");
   const [password, setPassword] = useState("");
@@ -58,16 +68,10 @@ export default function IniciarSessao({ navigation }) {
           const response2 = await axios.get(`${getUrl()}/MindCare/API/profissionais/iduser/${usuario.id}`);
           const profissional = response2.data;
           setidpro(profissional.id || null);
-
-          console.log(`Buscando Área Profissional para o idpro: ${profissional.id}...`);
           const response3 = await axios.get(`${getUrl()}/MindCare/API/areaprof/idpro/${profissional.id}`);
-          console.log("Resposta da API (Área Profissional):", response3.data);
           const AreaPro = response3.data;
           setidap(AreaPro.id || null);
-
-          console.log(`Buscando Área de Trabalho para idarea: ${AreaPro.idarea}...`);
           const response4 = await axios.get(`${getUrl()}/MindCare/API/areatrabalho/${AreaPro.idarea}`);
-          console.log("Resposta da API (Área de Trabalho):", response4.data);
           const AreaTrabalho = response4.data;
           setidat(AreaTrabalho || null);
           setexpe(AreaTrabalho.area || null);

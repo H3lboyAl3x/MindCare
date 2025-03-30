@@ -28,11 +28,11 @@ router.put("/profissionais/:id", Controller.updateProfissional);
 router.delete("/profissionais/:id", Controller.deleteProfissional);
 
 //PARA A CONSULTA_________________________________________
-router.get("/consultas", Controller.getAllConsultas);
-router.post("/consultas", Controller.createConsulta);
-router.get("/consultas/:id", Controller.getConsultaById);
-router.put("/consultas/:id", Controller.updateConsulta);
-router.delete("/consultas/:id", Controller.deleteConsulta);
+router.get(`/consultas`, Controller.getAllConsultas);
+router.post(`/consultas`, Controller.createConsulta);
+router.get(`/consultas/:id`, Controller.getConsultaById);
+router.put(`/consultas/:id`, Controller.updateConsulta);
+router.delete(`/consultas/:id`, Controller.deleteConsulta);
 
 //PARA O CHAT_____________________________________________
 router.get("/chats", Controller.getAllChats);

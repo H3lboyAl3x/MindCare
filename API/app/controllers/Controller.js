@@ -13,7 +13,6 @@ export const getAllUsuario = async (req, res) => {
 
 export const createUsuario = async (req, res) => {
     try {
-        console.log("Recebido no backend:", req.body); 
         const newUser = await Services.createUsuario(req.body);
         res.status(201).json(newUser);
     } catch (error) {
@@ -174,7 +173,6 @@ export const getProfissionalById = async (req, res) => {
 export const getProfissionalByfk = async (req, res) => {
     try {
         const { iduser } = req.params;
-        console.log("Buscando profissional com iduser:", iduser);
         const profissional = await Services.getProfissionalByfk(iduser);
         if (!profissional) {
             return res.status(404).json({ message: 'Profissional nao encontrado de id:' + iduser });
