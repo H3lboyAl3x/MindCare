@@ -9,12 +9,14 @@ import CriarConta02 from "@/components/IniciarCriar/Paciente/CriarConta02";
 import Navegacao1 from "@/components/Paciente/Navegacao1";
 import Navegacao2 from "@/components/Proficional/Navegacao2";
 import EditarPerfil from "@/components/Paciente/Perfil/EditarPerfil";
-import Perfil01 from "@/components/Paciente/Perfil/Perfil01";
+import Perfil from "@/components/Paciente/Perfil/Perfil";
 import CriarConta01p from "@/components/IniciarCriar/Profissional/CriarConta01";
 import CriarConta02p from "@/components/IniciarCriar/Profissional/CriarConta02";
 import Mensagem from "@/components/Mensagem/Mensagem";
 import Proficional from "@/components/Paciente/Profissionais/Profissional";
 import DetalhesProfissional from "@/components/Paciente/Profissionais/DetalhesProfissional";
+import ExibirInformacao from "@/components/Paciente/Perfil/ExibirInformacao";
+import EditarSenha from "@/components/Paciente/Perfil/EditarSenha";
 import React from "react";
 import * as FileSystem from "expo-file-system";
 
@@ -35,10 +37,12 @@ export default function HomeScreen() {
       <Stack.Screen name="Navegacao1" component={Navegacao1} options={{ headerShown: false }}/>
       <Stack.Screen name="Navegacao2" component={Navegacao2} options={{ headerShown: false }}/>
       <Stack.Screen name="EditarPerfil" component={EditarPerfil} options={{ headerShown: false }}/>
-      <Stack.Screen name="Perfil01" component={Perfil01} options={{ headerShown: false }}/>
+      <Stack.Screen name="Perfil01" component={Perfil} options={{ headerShown: false }}/>
       <Stack.Screen name="Mensagem" component={Mensagem} options={{ headerShown: false }}/>
       <Stack.Screen name="Proficional" component={Proficional} options={{ headerShown: false }}/>
       <Stack.Screen name="DetalhesProfissional" component={DetalhesProfissional} options={{ headerShown: false }}/>
+      <Stack.Screen name="ExibirInformacao" component={ExibirInformacao} options={{ headerShown: false }}/>
+      <Stack.Screen name="EditarSenha" component={EditarSenha} options={{ headerShown: false }}/>
     </Stack.Navigator>
   );
 }

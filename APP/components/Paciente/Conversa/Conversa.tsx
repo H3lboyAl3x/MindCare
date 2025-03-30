@@ -109,6 +109,7 @@ export default function Conversa({navigation, route}) {
         <View style={styles.container}>
             <Text style={styles.titulo}>Conversas</Text>
             <FlatList
+            style={styles.Inf}
                 data={conversas}
                 keyExtractor={(item) => item.id.toString()}
                 renderItem={({ item }) => (
@@ -128,21 +129,31 @@ export default function Conversa({navigation, route}) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#fff",
-        padding: 10,
+        backgroundColor: "#37C231",
     },
     titulo: {
-        fontSize: 30,
-        fontWeight: "bold",
+        fontSize: 25,
         marginBottom: 10,
+        backgroundColor: '#37C231',
+        color: '#fff',
+        height: 40,
+        textAlign: 'center'
     },
     pessoa: {
         padding: 15,
-        borderBottomColor: "#ddd",
-        height: 80,
+        backgroundColor: "#f0f0f0",
+        height: "90%",
+        borderRadius: 20,
+        marginBottom: 5,
+        marginHorizontal: 5,
     },
     textp: {
         fontSize: 15,
+    },
+    Inf: {
+        borderTopLeftRadius: 25,
+        borderTopRightRadius: 25,
+        backgroundColor: '#fff'
     },
 });
 

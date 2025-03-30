@@ -70,10 +70,9 @@ export default function CriarConta02({ route, navigation }) {
     <View style={styles.container}>
       <Text style={styles.title}>Criar Conta</Text>
 
-      <Text style={styles.text}>Data de Nascimento</Text>
       <TouchableOpacity style={styles.input} onPress={() => setShowDatePicker(true)}>
-        <Text style={{ color: datanascimento ? '#000' : '#aaa' }}>
-          {datanascimento ? datanascimento.toLocaleDateString('pt-BR') : 'Selecione a data'}
+        <Text style={{ color: datanascimento ? '#fff' : '#aaa' }}>
+          {datanascimento ? datanascimento.toLocaleDateString('pt-BR') : 'Data de nascimento'}
         </Text>
       </TouchableOpacity>
 
@@ -81,17 +80,16 @@ export default function CriarConta02({ route, navigation }) {
         <DateTimePicker
           value={datanascimento || new Date()}
           mode="date"
-          display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+          display="spinner"
           minimumDate={minimumDate}
           maximumDate={maximumDate}
           onChange={onDateChange}
         />
       )}
 
-      <Text style={styles.text}>Gênero</Text>
       <TouchableOpacity style={styles.input} onPress={() => setShowGenderModal(true)}>
-        <Text style={{ color: genero ? '#000' : '#aaa' }}>
-          {genero || 'Selecione o gênero'}
+        <Text style={{ color: genero ? '#fff' : '#aaa' }}>
+          {genero || 'Gênero'}
         </Text>
       </TouchableOpacity>
 
@@ -124,41 +122,37 @@ export default function CriarConta02({ route, navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#37C231',
     alignItems: 'center',
+    justifyContent: 'center',
   },
   title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 30,
-    marginTop: 100,
-  },
-  text: {
-    marginTop: 30,
-    color: '#D2D2D2',
-    fontSize: 15,
+    fontSize: 20,
+    color: "#fff",
+    textAlign: "center",
   },
   input: {
-    width: 300,
+    marginTop: 20,
+    color:'white',
+    width: '80%',
     height: 50,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    justifyContent: 'center',
-    marginBottom: 20,
-  },
-  button: {
-    backgroundColor: '#14AE5C',
-    width: 200,
-    height: 50,
-    borderRadius: 25,
+    borderRadius: 50,
+    backgroundColor: '#2a8c26',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  button: {
+    width: '80%',
+    height: 50,
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 50,
+    alignSelf: 'center',
     marginTop: 30,
   },
   buttonText: {
-    color: '#fff',
+    color: '#7EBF42',
     fontSize: 18,
     fontWeight: 'bold',
   },
@@ -170,7 +164,7 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     width: 300,
-    backgroundColor: '#fff',
+    backgroundColor: '#37C231',
     borderRadius: 10,
     padding: 20,
     alignItems: 'center',
@@ -179,6 +173,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 20,
+    color: '#fff'
   },
   modalItem: {
     width: '100%',
@@ -187,6 +182,7 @@ const styles = StyleSheet.create({
   },
   modalText: {
     fontSize: 16,
+    color: '#fff',
   },
   errorText: {
     color: 'red',

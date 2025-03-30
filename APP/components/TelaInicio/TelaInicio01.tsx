@@ -4,17 +4,14 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 export default function TelaInicio01({navigation}) {
   return (
     <View style={styles.container}>
-      <View style={styles.logoContainer}>
         <View style={styles.circle}>
           <Image
             source={{ uri: 'https://img.freepik.com/vetores-premium/trevo-com-quatro-folhas-isoladas-no-fundo-branco-conceito-da-sorte-no-estilo-cartoon-realista_302536-46.jpg' }}
             style={styles.logo}
           />
         </View>
-      </View>
-      <Text style={styles.welcomeText}>Bem-Vindo ao</Text>
-      <Text style={[styles.welcomeText, { fontWeight: 'bold' }]}>MindCare</Text>
-      <View style={styles.indicator} />
+      <Text style={[styles.welcomeText, { fontSize: 20 }]}>Bem-Vindo ao</Text>
+      <Text style={[styles.welcomeText, { fontWeight: 'bold', fontSize: 30 }]}>MindCare</Text>
       <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('TelaInicio02')}>
         <Text style={styles.buttonText}>Iniciar</Text>
       </TouchableOpacity>
@@ -27,56 +24,41 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
-  },
-  logoContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 20,
-    borderRadius: 200,
-    borderWidth: 2,
-    borderColor: '#34C759',
-    width: '95%',
-    height: 395
+    backgroundColor: '#37C231',
   },
   circle: {
-    width: '80%',
-    height: 310,
+    width: '60%',
+    height: '30%',
     borderRadius: 200,
-    borderWidth: 2,
-    borderColor: '#40C900',
+    backgroundColor: '#fff',
     justifyContent: 'center',
     alignItems: 'center',
+    alignSelf: "center",
+    marginBottom: 200,
+    marginTop:100,
   },
   logo: {
-    width: '95%',
-    height: '95%',
+    width: '90%',
+    height: '90%',
     borderRadius: 200,
-
   },
   welcomeText: {
     fontSize: 24,
-    color: '#000',
-    textAlign: 'center',
+    color: 'white',
     fontFamily: 'sans-serif',
   },
-  indicator: {
-    width: 35,
-    height: 35,
-    backgroundColor: '#009951',
-    borderRadius: 50,
-    marginVertical: 20,
-  },
   button: {
-    width: 200,
+    width: '80%',
     height: 56,
-    backgroundColor: '#14AE5C',
+    backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 50,
+    alignSelf: 'center',
+    marginTop: 50,
   },
   buttonText: {
-    color: '#fff',
+    color: '#7EBF42',
     fontSize: 18,
     fontWeight: 'bold',
   },

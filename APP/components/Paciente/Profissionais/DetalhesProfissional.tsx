@@ -5,7 +5,6 @@ import { Ionicons } from "@expo/vector-icons";
 
 export default function DetalhesProfissional({route}){
     const {id, nome, email, telefone, datanascimento, experiencia, areaTrabalho} = route.params;
-    console.log(areaTrabalho);
     return(
         <View style={styles.container}>
             <Ionicons style={styles.perfil} name="person-circle-outline" size={100} color={'black'} ></Ionicons>

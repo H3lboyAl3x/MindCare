@@ -26,7 +26,8 @@ export default function Proficional({navigation, route}){
             const numerops = response1.data;
             const numeropExistente = numerops.find((numeroP : NumeroP) => numeroP.idpac === idp && numeroP.idprof === id);
             const chatExistente = chats.find((chat: Chat) => chat.idpaci === idp && chat.idpro === id);
-            if (chatExistente ) {
+
+            if (chatExistente) {
                 console.log("Chat já existente:", chatExistente);
                 navigation.navigate('Mensagem', {
                     idchats: chatExistente.id,
@@ -34,34 +35,20 @@ export default function Proficional({navigation, route}){
                     id: idu
                 });
             } else {
-                if(numeropExistente)
-                {
-                    const response = await axios.post(`${getUrl()}/MindCare/API/chats`, {
-                        idpaci: idp,
-                        idpro: id
-                    });
-                    console.log("Novo chat criado:", response.data);
-                    navigation.navigate('Mensagem', {
-                    idchats: response.data.id,
-                    nome: nome,
-                    id: idu
+                const response = await axios.post(`${getUrl()}/MindCare/API/chats`, {
+                    idpaci: idp,
+                    idpro: id
                 });
-                }else{
-                    const response = await axios.post(`${getUrl()}/MindCare/API/chats`, {
-                        idpaci: idp,
-                        idpro: id
-                    });
-                    await axios.post(`${getUrl()}/MindCare/API/numeroP`,{
-                        idprof: id,
-                        idpac: id
-                    })
-                    console.log("Novo chat criado:", response.data);
-                    navigation.navigate('Mensagem', {
-                    idchats: response.data.id,
-                    nome: nome,
-                    id: idu
-                    });
-                }
+                await axios.post(`${getUrl()}/MindCare/API/numeroP`,{
+                    idprof: id,
+                    idpac: idp
+                })
+                console.log("Novo chat criado:", response.data);
+                navigation.navigate('Mensagem', {
+                idchats: response.data.id,
+                nome: nome,
+                id: idu
+                });
             }
         } catch (error) {
             console.error("Erro ao criar ou buscar chat:", error);

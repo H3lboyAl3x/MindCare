@@ -54,6 +54,7 @@ export default function Profissionais({ navigation ,route }) {
   const [profissionaisC, setProfissionaisC] = useState<ProfissionalComNome[]>([]);
   const [especialidades, setEspecialidades] = useState<AreaTrabalho[]>([]);
   const [tempex, settempex] = useState(Number);
+  const [especialidadeSelecionada, setEspecialidadeSelecionada] = useState<number | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
   const Listafuncionario = async () => {
@@ -65,7 +66,11 @@ export default function Profissionais({ navigation ,route }) {
       // Buscar todas as áreas de trabalho
       const response1 = await axios.get<AreaTrabalho[]>(`${getUrl()}/MindCare/API/areatrabalho`);
       const listaEspecialidades = response1.data;
-      setEspecialidades(listaEspecialidades);
+      const especialidadesUnicas = listaEspecialidades.filter((item, index, self) =>
+        index === self.findIndex((t) => t.area === item.area)
+      );
+      setEspecialidades(especialidadesUnicas);
+      
 
       // Buscar os nomes dos usuários relacionados
       const profissionaisComNomes: ProfissionalComNome[] = await Promise.all(
@@ -141,8 +146,6 @@ export default function Profissionais({ navigation ,route }) {
         })
       );
       
-
-
       setProfissionais(profissionaisComNomes);
       setProfissionaisC(profissionaisComNomesC);
     } catch (error) {
@@ -151,6 +154,13 @@ export default function Profissionais({ navigation ,route }) {
       setLoading(false);
     }
   };
+
+  const profissionaisFiltrados = profissionais.filter((profissional) => 
+    especialidadeSelecionada === null || profissional.areaT === especialidades.find(e => e.id === especialidadeSelecionada)?.area
+  );
+  const profissionaisCFiltrados = profissionaisC.filter((profissional) => 
+    especialidadeSelecionada === null || profissional.areaT === especialidades.find(e => e.id === especialidadeSelecionada)?.area
+  );
 
   useEffect(() => {
     Listafuncionario();
@@ -161,85 +171,86 @@ export default function Profissionais({ navigation ,route }) {
   return (
     <View style={styles.container}>
       <Text style={styles.titulo}>Profissionais</Text>
+      <View style={styles.Inf}>
+        {/* Especialidades */}
+        <Text style={styles.especialidades}>Especialidades</Text>
+        <View>
+          <FlatList
+            data={especialidades}
+            keyExtractor={(item) => item.id.toString()}
+            horizontal
+            contentContainerStyle={styles.scrollEspecialidades}
+            renderItem={({ item }) => (
+              <TouchableOpacity style={styles.bolinhaContainer} onPress={() => setEspecialidadeSelecionada(item.id)}>
+                <View style={styles.bolinha} />
+                <Text style={styles.textoEspecialidade}>{item.area}</Text>
+              </TouchableOpacity>
+            )}
+          />
+        </View>
 
-      {/* Especialidades */}
-      <Text style={styles.especialidades}>Especialidades</Text>
-      <View>
-        <FlatList
-          data={especialidades}
-          keyExtractor={(item) => item.id.toString()}
-          horizontal
-          contentContainerStyle={styles.scrollEspecialidades}
-          renderItem={({ item }) => (
-            <TouchableOpacity style={styles.bolinhaContainer}>
-              <View style={styles.bolinha} />
-              <Text style={styles.textoEspecialidade}>{item.area}</Text>
-            </TouchableOpacity>
+        
+        {/* Profissionais */}
+        <View>
+          <Text style={styles.Textpro}>Profissionais que ja o acompanham</Text>
+          {loading ? (
+            <ActivityIndicator size="large" color="#34C759" />
+          ) : (
+            <FlatList
+              data={profissionaisCFiltrados}
+              keyExtractor={(item) => item.id.toString()}
+              renderItem={({ item }) => (
+                <TouchableOpacity style={styles.card}onPress={() => navigation.navigate("Proficional", {
+                  idu: idu,
+                  idp: idp,
+                  id: item.id,
+                  nome: item.nome,
+                  email: item.email,
+                  telefone: item.telefone,
+                  datanascimento: item.datanascimento,
+                  experiencia: item.tempoexperiencia,
+                  areaTrabalho: item.areaT,
+                })}>
+                  <Text style={styles.nome}>{item.nome}</Text>
+                  <Text>Área: {item.areaT}</Text>
+                  <Text>Experiência: {item.tempoexperiencia} anos</Text>
+                </TouchableOpacity>
+              )}
+            />
           )}
-        />
-      </View>
+        </View>
+        
+        
 
-      
-      {/* Profissionais */}
-      <View>
-        <Text style={styles.Textpro}>Profissionais que ja o acompanham</Text>
-        {loading ? (
-          <ActivityIndicator size="large" color="#34C759" />
-        ) : (
-          <FlatList
-            data={profissionaisC}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item }) => (
-              <TouchableOpacity style={styles.card}onPress={() => navigation.navigate("Proficional", {
-                idu: idu,
-                idp: idp,
-                id: item.id,
-                nome: item.nome,
-                email: item.email,
-                telefone: item.telefone,
-                datanascimento: item.datanascimento,
-                experiencia: item.tempoexperiencia,
-                areaTrabalho: item.areaT,
-              })}>
-                <Text style={styles.nome}>{item.nome}</Text>
-                <Text>Área: {item.areaT}</Text>
-                <Text>Experiência: {item.tempoexperiencia} anos</Text>
-              </TouchableOpacity>
-            )}
-          />
-        )}
-      </View>
-      
-      
-
-      {/* Profissionais */}
-      <View>
-        <Text style={styles.Textpro}>Outros Profissionais</Text>
-        {loading ? (
-          <ActivityIndicator size="large" color="#34C759" />
-        ) : (
-          <FlatList
-            data={profissionais}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item }) => (
-              <TouchableOpacity style={styles.card} onPress={() => navigation.navigate("Proficional", {
-                idu: idu,
-                idp: idp,
-                id: item.id,
-                nome: item.nome,
-                email: item.email,
-                telefone: item.telefone,
-                datanascimento: item.datanascimento,
-                experiencia: item.tempoexperiencia,
-                areaTrabalho: item.areaT,
-              })}>
-                <Text style={styles.nome}>{item.nome}</Text>
-                <Text>Área: {item.areaT}</Text>
-                <Text>Experiência: {item.tempoexperiencia} anos</Text>
-              </TouchableOpacity>
-            )}
-          />
-        )}
+        {/* Profissionais */}
+        <View>
+          <Text style={styles.Textpro}>Outros Profissionais</Text>
+          {loading ? (
+            <ActivityIndicator size="large" color="#34C759" />
+          ) : (
+            <FlatList
+              data={profissionaisFiltrados}
+              keyExtractor={(item) => item.id.toString()}
+              renderItem={({ item }) => (
+                <TouchableOpacity style={styles.card} onPress={() => navigation.navigate("Proficional", {
+                  idu: idu,
+                  idp: idp,
+                  id: item.id,
+                  nome: item.nome,
+                  email: item.email,
+                  telefone: item.telefone,
+                  datanascimento: item.datanascimento,
+                  experiencia: item.tempoexperiencia,
+                  areaTrabalho: item.areaT,
+                })}>
+                  <Text style={styles.nome}>{item.nome}</Text>
+                  <Text>Área: {item.areaT}</Text>
+                  <Text>Experiência: {item.tempoexperiencia} anos</Text>
+                </TouchableOpacity>
+              )}
+            />
+          )}
+        </View>
       </View>
     </View>
   );
@@ -248,13 +259,15 @@ export default function Profissionais({ navigation ,route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
-    padding: 10,
+    backgroundColor: "#37C231",
   },
   titulo: {
-    fontSize: 30,
-    fontWeight: "bold",
-    marginBottom: 5,
+      fontSize: 25,
+      marginBottom: 10,
+      backgroundColor: '#37C231',
+      color: '#fff',
+      height: 40,
+      textAlign: 'center'
   },
   especialidades: {
     textAlign: "center",
@@ -273,7 +286,7 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 25,
-    backgroundColor: "#c0c0c0",
+    backgroundColor: "#2eb028",
   },
   textoEspecialidade: {
     fontSize: 12,
@@ -290,11 +303,18 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: "#f0f0f0",
     padding: 10,
-    borderRadius: 8,
+    borderRadius: 20,
     marginBottom: 5,
+    marginHorizontal: 5,
   },
   nome: {
     fontSize: 16,
     fontWeight: "bold",
+  },
+  Inf: {
+      borderTopLeftRadius: 25,
+      borderTopRightRadius: 25,
+      backgroundColor: '#fff',
+      height: '100%',
   },
 });

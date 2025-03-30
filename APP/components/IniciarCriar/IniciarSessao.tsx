@@ -96,10 +96,8 @@ export default function IniciarSessao({ navigation }) {
   return (
     <View style={styles.container}>
       <Text style={[styles.welcomeText, { fontWeight: "bold" }]}>Iniciar Sessão</Text>
-      <Text style={styles.text}>Nome de usuario</Text>
-      <TextInput style={styles.textbox} value={nome} onChangeText={setNome} />
-      <Text style={styles.text}>Palavra Pass</Text>
-      <TextInput style={styles.textbox} secureTextEntry={true} value={password} onChangeText={setPassword} />
+      <TextInput style={styles.textbox} value={nome} onChangeText={setNome} placeholder="Nome de usuario"  placeholderTextColor={'#c0c0c0'}/>
+      <TextInput style={styles.textbox} secureTextEntry={true} value={password} onChangeText={setPassword} placeholder="Senha" placeholderTextColor={'#c0c0c0'}/>
       <Text style={styles.esqueci}>Esqueci a password!</Text>
       <Text style={{ fontSize: 11, color: "red" }}>{espaco}</Text>
       <TouchableOpacity style={styles.button} onPress={iniciar}>
@@ -113,42 +111,39 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    backgroundColor: "#fff",
+    justifyContent: 'center',
+    backgroundColor: "#37C231",
   },
   welcomeText: {
-    fontSize: 24,
-    color: "#000",
+    fontSize: 20,
+    color: "#fff",
     textAlign: "center",
-    marginTop: 100,
-  },
-  text: {
-    marginTop: 50,
-    color: "#D2D2D2",
-    fontSize: 15,
   },
   textbox: {
-    width: 300,
-    height: 40,
-    borderWidth: 1,
-    borderColor: "#D2D2D2",
-    borderRadius: 10,
+    marginTop: 20,
+    color:'white',
+    width: '80%',
+    height: 50,
+    borderRadius: 50,
+    backgroundColor: '#2a8c26',
+    textAlign: 'center'
   },
   esqueci: {
-    color: "#5BD654",
-    marginRight: 150,
+    color: "#fff",
   },
   button: {
-    width: 200,
-    height: 56,
-    backgroundColor: "#14AE5C",
-    justifyContent: "center",
-    alignItems: "center",
+    width: '80%',
+    height: 50,
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    alignItems: 'center',
     borderRadius: 50,
-    marginTop: 300,
+    alignSelf: 'center',
+    marginTop: 30,
   },
   buttonText: {
-    color: "#fff",
+    color: '#7EBF42',
     fontSize: 18,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
 });

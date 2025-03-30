@@ -38,70 +38,60 @@ export default function CriarConta01p({navigation}) {
 
   return (
     <KeyboardAvoidingView
-      style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-      <ScrollView contentContainerStyle={styles.scrollView} keyboardShouldPersistTaps="handled">
-        <Text style={[styles.welcomeText, { fontWeight: 'bold' }]}>Criar Conta</Text>
-        <Text style={styles.text}>Nome de Usuario</Text>
-        <TextInput style={styles.textbox} value={nome} onChangeText={setnome} />
-        <Text style={styles.text}>Telefone</Text>
-        <TextInput style={styles.textbox} keyboardType="phone-pad" value={telefone} onChangeText={settelefone} />
-        <Text style={styles.text}>Email</Text>
-        <TextInput style={styles.textbox} keyboardType="email-address" value={email} onChangeText={setEmail} />
-        <Text style={styles.text}>Palavra Pass</Text>
-        <TextInput style={styles.textbox} secureTextEntry={true} value={password} onChangeText={setPassword} />
-        <Text style={styles.text}>Confirmar Palavra Pass</Text>
-        <TextInput style={styles.textbox} secureTextEntry={true} value={confirmarp} onChangeText={setconfirmarp}/>
-        <Text style={{fontSize: 11, color: 'red'}}>{espaco}</Text>
-        <TouchableOpacity style={styles.button} onPress={criar1}>
-          <Text style={styles.buttonText}>Criar conta</Text>
-        </TouchableOpacity>
-      </ScrollView>
-    </KeyboardAvoidingView>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  scrollView: {
-    flexGrow: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  welcomeText: {
-    fontSize: 24,
-    color: '#000',
-    textAlign: 'center',
-    fontFamily: 'sans-serif',
-    marginTop: 30,
-  },
-  text: {
-    marginTop: 30,
-    color: '#D2D2D2',
-    fontSize: 15,
-  },
-  textbox: {
-    width: 300,
-    height: 40,
-    borderWidth: 1,
-    borderColor: '#D2D2D2',
-    borderRadius: 10,
-    paddingHorizontal: 10,
-  },
-  button: {
-    width: 200,
-    height: 56,
-    backgroundColor: '#14AE5C',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 50,
-    marginTop: 30,
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-});
+          style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+          <ScrollView contentContainerStyle={styles.scrollView} keyboardShouldPersistTaps="handled">
+            <Text style={[styles.welcomeText, { fontWeight: 'bold' }]}>Criar Conta</Text>
+            <TextInput style={styles.textbox} value={nome} onChangeText={setnome} placeholder="Nome de usuario"  placeholderTextColor={'#c0c0c0'}/>
+            <TextInput style={styles.textbox} keyboardType="phone-pad" value={telefone} onChangeText={settelefone} placeholder="Telefone"  placeholderTextColor={'#c0c0c0'} />
+            <TextInput style={styles.textbox} keyboardType="email-address" value={email} onChangeText={setEmail} placeholder="Email"  placeholderTextColor={'#c0c0c0'}/>
+            <TextInput style={styles.textbox} secureTextEntry={true} value={password} onChangeText={setPassword} placeholder="Senha"  placeholderTextColor={'#c0c0c0'}/>
+            <TextInput style={styles.textbox} secureTextEntry={true} value={confirmarp} onChangeText={setconfirmarp} placeholder="Confirmar Senha"  placeholderTextColor={'#c0c0c0'}/>
+            <Text style={{fontSize: 11, color: 'red'}}>{espaco}</Text>
+            <TouchableOpacity style={styles.button} onPress={criar1}>
+              <Text style={styles.buttonText}>Criar conta</Text>
+            </TouchableOpacity>
+          </ScrollView>
+        </KeyboardAvoidingView>
+      );
+    }
+    
+    const styles = StyleSheet.create({
+      container: {
+        flex: 1,
+        backgroundColor: '#37C231',
+      },
+      scrollView: {
+        flexGrow: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
+      welcomeText: {
+        fontSize: 20,
+        color: "#fff",
+        textAlign: "center",
+      },
+      textbox: {
+        marginTop: 20,
+        color:'white',
+        width: '80%',
+        height: 50,
+        borderRadius: 50,
+        backgroundColor: '#2a8c26',
+        textAlign: 'center'
+      },
+      button: {
+        width: '80%',
+        height: 50,
+        backgroundColor: 'white',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 50,
+        alignSelf: 'center',
+        marginTop: 30,
+      },
+      buttonText: {
+        color: '#7EBF42',
+        fontSize: 18,
+        fontWeight: 'bold',
+      },
+    });

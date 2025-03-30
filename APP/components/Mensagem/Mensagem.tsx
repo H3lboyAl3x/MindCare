@@ -1,9 +1,7 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { 
-  View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, 
-  FlatList, StyleSheet, Platform 
-} from "react-native";
+import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, FlatList, StyleSheet, Platform, Keyboard } 
+from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { getUrl } from "@/app/utils/url";
 
@@ -43,8 +41,8 @@ export default function Mensagem({ route }) {
     const agora = new Date();
     const horas = agora.getHours().toString().padStart(2, "0");
     const minutos = agora.getMinutes().toString().padStart(2, "0");
-    return `${horas}:${minutos}`;
-  };
+    return `${horas}:${minutos}`; // Remove os segundos
+  };  
 
   const buscarMensagens = async () => {
     try {
@@ -66,7 +64,9 @@ export default function Mensagem({ route }) {
     setdata(pegarData());
     sethora(pegarHora());
     const intervalo = setInterval(buscarMensagens, 1000);
-    return () => clearInterval(intervalo);
+    return () => {
+      clearInterval(intervalo);
+    }
   }, [idchats]);
 
   const enviarMensagem = async () => {
@@ -87,7 +87,7 @@ export default function Mensagem({ route }) {
   };
 
   return (
-    <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === "ios" ? "padding" : "height"}>
+    <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === "ios" ? "padding" : "padding"}>
       <View style={styles.titulo}>
         <Text style={styles.nomep}>{nome}</Text>
       </View>
@@ -98,13 +98,12 @@ export default function Mensagem({ route }) {
         renderItem={({ item }) => (
           <View style={[styles.caixasms, { alignSelf: item.remetente === id ? "flex-end" : "flex-start", backgroundColor: item.remetente === id ? "#DCF8C6" : "#FFFFFF" }]}>
             <Text style={[styles.textp, { color: "#000" }]}>{item.conteudo}</Text>
-            {item.hora && <Text style={[styles.textp, { color: "#757575", fontSize: 12, textAlign: "right" }]}>{item.hora}</Text>}
+            {item.hora && <Text style={[styles.textp, { color: "#757575", fontSize: 12, textAlign: "right" }]}>{item.hora.slice(0, 5)}</Text>}
           </View>
         )}
         contentContainerStyle={styles.flatList}
-        keyboardShouldPersistTaps="handled"
+        keyboardShouldPersistTaps="never"
       />
-
       <View style={styles.escrever}>
         <TextInput 
           placeholder="Mensagem" 
@@ -113,7 +112,7 @@ export default function Mensagem({ route }) {
           onChangeText={setMensagem} 
         />
         <TouchableOpacity style={styles.icon} onPress={enviarMensagem}>
-          <Ionicons name="send-outline" size={35} color={"#1A4732"} />
+          <Ionicons name="send-outline" size={32} color={"white"} />
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
@@ -124,23 +123,36 @@ export default function Mensagem({ route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#37C231",
   },
   titulo: {
+    fontSize: 25,
+    marginBottom: 10,
+    backgroundColor: '#37C231',
     height: 50,
-    justifyContent: "center",
-  },
-  flatList: {
-    flexGrow: 1,
-    backgroundColor: "#E7E7E7",
-    paddingHorizontal: 10,
-    paddingVertical: 10,
+    justifyContent: 'center',
+    width: '98%',
+    alignSelf: 'center',
+    borderRadius: 25,
   },
   nomep: {
     fontSize: 25,
+    marginLeft: 10,
+    color: '#fff',
+    textAlign: 'center',
+  },
+  flatList: {
+    flexGrow: 1,
+    backgroundColor: "#e3e6e3",
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
+
   },
   escrever: {
     height: 80,
+    backgroundColor: "#e3e6e3",
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
@@ -148,12 +160,12 @@ const styles = StyleSheet.create({
   ti: {
     height: 50,
     width: "85%",
-    backgroundColor: "#D9D9D9",
+    backgroundColor: "#fff",
     borderRadius: 25,
     paddingHorizontal: 10,
   },
   icon: {
-    backgroundColor: "#14AE5C",
+    backgroundColor: "#37C231",
     height: 45,
     width: 45,
     alignItems: "center",
