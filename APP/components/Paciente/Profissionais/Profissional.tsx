@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     },
     quadro: {
         marginTop: 40,
-        backgroundColor: '#37C231',
+        backgroundColor: '#4CD964',
         width: '95%',
         height: 200,
         alignSelf: 'center',
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
         left: 140,
         width: 115,
         height: 115,
-        borderColor: '#37C231',
+        borderColor: '#4CD964',
         borderWidth: 2,
         borderRadius: 60,
     },
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
         left: 130,
         borderRadius: 25,
         borderWidth: 2,
-        borderColor: '#37C231'
+        borderColor: '#4CD964'
     },
     Menu: {
         marginTop: 130,
@@ -175,6 +175,7 @@ const styles = StyleSheet.create({
       alignSelf: 'center',
       backgroundColor: '#D9D9D9',
       borderRadius: 25,
+      width: 200,
     },
     logoContainer: {
       justifyContent: 'center',
@@ -183,7 +184,7 @@ const styles = StyleSheet.create({
       marginTop: 20,
       borderRadius: 200,
       borderWidth: 2,
-      borderColor: '#34C759',
+      borderColor: '#4CD964',
       width: 150,
       height: 150
     },
@@ -192,7 +193,7 @@ const styles = StyleSheet.create({
       height: '80%',
       borderRadius: 200,
       borderWidth: 2,
-      borderColor: '#40C900',
+      borderColor: '#4CD964',
       justifyContent: 'center',
       alignItems: 'center',
     },
@@ -208,7 +209,7 @@ const styles = StyleSheet.create({
       width: "100%",
     },
     botao: {
-      backgroundColor: '#14AE5C',
+      backgroundColor: '#4CD964',
       width: 180,
       height: 50,
       borderRadius: 25,

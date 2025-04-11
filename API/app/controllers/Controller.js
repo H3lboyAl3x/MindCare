@@ -525,7 +525,7 @@ export const getAreaTrabalhoById = async (req, res) => {
 
 export const updadeAreaTrabalho = async (req, res) => {
     try {
-        const updateareaTrabalho = await Services.updadeAreaTrabalho(req.params.id, req.body);
+        const updateareaTrabalho = await Services.updateAreaTrabalho(req.params.id, req.body);
         if (!updateareaTrabalho) {
             return res.status(404).json({ message: 'Area de Trabalho nao encontrado' });
         }

@@ -4,11 +4,12 @@ import { Ionicons } from '@expo/vector-icons';
 import Conversa from './Conversa/Conversa';
 import Perfil01 from './Perfil/Perfil01';
 import Consulta from './Consulta/Consulta';
+import Paciente from './Paciente/Pacientes';
 
 const Tab = createBottomTabNavigator();
 
 export default function Navegacao2({route}) {
-  const {id, idp, nome, telefone, email, password, datanascimento, genero} = route.params;
+  const {id, idp, nome, telefone, email, password, datanascimento, genero, espe, expe} = route.params;
 return (
     <Tab.Navigator 
       screenOptions={{
@@ -31,7 +32,8 @@ return (
         />
         <Tab.Screen
           name="Pacientes"
-          component={Consulta} 
+          component={Paciente} 
+          initialParams={{idp, id}}
           options={{
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="people-outline" size={size} color={color} />
@@ -42,6 +44,7 @@ return (
         <Tab.Screen
           name="Consulta"
           component={Consulta} 
+          initialParams={{idp}}
           options={{
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="videocam-outline" size={size} color={color} />
@@ -51,7 +54,8 @@ return (
         />
         <Tab.Screen
           name="Perfil"
-          component={Perfil01} 
+          component={Perfil01}
+          initialParams={{id, idp, nome, telefone, email, password, datanascimento, genero, espe, expe}}
           options={{
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="person-circle-outline" size={size} color={color} />

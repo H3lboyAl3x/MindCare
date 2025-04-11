@@ -14,10 +14,10 @@ export default function Navegacao1({route}) {
 return (
     <Tab.Navigator 
       screenOptions={{
-        tabBarActiveTintColor: '#1a5917',
+        tabBarActiveTintColor: '#37a149',
         tabBarInactiveTintColor: '#fff',
         tabBarStyle: {
-        backgroundColor: '#37C231',
+        backgroundColor: '#4CD964',
         width: '95%',
         height: 60,
         alignSelf: 'center',

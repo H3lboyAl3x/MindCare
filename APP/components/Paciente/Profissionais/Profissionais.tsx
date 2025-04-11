@@ -200,7 +200,7 @@ export default function Profissionais({ navigation ,route }) {
               data={profissionaisCFiltrados}
               keyExtractor={(item) => item.id.toString()}
               renderItem={({ item }) => (
-                <TouchableOpacity style={styles.card}onPress={() => navigation.navigate("Proficional", {
+                <TouchableOpacity style={styles.card} onPress={() => navigation.navigate("Proficional", {
                   idu: idu,
                   idp: idp,
                   id: item.id,
@@ -259,12 +259,12 @@ export default function Profissionais({ navigation ,route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#37C231",
+    backgroundColor: "#4CD964",
   },
   titulo: {
       fontSize: 25,
       marginBottom: 10,
-      backgroundColor: '#37C231',
+      backgroundColor: '#4CD964',
       color: '#fff',
       height: 40,
       textAlign: 'center'
@@ -286,7 +286,7 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 25,
-    backgroundColor: "#2eb028",
+    backgroundColor: "#4CD964",
   },
   textoEspecialidade: {
     fontSize: 12,
@@ -295,7 +295,7 @@ const styles = StyleSheet.create({
   Textpro: {
     fontSize: 15,
     color: "white",
-    backgroundColor: "#34C759",
+    backgroundColor: "#4CD964",
     padding: 5,
     textAlign: "center",
     marginBottom: 5,

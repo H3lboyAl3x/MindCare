@@ -1,10 +1,12 @@
 
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { TopWaves } from '@/app/TopWaves';
 
 export default function TelaInicio02({navigation}) {
   return (
     <View style={styles.container}>
+      <TopWaves/>
         <View style={styles.circle}>
           <Image
             source={{ uri: 'https://img.freepik.com/vetores-premium/trevo-com-quatro-folhas-isoladas-no-fundo-branco-conceito-da-sorte-no-estilo-cartoon-realista_302536-46.jpg' }}
@@ -12,8 +14,8 @@ export default function TelaInicio02({navigation}) {
           />
         </View>
       <Text style={styles.welcomeText}>MindCare</Text>
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText} onPress={() => navigation.navigate('IniciarSessao')}>Iniciar Sessao</Text>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('IniciarSessao')}>
+        <Text style={styles.buttonText}>Iniciar Sessao</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Selecao')}> 
         <Text style={styles.buttonText}>Criar Conta</Text>
@@ -27,42 +29,42 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#37C231',
+    backgroundColor: '#fff',
+    marginTop: -75,
   },
   circle: {
-    width: '60%',
+    width: '65%',
     height: '30%',
     borderRadius: 200,
-    backgroundColor: '#fff',
+    backgroundColor: '#4CD964',
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: "center",
-    marginBottom: 150,
-    marginTop:100,
+    marginBottom: 100,
+    marginTop:80,
   },
   logo: {
-    width: '90%',
-    height: '90%',
+    width: '95%',
+    height: '95%',
     borderRadius: 200,
   },
   welcomeText: {
-    fontSize: 25,
-    color: 'white',
+    fontSize: 24,
+    color: '#4CD964',
     fontFamily: 'sans-serif',
-    fontWeight: 'bold',
   },
   button: {
     width: '80%',
-    height: 56,
-    backgroundColor: 'white',
+    height: 60,
+    backgroundColor: '#4CD964',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 50,
     alignSelf: 'center',
-    marginTop: 20,
+    marginTop: 10,
   },
   buttonText: {
-    color: '#7EBF42',
+    color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
   },

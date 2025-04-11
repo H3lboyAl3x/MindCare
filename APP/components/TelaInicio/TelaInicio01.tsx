@@ -1,9 +1,11 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { TopWaves } from '@/app/TopWaves';
 
 export default function TelaInicio01({navigation}) {
   return (
     <View style={styles.container}>
+      <TopWaves/>
         <View style={styles.circle}>
           <Image
             source={{ uri: 'https://img.freepik.com/vetores-premium/trevo-com-quatro-folhas-isoladas-no-fundo-branco-conceito-da-sorte-no-estilo-cartoon-realista_302536-46.jpg' }}
@@ -24,41 +26,42 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#37C231',
+    backgroundColor: '#fff',
+    marginTop: -115,
   },
   circle: {
-    width: '60%',
+    width: '65%',
     height: '30%',
     borderRadius: 200,
-    backgroundColor: '#fff',
+    backgroundColor: '#38C92B',
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: "center",
-    marginBottom: 200,
-    marginTop:100,
+    marginBottom: 100,
+    marginTop:80,
   },
   logo: {
-    width: '90%',
-    height: '90%',
+    width: '95%',
+    height: '95%',
     borderRadius: 200,
   },
   welcomeText: {
     fontSize: 24,
-    color: 'white',
+    color: '#4CD964',
     fontFamily: 'sans-serif',
   },
   button: {
     width: '80%',
     height: 56,
-    backgroundColor: 'white',
+    backgroundColor: '#4CD964',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 50,
     alignSelf: 'center',
-    marginTop: 50,
+    marginTop: 0,
   },
   buttonText: {
-    color: '#7EBF42',
+    color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
   },

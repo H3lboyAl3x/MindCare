@@ -28,7 +28,16 @@ export default function Consulta({navigation, route}) {
             console.error("Erro ao buscar consultas:", error);
         }
     };
-
+    const Analisar = (consulta: Consulta) => {
+        navigation.navigate("AnalisarConsultas", {
+          idConsulta: consulta.id,
+          dataConsulta: consulta.data,
+          horaConsulta: consulta.hora,
+          idpaci: consulta.idpaci,
+          idp: idp,
+          statusConsulta: consulta.status,
+        });
+      };
 
     useEffect(() => {
         buscarConsultas();
@@ -43,12 +52,11 @@ export default function Consulta({navigation, route}) {
                 data={consultas}
                 keyExtractor={(item) => item.id.toString()}
                 renderItem={({ item }) => (
-                    <TouchableOpacity style={styles.card}>
+                    <TouchableOpacity style={styles.card} onPress={() => Analisar(item)}>
                         <View>
-                            <Text style={styles.consultaText}>Consulta {item.id}</Text>
+                            <Text style={[styles.consultaText , {fontWeight: 'bold', fontSize: 16}]}>Consulta {item.id}</Text>
                             <Text style={styles.consultaText}>Data: {item.data ? item.data.toString().split("T")[0] : ""}</Text>
-                            <Text style={styles.consultaText}>Hora: {item.hora}</Text>
-                            <Text style={styles.consultaText}>Status: {item.status}</Text>
+                            <Text style={styles.consultaText}>Hora: {item.hora.slice(0, 5)}</Text>
                         </View>
                     </TouchableOpacity>
                 )}
@@ -60,19 +68,19 @@ export default function Consulta({navigation, route}) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#37C231",
+        backgroundColor: "#4CD964",
     },
     titulo: {
         fontSize: 25,
         marginBottom: 10,
-        backgroundColor: '#37C231',
+        backgroundColor: '#4CD964',
         color: '#fff',
         height: 40,
         textAlign: 'center'
     },
     card: {
         padding: 15,
-        backgroundColor: "#f0f0f0",
+        backgroundColor: "#4CD964",
         height: 100,
         borderRadius: 20,
         marginTop: 5,
@@ -80,7 +88,7 @@ const styles = StyleSheet.create({
     },
     consultaText: {
         fontSize: 14,
-        color: "#000",
+        color: "#fff",
     },
     Inf: {
         borderTopLeftRadius: 25,

@@ -18,10 +18,17 @@ import DetalhesProfissional from "@/components/Paciente/Profissionais/DetalhesPr
 import ExibirInformacao from "@/components/Paciente/Perfil/ExibirInformacao";
 import EditarSenha from "@/components/Paciente/Perfil/EditarSenha";
 import MarcarConsulta from "@/components/Paciente/Consulta/MarcarConsulta";
-import Consulta from "@/components/Paciente/Consulta/Consulta";
-import React, { useEffect } from "react";
-import * as FileSystem from "expo-file-system";
-import * as Device from "expo-device";
+import Paciente from "@/components/Proficional/Paciente/Paciente";
+import DetalhesPaciente from "@/components/Proficional/Paciente/DetalhesPaciente";
+import MarcarConsultap from "@/components/Proficional/Consulta/MarcarConsultap";
+import ExibirInformacaop from "@/components/Proficional/Perfil/ExibirInformacao";
+import EditarPerfilp from "@/components/Proficional/Perfil/EditarPerfil";
+import EditarSenhap from "@/components/Proficional/Perfil/EditarSenhap";
+import AnalisarConsultasp from "@/components/Proficional/Consulta/AnalisarConsultasp";
+import AnalisarConsultas from "@/components/Paciente/Consulta/AnalisarConsultas";
+import AdiarConsultap from "@/components/Proficional/Consulta/AdiarConsultap";
+import AdiarConsulta from "@/components/Paciente/Consulta/AdiarConsulta";
+import React from "react";
 
 const Stack = createStackNavigator();
 
@@ -39,13 +46,23 @@ export default function HomeScreen() {
       <Stack.Screen name="Navegacao1" component={Navegacao1} options={{ headerShown: false }}/>
       <Stack.Screen name="Navegacao2" component={Navegacao2} options={{ headerShown: false }}/>
       <Stack.Screen name="EditarPerfil" component={EditarPerfil} options={{ headerShown: false }}/>
+      <Stack.Screen name="EditarPerfilp" component={EditarPerfilp} options={{ headerShown: false }}/>
       <Stack.Screen name="Perfil01" component={Perfil} options={{ headerShown: false }}/>
       <Stack.Screen name="Mensagem" component={Mensagem} options={{ headerShown: false }}/>
       <Stack.Screen name="Proficional" component={Proficional} options={{ headerShown: false }}/>
       <Stack.Screen name="DetalhesProfissional" component={DetalhesProfissional} options={{ headerShown: false }}/>
       <Stack.Screen name="ExibirInformacao" component={ExibirInformacao} options={{ headerShown: false }}/>
       <Stack.Screen name="EditarSenha" component={EditarSenha} options={{ headerShown: false }}/>
+      <Stack.Screen name="EditarSenhap" component={EditarSenhap} options={{ headerShown: false }}/>
       <Stack.Screen name="MarcarConsulta" component={MarcarConsulta} options={{ headerShown: false }}/>
+      <Stack.Screen name="MarcarConsultap" component={MarcarConsultap} options={{ headerShown: false }}/>
+      <Stack.Screen name="Paciente" component={Paciente} options={{ headerShown: false }}/>
+      <Stack.Screen name="DetalhesPaciente" component={DetalhesPaciente} options={{ headerShown: false }}/>
+      <Stack.Screen name="ExibirInformacaop" component={ExibirInformacaop} options={{ headerShown: false }}/>
+      <Stack.Screen name="AnalisarConsultasp" component={AnalisarConsultasp} options={{ headerShown: false }}/>
+      <Stack.Screen name="AnalisarConsultas" component={AnalisarConsultas} options={{ headerShown: false }}/>
+      <Stack.Screen name="AdiarConsultap" component={AdiarConsultap} options={{ headerShown: false }}/>
+      <Stack.Screen name="AdiarConsulta" component={AdiarConsulta} options={{ headerShown: false }}/>
     </Stack.Navigator>
   );
 }

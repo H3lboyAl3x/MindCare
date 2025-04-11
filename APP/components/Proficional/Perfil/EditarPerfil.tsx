@@ -1,53 +1,274 @@
-import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet,  } from "react-native";
+import { getUrl } from "@/app/utils/url";
+import { Ionicons } from "@expo/vector-icons";
+import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
+import axios from "axios";
+import React, { useState } from "react";
+import { View, Text, TouchableOpacity, StyleSheet, Alert, Platform, Modal, FlatList, TextInput,  } from "react-native";
 
 
-export default function EditarPerfil()
-{
-    return(
-        <View style={styles.container}>
-            <TouchableOpacity>
-                <View style={styles.perfil}/>
-            </TouchableOpacity>
+export default function EditarPerfilp({navigation,route}){
+  const {ide, idpe, nomee, telefonee, emaile, passworde, datanascimentoe, generoe, espe, expe} = route.params;
+  const [Nome, setnome] = useState(nomee);
+  const [Telefone, settelefone] = useState(telefonee);
+  const [Email, setemail] = useState(emaile);
 
-            <TouchableOpacity style={styles.editor}>
-                <Text style={styles.text}>Nome:</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.editor}>
-                <Text style={styles.text}>Telefone:</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.editor}>
-                <Text style={styles.text}>Email:</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.editor}>
-                <Text style={styles.text}>Data de Nascimento:</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.editor}>
-                <Text style={styles.text}>Password:</Text>
-            </TouchableOpacity>
-        </View>
-    );
-}
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        backgroundColor: '#fff',
-    },
-    perfil: {
-        margin: 10,
-        backgroundColor: 'red',
-        borderRadius:50,
-        width: 100,
-        height: 100,
-    },
-    editor: {
-        width: '90%',
-        height: 50,
-        borderTopWidth: 1,
-        borderBottomWidth: 1,
-    },
-    text: {
-        fontSize: 18,
+  const [datanascimento, setDatan] = useState<Date | null>(datanascimentoe ? new Date(datanascimentoe) : null);
+  const [genero, setGenero] = useState(generoe);
+  const [especialidade, setespecialidade] = useState(espe);
+  const [experiencia, setexperiencia] = useState(expe);
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showGenderModal, setShowGenderModal] = useState(false);
+  const [showexperiencia, setshowexperiencia] = useState(false);
+  const [showtrabalho, setshowtrabalho] = useState(false);
+
+  const Editar = async () => {
+    if (!datanascimento) {
+      return;
     }
+    const formattedDate = datanascimento.toISOString().split('T')[0];
+    try {
+        const response = await axios.put(`${getUrl()}/MindCare/API/users/${ide}`, {
+            nome: Nome.trim() || nomee,
+            email: Email.trim() || emaile,
+            telefone: Telefone.trim() || telefonee,
+            datanascimento: formattedDate,
+            passworde: passworde,
+            genero: genero,
+        });
+        console.log("user:"+response.data.id);
+        const response1 = await axios.put(`${getUrl()}/MindCare/API/profissionais/${idpe}`,{
+            iduser: ide,
+            tempoexpecialidade: especialidade,
+        })
+        const areapro = await axios.get(`${getUrl()}/MindCare/API/areaprof/idpro/${idpe}`);
+        const response3 = await axios.put(`${getUrl()}/MindCare/API/areatrabalho/${areapro.data.idarea}`,{
+            area: especialidade,
+        });
+
+        const user = response.data
+        const profissional = response1.data;
+        const area = response3.data;
+        navigation.navigate("Navegacao2", { 
+                id: user.id, 
+                idp: idpe, 
+                nome: user.nome, 
+                telefone: user.telefone, 
+                email: user.email, 
+                password: user.password, 
+                datanascimento: formattedDate, 
+                genero: user.genero,
+                espe: area.area,
+                expe: profissional.tempoexperiencia,
+        });
+
+    } catch (error) {
+      console.error("Erro ao Editar", "Tente novamente mais tarde. "+error);
+    }
+  };
+  
+
+  const genders = ['Masculino', 'Feminino', 'Não incluir'];
+  const experent = ['1', '2', '3', '4', '5'];
+  const work = ['Psicologia clínica', 'Psicologia Educacional', 'Terapeuta holístico', 'Terapeuta de Renascimento'];
+
+  const minimumDate = new Date(1900, 0, 1);
+  const maximumDate = new Date();
+  maximumDate.setFullYear(maximumDate.getFullYear() - 10);
+
+  const onDateChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
+    if (event.type === 'set' && selectedDate) {
+      if (selectedDate > maximumDate) {
+        Alert.alert('Data inválida', 'Você deve ter pelo menos 10 anos de idade.');
+      } else {
+        setDatan(selectedDate);
+      }
+    }
+    setShowDatePicker(false);
+  };
+
+  return (
+    <View style={styles.container}>
+        <Text style={styles.title}>Ediar Perfil</Text>
+        <TextInput style={styles.textbox} value={Nome} onChangeText={setnome} placeholder={nomee} />
+        <TextInput style={styles.textbox} keyboardType="phone-pad" value={Telefone} onChangeText={settelefone} placeholder={telefonee} />
+        <TextInput style={styles.textbox} keyboardType="email-address" value={Email} onChangeText={setemail} placeholder={emaile} />
+        <TouchableOpacity style={styles.input} onPress={() => {navigation.navigate('EditarSenhap', {
+                    id: ide,
+                    idp: idpe,
+                    nome: nomee,
+                    telefone: telefonee,
+                    email: emaile,
+                    password: passworde,
+                    datanascimento: datanascimentoe,
+                    genero: generoe,
+                    espe: espe,
+                    expe: expe,
+
+                })}}>
+            <Text style={{color: '#fff'}}>Alterar minha Senha</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.input} onPress={() => setShowDatePicker(true)}>
+            <Text style={{ color: datanascimento instanceof Date ? '#fff' : '#aaa' }}>
+                {datanascimento instanceof Date ? datanascimento.toLocaleDateString('pt-BR') : datanascimentoe}
+            </Text>
+        </TouchableOpacity>
+        {showDatePicker && (
+        <DateTimePicker
+            value={datanascimento || new Date()}
+            mode="date"
+            display="spinner"
+            minimumDate={minimumDate}
+            maximumDate={maximumDate}
+            onChange={onDateChange}
+        />
+      )}
+      <TouchableOpacity style={styles.input} onPress={() => setShowGenderModal(true)}>
+        <Text style={{ color: genero ? '#fff' : '#aaa' }}>
+          {genero || 'Selecione o gênero'}
+        </Text>
+      </TouchableOpacity>
+
+      <Modal visible={showGenderModal} transparent={true} animationType="slide" onRequestClose={() => setShowGenderModal(false)}>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Selecione o Gênero</Text>
+            <FlatList
+              data={genders}
+              keyExtractor={(item) => item}
+              renderItem={({ item }) => (
+                <TouchableOpacity style={styles.modalItem} onPress={() => { setGenero(item); setShowGenderModal(false); }}>
+                  <Text style={styles.modalText}>{item}</Text>
+                </TouchableOpacity>
+              )}
+            />
+          </View>
+        </View>
+      </Modal>
+
+      <TouchableOpacity style={styles.input} onPress={() => setshowexperiencia(true)}>
+              <Text style={{ color: experiencia ? '#fff' : '#aaa' }}>
+                {experiencia || 'Anos de experiencia'}
+              </Text>
+            </TouchableOpacity>
+      
+            <Modal visible={showexperiencia} transparent={true} animationType="slide" onRequestClose={() => setshowexperiencia(false)}>
+              <View style={styles.modalContainer}>
+                <View style={styles.modalContent}>
+                  <Text style={styles.modalTitle}>Selecione a experiencia-ano</Text>
+                  <FlatList
+                    data={experent}
+                    keyExtractor={(item) => item}
+                    renderItem={({ item }) => (
+                      <TouchableOpacity style={styles.modalItem} onPress={() => { setexperiencia(item); setshowexperiencia(false); }}>
+                        <Text style={styles.modalText}>{item}</Text>
+                      </TouchableOpacity>
+                    )}
+                  />
+                </View>
+              </View>
+            </Modal>
+      
+            <TouchableOpacity style={styles.input} onPress={() => setshowtrabalho(true)}>
+              <Text style={{ color: especialidade ? '#fff' : '#aaa' }}>
+                {especialidade || 'Area de trabalho'}
+              </Text>
+            </TouchableOpacity>
+      
+            <Modal visible={showtrabalho} transparent={true} animationType="slide" onRequestClose={() => setshowtrabalho(false)}>
+              <View style={styles.modalContainer}>
+                <View style={styles.modalContent}>
+                  <Text style={styles.modalTitle}>Selecione a sua Area de Trabalho</Text>
+                  <FlatList
+                    data={work}
+                    keyExtractor={(item) => item}
+                    renderItem={({ item }) => (
+                      <TouchableOpacity style={styles.modalItem} onPress={() => { setespecialidade(item); setshowtrabalho(false); }}>
+                        <Text style={styles.modalText}>{item}</Text>
+                      </TouchableOpacity>
+                    )}
+                  />
+                </View>
+              </View>
+            </Modal>
+      <TouchableOpacity style={styles.button} onPress={Editar}>
+        <Text style={styles.buttonText}>Editar</Text>
+      </TouchableOpacity>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#37C231',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  title: {
+    fontSize: 20,
+    color: "#fff",
+    textAlign: "center",
+  },
+  textbox: {
+    marginTop: 20,
+    color:'white',
+    width: '80%',
+    height: 50,
+    borderRadius: 50,
+    backgroundColor: '#2a8c26',
+    textAlign: 'center'
+  },
+  input: {
+    marginTop: 20,
+    color:'white',
+    width: '80%',
+    height: 50,
+    borderRadius: 50,
+    backgroundColor: '#2a8c26',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  button: {
+    width: '80%',
+    height: 50,
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 50,
+    alignSelf: 'center',
+    marginTop: 30,
+  },
+  buttonText: {
+    color: '#7EBF42',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  modalContainer: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContent: {
+    width: 300,
+    backgroundColor: '#37C231',
+    borderRadius: 10,
+    padding: 20,
+    alignItems: 'center',
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    color: '#fff'
+  },
+  modalItem: {
+    width: '100%',
+    paddingVertical: 10,
+    alignItems: 'center',
+  },
+  modalText: {
+    fontSize: 16,
+    color: '#fff',
+  },
 });

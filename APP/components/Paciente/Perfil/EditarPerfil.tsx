@@ -1,3 +1,4 @@
+import { TopWaves } from "@/app/TopWaves";
 import { getUrl } from "@/app/utils/url";
 import { Ionicons } from "@expo/vector-icons";
 import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
@@ -68,6 +69,8 @@ export default function EditarPerfil({navigation,route}){
 
   return (
     <View style={styles.container}>
+      <TopWaves/>
+        <View style={styles.Menu}>
         <Text style={styles.title}>Ediar Perfil</Text>
         <TextInput style={styles.textbox} value={Nome} onChangeText={setnome} placeholder={nomee} />
         <TextInput style={styles.textbox} keyboardType="phone-pad" value={Telefone} onChangeText={settelefone} placeholder={telefonee} />
@@ -82,10 +85,10 @@ export default function EditarPerfil({navigation,route}){
                     datanascimento: datanascimentoe,
                     genero: generoe
                 })}}>
-            <Text style={{color: '#fff'}}>Alterar minha Senha</Text>
+            <Text style={{color: '#4CD964'}}>Alterar minha Senha</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.input} onPress={() => setShowDatePicker(true)}>
-            <Text style={{ color: datanascimento instanceof Date ? '#fff' : '#aaa' }}>
+            <Text style={{ color: datanascimento instanceof Date ? '#4CD964' : '#6fcf87' }}>
                 {datanascimento instanceof Date ? datanascimento.toLocaleDateString('pt-BR') : datanascimentoe}
             </Text>
         </TouchableOpacity>
@@ -100,7 +103,7 @@ export default function EditarPerfil({navigation,route}){
         />
       )}
       <TouchableOpacity style={styles.input} onPress={() => setShowGenderModal(true)}>
-        <Text style={{ color: genero ? '#fff' : '#aaa' }}>
+        <Text style={{ color: genero ? '#4CD964' : '#6fcf87' }}>
           {genero || 'Selecione o gênero'}
         </Text>
       </TouchableOpacity>
@@ -124,6 +127,7 @@ export default function EditarPerfil({navigation,route}){
       <TouchableOpacity style={styles.button} onPress={Editar}>
         <Text style={styles.buttonText}>Editar</Text>
       </TouchableOpacity>
+        </View>
     </View>
   );
 }
@@ -131,38 +135,43 @@ export default function EditarPerfil({navigation,route}){
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#37C231',
+    backgroundColor: '#fff',
     alignItems: 'center',
+    marginTop: -20,
+  },
+  Menu: {
+    width: '100%',
+    height: '80%',
+    alignItems: "center",
     justifyContent: 'center',
   },
   title: {
     fontSize: 20,
-    color: "#fff",
+    color: "#4CD964",
     textAlign: "center",
   },
   textbox: {
     marginTop: 20,
-    color:'white',
+    color:'#4CD964',
     width: '80%',
     height: 50,
     borderRadius: 50,
-    backgroundColor: '#2a8c26',
+    backgroundColor: '#e3e6e3',
     textAlign: 'center'
   },
   input: {
     marginTop: 20,
-    color:'white',
     width: '80%',
     height: 50,
     borderRadius: 50,
-    backgroundColor: '#2a8c26',
+    backgroundColor: '#e3e6e3',
     justifyContent: 'center',
     alignItems: 'center',
   },
   button: {
     width: '80%',
     height: 50,
-    backgroundColor: 'white',
+    backgroundColor: '#4CD964',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 50,
@@ -170,7 +179,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   buttonText: {
-    color: '#7EBF42',
+    color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
   },

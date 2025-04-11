@@ -171,9 +171,9 @@ export default function Perfil01({navigation, route}){
                 keyExtractor={(item) => item.id.toString()}
                 renderItem={({ item }) => (
                     <View style={styles.card}>
-                        <Text style={styles.nome}>Consulta: {item.id}</Text>
-                        <Text>{item.data.toString().split("T")[0]}</Text>
-                        <Text>Estado: {item.status}</Text>
+                        <Text style={[styles.nome, {fontSize: 16}]}>Consulta</Text>
+                        <Text style={styles.nome}>{item.data.toString().split("T")[0]}</Text>
+                        <Text style={styles.nome}>Estado: {item.status}</Text>
                     </View>
                 )}/>
             )}
@@ -183,9 +183,9 @@ export default function Perfil01({navigation, route}){
                 keyExtractor={(item) => item.id.toString()}
                 renderItem={({ item }) => (
                     <View style={styles.card}>
-                        <Text style={styles.nome}>{item.nome}</Text>
-                        <Text>{item.areaT}</Text>
-                        <Text>Estado: {item.tempoexperiencia}</Text>
+                        <Text style={[styles.nome, {fontSize: 16}]}>{item.nome}</Text>
+                        <Text style={styles.nome}>{item.areaT}</Text>
+                        <Text style={styles.nome}>Estado: {item.tempoexperiencia}</Text>
                     </View>
                 )}/>
             )}
@@ -199,7 +199,7 @@ const styles = StyleSheet.create({
     },
     quadro: {
         marginTop: 40,
-        backgroundColor: '#37C231',
+        backgroundColor: '#4CD964',
         width: '95%',
         height: 200,
         alignSelf: 'center',
@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
         left: 140,
         width: 115,
         height: 115,
-        borderColor: '#37C231',
+        borderColor: '#4CD964',
         borderWidth: 2,
         borderRadius: 60,
     },
@@ -229,7 +229,7 @@ const styles = StyleSheet.create({
         left: 130,
         borderRadius: 25,
         borderWidth: 2,
-        borderColor: '#37C231'
+        borderColor: '#4CD964'
     },
     Menu: {
         marginTop: 130,
@@ -259,14 +259,15 @@ const styles = StyleSheet.create({
         fontSize: 15,
     },
     card: {
-        backgroundColor: "#f0f0f0",
+        backgroundColor: "#4CD964",
         padding: 10,
         borderRadius: 20,
         marginTop: 5,
         marginHorizontal: 5,
     },
     nome: {
-        fontSize: 16,
+        fontSize: 13,
         fontWeight: "bold",
+        color: '#fff',
     },
 });

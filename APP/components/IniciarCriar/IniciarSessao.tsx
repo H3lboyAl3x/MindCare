@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, Alert, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, TextInput, Alert, StyleSheet, TouchableOpacity, Image } from "react-native";
 import axios from "axios";
+import { TopWaves } from "@/app/TopWaves";
 import { getUrl } from "@/app/utils/url";
 
 interface Usuario {
@@ -22,6 +23,7 @@ export default function IniciarSessao({ navigation }) {
   const [idap, setidap] = useState(null);
   const [idat, setidat] = useState(null);
   const [expe, setexpe] = useState(null);
+  const [espe, setespe] = useState(null);
   const [telefone, setTelefone] = useState(null);
   const [email, setEmail] = useState(null);
   const [datanascimento, setDatan] = useState<Date | null>(null);
@@ -68,24 +70,26 @@ export default function IniciarSessao({ navigation }) {
           const response2 = await axios.get(`${getUrl()}/MindCare/API/profissionais/iduser/${usuario.id}`);
           const profissional = response2.data;
           setidpro(profissional.id || null);
+          setexpe(profissional.tempoexperiencia || null);
           const response3 = await axios.get(`${getUrl()}/MindCare/API/areaprof/idpro/${profissional.id}`);
           const AreaPro = response3.data;
           setidap(AreaPro.id || null);
           const response4 = await axios.get(`${getUrl()}/MindCare/API/areatrabalho/${AreaPro.idarea}`);
           const AreaTrabalho = response4.data;
           setidat(AreaTrabalho || null);
-          setexpe(AreaTrabalho.area || null);
+          setespe(AreaTrabalho.area || null);
           
           navigation.navigate("Navegacao2",{ 
             id: usuario.id, 
             idp: profissional.id, 
-            nome, 
-            telefone, 
-            email, 
-            password, 
+            nome: usuario.nome, 
+            telefone: usuario.telefone,
+            email: usuario.email,
+            password: usuario.password, 
             datanascimento: formattedDate, 
-            genero ,
-            expe
+            genero: usuario.genero,
+            espe: AreaTrabalho.area,
+            expe: profissional.tempoexperiencia,
           });
 
         }catch (error) {
@@ -99,14 +103,17 @@ export default function IniciarSessao({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text style={[styles.welcomeText, { fontWeight: "bold" }]}>Iniciar Sessão</Text>
-      <TextInput style={styles.textbox} value={nome} onChangeText={setNome} placeholder="Nome de usuario"  placeholderTextColor={'#c0c0c0'}/>
-      <TextInput style={styles.textbox} secureTextEntry={true} value={password} onChangeText={setPassword} placeholder="Senha" placeholderTextColor={'#c0c0c0'}/>
-      <Text style={styles.esqueci}>Esqueci a password!</Text>
-      <Text style={{ fontSize: 11, color: "red" }}>{espaco}</Text>
-      <TouchableOpacity style={styles.button} onPress={iniciar}>
-        <Text style={styles.buttonText}>Iniciar Sessão</Text>
-      </TouchableOpacity>
+      <TopWaves/>
+      <View style={styles.Menu}>
+        <Text style={[styles.welcomeText, { fontWeight: "bold" }]}>Iniciar Sessão</Text>
+        <TextInput style={styles.textbox} value={nome} onChangeText={setNome} placeholder="Nome de usuario"  placeholderTextColor={'#4CD964'}/>
+        <TextInput style={styles.textbox} secureTextEntry={true} value={password} onChangeText={setPassword} placeholder="Senha" placeholderTextColor={'#4CD964'}/>
+        <Text style={styles.esqueci}>Esqueci a password!</Text>
+        <Text style={{ fontSize: 11, color: "red" }}>{espaco}</Text>
+        <TouchableOpacity style={styles.button} onPress={iniciar}>
+          <Text style={styles.buttonText}>Iniciar Sessão</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -115,21 +122,27 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
+    backgroundColor: "#fff",
+    marginTop: -20,
+  },
+  Menu: {
+    width: '100%',
+    height: '80%',
+    alignItems: "center",
     justifyContent: 'center',
-    backgroundColor: "#37C231",
   },
   welcomeText: {
     fontSize: 20,
-    color: "#fff",
+    color: "#4CD964",
     textAlign: "center",
   },
   textbox: {
     marginTop: 20,
-    color:'white',
+    color:'#4CD964',
     width: '80%',
     height: 50,
     borderRadius: 50,
-    backgroundColor: '#2a8c26',
+    backgroundColor: '#e3e6e3',
     textAlign: 'center'
   },
   esqueci: {
@@ -138,7 +151,7 @@ const styles = StyleSheet.create({
   button: {
     width: '80%',
     height: 50,
-    backgroundColor: 'white',
+    backgroundColor: '#4CD964',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 50,
@@ -146,7 +159,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   buttonText: {
-    color: '#7EBF42',
+    color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
   },

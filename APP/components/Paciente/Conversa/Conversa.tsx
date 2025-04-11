@@ -115,9 +115,9 @@ export default function Conversa({navigation, route}) {
                 renderItem={({ item }) => (
                     <TouchableOpacity style={styles.pessoa} onPress={() => navigation.navigate('Mensagem', {idchats: item.id, nome: item.nome, id})}>
                         <View>
-                            <Text style={[styles.textp, { color: "#757575" }]}>{item.nome}</Text>
-                            <Text style={[styles.textp, { color: "#B3B3B3" }]}>{item.ultimaMensagem}</Text>
-                            {item.hora && <Text style={[styles.textp, { color: "#B3B3B3", fontSize: 12, textAlign: 'right' }]}>{item.hora}</Text>}
+                            <Text style={[styles.textp, { color: "#fff" }]}>{item.nome}</Text>
+                            <Text style={[styles.textp, { color: "#e6e6e6" }]}>{item.ultimaMensagem}</Text>
+                            {item.hora && <Text style={[styles.textp, { color: "#e6e6e6", fontSize: 12, textAlign: 'right' }]}>{item.hora}</Text>}
                         </View>
                     </TouchableOpacity>
                 )}
@@ -129,19 +129,19 @@ export default function Conversa({navigation, route}) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#37C231",
+        backgroundColor: "#4CD964",
     },
     titulo: {
         fontSize: 25,
         marginBottom: 10,
-        backgroundColor: '#37C231',
+        backgroundColor: '#4CD964',
         color: '#fff',
         height: 40,
         textAlign: 'center'
     },
     pessoa: {
         padding: 15,
-        backgroundColor: "#f0f0f0",
+        backgroundColor: "#4CD964",
         height: 80,
         borderRadius: 20,
         marginTop: 5,

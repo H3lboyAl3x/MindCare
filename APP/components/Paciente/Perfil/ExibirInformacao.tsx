@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        backgroundColor: '#37C231',
+        backgroundColor: '#4CD964',
     },
     perfil: {
         margin: 10,
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     },
     EP: {
         marginTop: 50,
-        backgroundColor: '#14AE5C',
+        backgroundColor: '#4CD964',
         width: '90%',
         height: 50,
         borderRadius: 25,

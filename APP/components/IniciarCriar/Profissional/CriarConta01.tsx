@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView, Alert } from 'react-native';
+import { TopWaves } from '@/app/TopWaves';
 
 export default function CriarConta01p({navigation}) {
   
@@ -38,14 +39,15 @@ export default function CriarConta01p({navigation}) {
 
   return (
     <KeyboardAvoidingView
-          style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <TopWaves />
           <ScrollView contentContainerStyle={styles.scrollView} keyboardShouldPersistTaps="handled">
             <Text style={[styles.welcomeText, { fontWeight: 'bold' }]}>Criar Conta</Text>
-            <TextInput style={styles.textbox} value={nome} onChangeText={setnome} placeholder="Nome de usuario"  placeholderTextColor={'#c0c0c0'}/>
-            <TextInput style={styles.textbox} keyboardType="phone-pad" value={telefone} onChangeText={settelefone} placeholder="Telefone"  placeholderTextColor={'#c0c0c0'} />
-            <TextInput style={styles.textbox} keyboardType="email-address" value={email} onChangeText={setEmail} placeholder="Email"  placeholderTextColor={'#c0c0c0'}/>
-            <TextInput style={styles.textbox} secureTextEntry={true} value={password} onChangeText={setPassword} placeholder="Senha"  placeholderTextColor={'#c0c0c0'}/>
-            <TextInput style={styles.textbox} secureTextEntry={true} value={confirmarp} onChangeText={setconfirmarp} placeholder="Confirmar Senha"  placeholderTextColor={'#c0c0c0'}/>
+            <TextInput style={styles.textbox} value={nome} onChangeText={setnome} placeholder="Nome de usuario"  placeholderTextColor={'#6fcf87'}/>
+            <TextInput style={styles.textbox} keyboardType="phone-pad" value={telefone} onChangeText={settelefone} placeholder="Telefone"  placeholderTextColor={'#6fcf87'} />
+            <TextInput style={styles.textbox} keyboardType="email-address" value={email} onChangeText={setEmail} placeholder="Email"  placeholderTextColor={'#6fcf87'}/>
+            <TextInput style={styles.textbox} secureTextEntry={true} value={password} onChangeText={setPassword} placeholder="Senha"  placeholderTextColor={'#6fcf87'}/>
+            <TextInput style={styles.textbox} secureTextEntry={true} value={confirmarp} onChangeText={setconfirmarp} placeholder="Confirmar Senha"  placeholderTextColor={'#6fcf87'}/>
             <Text style={{fontSize: 11, color: 'red'}}>{espaco}</Text>
             <TouchableOpacity style={styles.button} onPress={criar1}>
               <Text style={styles.buttonText}>Criar conta</Text>
@@ -58,7 +60,8 @@ export default function CriarConta01p({navigation}) {
     const styles = StyleSheet.create({
       container: {
         flex: 1,
-        backgroundColor: '#37C231',
+        backgroundColor: '#fff',
+        marginTop: -35,
       },
       scrollView: {
         flexGrow: 1,
@@ -67,22 +70,22 @@ export default function CriarConta01p({navigation}) {
       },
       welcomeText: {
         fontSize: 20,
-        color: "#fff",
+        color: "#4CD964",
         textAlign: "center",
       },
       textbox: {
         marginTop: 20,
-        color:'white',
+        color:'#4CD964',
         width: '80%',
         height: 50,
         borderRadius: 50,
-        backgroundColor: '#2a8c26',
+        backgroundColor: '#e3e6e3',
         textAlign: 'center'
       },
       button: {
         width: '80%',
         height: 50,
-        backgroundColor: 'white',
+        backgroundColor: '#4CD964',
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 50,
@@ -90,7 +93,7 @@ export default function CriarConta01p({navigation}) {
         marginTop: 30,
       },
       buttonText: {
-        color: '#7EBF42',
+        color: '#fff',
         fontSize: 18,
         fontWeight: 'bold',
       },

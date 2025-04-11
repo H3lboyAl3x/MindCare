@@ -96,8 +96,8 @@ export default function Mensagem({ route }) {
         data={sms}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <View style={[styles.caixasms, { alignSelf: item.remetente === id ? "flex-end" : "flex-start", backgroundColor: item.remetente === id ? "#DCF8C6" : "#FFFFFF" }]}>
-            <Text style={[styles.textp, { color: "#000" }]}>{item.conteudo}</Text>
+          <View style={[styles.caixasms, { alignSelf: item.remetente === id ? "flex-end" : "flex-start", backgroundColor: item.remetente === id ? "#4CD964" : "#FFFFFF" }]}>
+            <Text style={[styles.textp, { color: "#fff" }]}>{item.conteudo}</Text>
             {item.hora && <Text style={[styles.textp, { color: "#757575", fontSize: 12, textAlign: "right" }]}>{item.hora.slice(0, 5)}</Text>}
           </View>
         )}
@@ -112,7 +112,7 @@ export default function Mensagem({ route }) {
           onChangeText={setMensagem} 
         />
         <TouchableOpacity style={styles.icon} onPress={enviarMensagem}>
-          <Ionicons name="send-outline" size={32} color={"white"} />
+          <Ionicons name="send-outline" size={32} color={"#3aa64c"} />
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
@@ -123,12 +123,12 @@ export default function Mensagem({ route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#37C231",
+    backgroundColor: "#4CD964",
   },
   titulo: {
     fontSize: 25,
     marginBottom: 10,
-    backgroundColor: '#37C231',
+    backgroundColor: '#4CD964',
     height: 50,
     justifyContent: 'center',
     width: '98%',
@@ -139,15 +139,12 @@ const styles = StyleSheet.create({
     fontSize: 25,
     marginLeft: 10,
     color: '#fff',
-    textAlign: 'center',
   },
   flatList: {
     flexGrow: 1,
     backgroundColor: "#e3e6e3",
     paddingHorizontal: 10,
     paddingVertical: 10,
-    borderTopLeftRadius: 25,
-    borderTopRightRadius: 25,
 
   },
   escrever: {
@@ -165,7 +162,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   icon: {
-    backgroundColor: "#37C231",
+    backgroundColor: "#4CD964",
     height: 45,
     width: 45,
     alignItems: "center",

@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        backgroundColor: '#37C231',
+        backgroundColor: '#4CD964',
     },
     perfil: {
         margin: 10,

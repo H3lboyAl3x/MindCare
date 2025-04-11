@@ -3,6 +3,7 @@ import axios from "axios";
 import { View, Text, TouchableOpacity, StyleSheet, Modal, FlatList, Alert, Platform } from 'react-native';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { getUrl } from '@/app/utils/url';
+import { TopWaves } from '@/app/TopWaves';
 
 export default function CriarConta02({ route, navigation }) {
   const { nome, telefone, email, password} = route.params;
@@ -43,7 +44,7 @@ export default function CriarConta02({ route, navigation }) {
       const idpac = Paciente.id;
       setidp(idpac);
 
-      navigation.navigate("Navegacao1", {id: userId, idp: idpac, nome, telefone, email, password, datanascimento: formattedDate, genero});
+      navigation.navigate("Navegacao1", {id: userId, idp: idpac, nome: Usuario.nome, telefone: Usuario.telefone, email: Usuario.email, password: Usuario.password, datanascimento: formattedDate, genero: Usuario.genero});
     } catch (error) {
       Alert.alert("Erro ao cadastrar", "Tente novamente mais tarde.");
     }
@@ -53,7 +54,7 @@ export default function CriarConta02({ route, navigation }) {
   const genders = ['Masculino', 'Feminino', 'Não incluir'];
   const minimumDate = new Date(1900, 0, 1);
   const maximumDate = new Date();
-  maximumDate.setFullYear(maximumDate.getFullYear() - 10);
+  maximumDate.setFullYear(maximumDate.getFullYear() - 18);
 
   const onDateChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
     if (event.type === 'set' && selectedDate) {
@@ -68,10 +69,11 @@ export default function CriarConta02({ route, navigation }) {
 
   return (
     <View style={styles.container}>
+      <TopWaves />
+      <View style={styles.Menu}>
       <Text style={styles.title}>Criar Conta</Text>
-
       <TouchableOpacity style={styles.input} onPress={() => setShowDatePicker(true)}>
-        <Text style={{ color: datanascimento ? '#fff' : '#aaa' }}>
+        <Text style={{ color: datanascimento ? '#4CD964' : '#6fcf87' }}>
           {datanascimento ? datanascimento.toLocaleDateString('pt-BR') : 'Data de nascimento'}
         </Text>
       </TouchableOpacity>
@@ -88,7 +90,7 @@ export default function CriarConta02({ route, navigation }) {
       )}
 
       <TouchableOpacity style={styles.input} onPress={() => setShowGenderModal(true)}>
-        <Text style={{ color: genero ? '#fff' : '#aaa' }}>
+        <Text style={{ color: genero ? '#4CD964' : '#6fcf87' }}>
           {genero || 'Gênero'}
         </Text>
       </TouchableOpacity>
@@ -115,6 +117,7 @@ export default function CriarConta02({ route, navigation }) {
       <TouchableOpacity style={styles.button} onPress={criar2}>
         <Text style={styles.buttonText}>Criar Conta</Text>
       </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -122,29 +125,34 @@ export default function CriarConta02({ route, navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#37C231',
+    backgroundColor: '#fff',
     alignItems: 'center',
+    marginTop: -35,
+  },
+  Menu: {
+    width: '100%',
+    height: '80%',
+    alignItems: "center",
     justifyContent: 'center',
   },
   title: {
     fontSize: 20,
-    color: "#fff",
+    color: "#4CD964",
     textAlign: "center",
   },
   input: {
     marginTop: 20,
-    color:'white',
     width: '80%',
     height: 50,
     borderRadius: 50,
-    backgroundColor: '#2a8c26',
+    backgroundColor: '#e3e6e3',
     justifyContent: 'center',
     alignItems: 'center',
   },
   button: {
     width: '80%',
     height: 50,
-    backgroundColor: 'white',
+    backgroundColor: '#4CD964',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 50,
@@ -152,7 +160,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   buttonText: {
-    color: '#7EBF42',
+    color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
   },
