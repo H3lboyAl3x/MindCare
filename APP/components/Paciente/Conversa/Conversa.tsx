@@ -1,158 +1,303 @@
 import React, { useEffect, useState } from "react";
-import { 
-  View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator 
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+  Alert,
+  Platform,
+  useWindowDimensions,
+  Image,
 } from "react-native";
 import axios from "axios";
 import { getUrl } from "@/app/utils/url";
-
-interface Chat {
-    id: number;
-    idpaci: number;
-    idpro: number;
-}
-
-interface Mensagem {
-    id: number;
-    idchat: number;
-    remetente: number;
-    conteudo: string;
-    data: string;
-    hora: string;
-}
-
-interface Profissional {
-    id: number;
-    tempoexperiencia: number;
-    iduser: number;
-}
-
-interface Usuario {
-    id: number;
-    nome: string;
-}
+import Mensagem from "@/components/Mensagem/Mensagem";
 
 interface ConversaItem {
-    id: number;
-    nome: string;
-    ultimaMensagem: string;
-    hora: string;
+  id: number;
+  nome: string;
+  ultimaMensagem: string;
+  hora: string;
 }
 
-export default function Conversa({navigation, route}) {
-    const {id, idp} = route.params;
-    const [conversas, setConversas] = useState<ConversaItem[]>([]);
-    const [loading, setLoading] = useState<boolean>(true);
-    const userId = idp;
-    const [idchats, setidchats] = useState(null);
-    const [nome, setnome] = useState(null);
+interface NumeroP {
+    id: number;
+    idprof: number;
+    idpac: number;
+}
 
-    const fetchConversas = async () => {
-        try {
-            const response = await axios.get(`${getUrl()}/MindCare/API/chats/idpaci/${userId}`);
-    
-            if (!response.data || !Array.isArray(response.data)) {
-                console.error("Resposta inesperada da API:", response.data);
-                setConversas([]);
-                return;
+export default function Conversa({ navigation, route }) {
+  const { id, idp } = route.params;
+  const [conversas, setConversas] = useState<ConversaItem[]>([]);
+  const [chatSelecionado, setChatSelecionado] = useState<ConversaItem | null>(null);
+  const isWeb = Platform.OS === "web";
+  const { width } = useWindowDimensions();
+  const [sos, setSos] = useState('');
+  const [idprof, setIdprof] = useState(null);
+
+  const fetchConversas = async () => {
+    try {
+      const res = await axios.get(`${getUrl()}/MindCare/API/chats/idpaci/${idp}`);
+      const chats = res.data;
+      if (!chats || chats.length === 0) {
+        setSos("Nenhuma conversa encontrada. Acesse a aba 'Profissionais' para iniciar uma nova interação.");
+        setConversas([]);
+        return;
+      }
+
+      const conversasFormatadas = await Promise.all(
+        chats.map(async (chat: { idpro: any; id: any; }) => {
+          try {
+            const prof = await axios.get(`${getUrl()}/MindCare/API/profissionais/${chat.idpro}`);
+            setIdprof(prof.data.id);
+            const user = await axios.get(`${getUrl()}/MindCare/API/users/${prof.data.iduser}`);
+            const mensagens = await axios.get(`${getUrl()}/MindCare/API/mensagens/idchat/${chat.id}`);
+            const lista = mensagens.data;
+            const ultima = lista.length > 0 ? lista[lista.length - 1] : null;
+
+            return {
+              id: chat.id,
+              nome: user.data.nome,
+              ultimaMensagem: ultima ? ultima.conteudo : "Nenhuma mensagem",
+              hora: ultima ? ultima.hora?.substring(0, 5) : "",
+            };
+          } catch {
+            return {
+              id: chat.id,
+              nome: "Desconhecido",
+              ultimaMensagem: "Erro ao carregar",
+              hora: "",
+            };
+          }
+        })
+      );
+
+      setConversas(conversasFormatadas);
+    } catch (err) {
+      console.error("Erro ao buscar conversas:", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchConversas();
+    const interval = setInterval(fetchConversas, 1000);
+    return () => clearInterval(interval);
+  }, [id]);
+
+  const apagarConversa = (idchat: number) => {
+    Alert.alert("Apagar conversa", "Tens certeza que desejas eliminar esta conversa?", [
+      { text: "Cancelar", style: "cancel" },
+      {
+        text: "Apagar",
+        onPress: async () => {
+          try {
+            await axios.delete(`${getUrl()}/MindCare/API/mensagens/chat/${idchat}`);
+            await axios.delete(`${getUrl()}/MindCare/API/chats/${idchat}`);
+
+            const response1 = await axios.get<NumeroP[]>(`${getUrl()}/MindCare/API/numeroP`);
+            const numerops = response1.data;
+            const numeropExistente = numerops.find((numeroP: NumeroP) => numeroP.idpac === idp && numeroP.idprof === idprof);
+            if (numeropExistente) {
+            const responseDelete = await axios.delete(`${getUrl()}/MindCare/API/numeroP/${numeropExistente.id}`);
+            if (responseDelete.status === 200) {
+                console.log("Número P excluído com sucesso!");
             }
-    
-            const chats = response.data;
-    
-            const conversasFormatadas = await Promise.all(
-                chats.map(async (chat) => {
-                    try {
-                        const profissionalResponse = await axios.get(`${getUrl()}/MindCare/API/profissionais/${chat.idpro}`);
-                        const profissional = profissionalResponse.data;
-                        
-                        const usuarioResponse = await axios.get(`${getUrl()}/MindCare/API/users/${profissional.iduser}`);
-                        const usuario = usuarioResponse.data;
-    
-                        const mensagemResponse = await axios.get(`${getUrl()}/MindCare/API/mensagens/idchat/${chat.id}`);
-                        const mensagens = mensagemResponse.data;
-                        const ultimaMensagem = mensagens.length > 0 ? mensagens[mensagens.length - 1] : null;
-                        setidchats(chat.id);
-                        setnome(usuario.nome);
-                        return {
-                            id: chat.id,
-                            nome: usuario.nome,
-                            ultimaMensagem: ultimaMensagem ? ultimaMensagem.conteudo : "Nenhuma mensagem",
-                            hora: ultimaMensagem ? ultimaMensagem.hora?.substring(0, 5) : "", // Pega só HH:mm
-                            };
+            } else {
+            console.log("Número P não encontrado!");
+            }
 
-                    } catch (error) {
-                        console.error(`Erro ao processar chat ${chat.id}:`, error);
-                        return {
-                            id: chat.id,
-                            nome: "Desconhecido",
-                            ultimaMensagem: "Erro ao carregar",
-                            hora: "",
-                        };
-                    }
-                })
-            );
-    
-            setConversas(conversasFormatadas);
-        } catch (error) {
-            console.error("Erro ao buscar conversas:", error);
-        } finally {
+            fetchConversas();
+            if (chatSelecionado?.id === idchat) setChatSelecionado(null);
+          } catch (err) {
+            console.error("Erro ao apagar conversa:", err);
+            Alert.alert("Erro", "Não foi possível apagar a conversa.");
+          }
+        },
+      },
+    ]);
+  };
+
+  const abrirOpcoes = async (item: ConversaItem) => {
+    if (Platform.OS === "web") {
+        const confirmar = window.confirm("Desejas apagar a conversa?");
+        if (confirmar) {
+          apagarConversa(item.id);
         }
-    };
-    
+        return;
+      }      
+    Alert.alert("Opções da conversa", "Escolha uma ação:", [
+      {
+        text: "Visualizar profissional",
+        onPress: async () => {
+          try {
+            const chatInfo = await axios.get(`${getUrl()}/MindCare/API/chats/${item.id}`);
+            const idpro = chatInfo.data.idpro;
+            const prof = await axios.get(`${getUrl()}/MindCare/API/profissionais/${idpro}`);
+            const user = await axios.get(`${getUrl()}/MindCare/API/users/${prof.data.iduser}`);
 
-    useEffect(() => {
-        fetchConversas();
-        const intervalo = setInterval(fetchConversas, 1000);
-        return () => clearInterval(intervalo);
-    }, [id]);
+            navigation.navigate("Proficional", {
+              idu: user.data.id,
+              idp: prof.data.id,
+              id: item.id,
+              nome: user.data.nome,
+              email: user.data.email,
+              telefone: user.data.telefone,
+              datanascimento: user.data.datanascimento,
+              experiencia: prof.data.tempoexperiencia,
+              areaTrabalho: prof.data.areaT,
+            });
+          } catch (err) {
+            console.error("Erro ao buscar profissional:", err);
+            Alert.alert("Erro", "Não foi possível carregar os dados do profissional.");
+          }
+        },
+      },
+      {
+        text: "Apagar conversa",
+        style: "destructive",
+        onPress: () => apagarConversa(item.id),
+      },
+      {
+        text: "Cancelar",
+        style: "cancel",
+      },
+    ]);
+  };
+
+  const renderConversas = () => {
+    if (conversas.length === 0) {
+      return (
+        <View>
+          <Image
+            source={{
+              uri: "https://img.freepik.com/vetores-premium/trevo-com-quatro-folhas-isoladas-no-fundo-branco-conceito-da-sorte-no-estilo-cartoon-realista_302536-46.jpg",
+            }}
+            style={styles.logo}
+          />
+          <Text style={{ textAlign: "center", marginTop: 30, color: "#fff" }}>{sos}</Text>
+        </View>
+      );
+    }
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.titulo}>Conversas</Text>
-            <FlatList
-                style={styles.Inf}
-                data={conversas}
-                keyExtractor={(item) => item.id.toString()}
-                renderItem={({ item }) => (
-                    <TouchableOpacity style={styles.pessoa} onPress={() => navigation.navigate('Mensagem', {idchats: item.id, nome: item.nome, id})}>
-                        <View>
-                            <Text style={[styles.textp, { color: "#fff" }]}>{item.nome}</Text>
-                            <Text style={[styles.textp, { color: "#e6e6e6" }]}>{item.ultimaMensagem}</Text>
-                            {item.hora && <Text style={[styles.textp, { color: "#e6e6e6", fontSize: 12, textAlign: 'right' }]}>{item.hora}</Text>}
-                        </View>
-                    </TouchableOpacity>
-                )}
-            />
-        </View>
+      <FlatList
+        style={styles.Inf}
+        data={conversas}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => {
+          const content = (
+            <TouchableOpacity
+              style={styles.pessoa}
+              onPress={() =>
+                isWeb
+                  ? setChatSelecionado(item)
+                  : navigation.navigate("Mensagem", { idchats: item.id, nome: item.nome, id })
+              }
+              onLongPress={() => !isWeb && abrirOpcoes(item)}
+            >
+              <Text style={[styles.textp, { color: "#fff" }]}>{item.nome}</Text>
+              <Text style={[styles.textp, { color: "#e6e6e6" }]}>{item.ultimaMensagem}</Text>
+              <Text style={[styles.textp, { color: "#e6e6e6", fontSize: 12, textAlign: "right" }]}>
+                {item.hora}
+              </Text>
+            </TouchableOpacity>
+          );
+
+          if (isWeb) {
+            return (
+              <div
+                onContextMenu={(e) => {
+                  e.preventDefault();
+                  abrirOpcoes(item);
+                }}
+              >
+                {content}
+              </div>
+            );
+          }
+
+          return content;
+        }}
+      />
     );
+  };
+
+  const renderMensagemWeb = () => (
+    <View style={{ flex: 1, backgroundColor: "#e3e6e3" }}>
+      {chatSelecionado ? (
+        <Mensagem route={{ params: { idchats: chatSelecionado.id, nome: chatSelecionado.nome, id } }} />
+      ) : (
+        <Text style={{ textAlign: "center", marginTop: 20 }}>
+          Selecione uma conversa para visualizar as mensagens usando o botão esquerdo ou exclua-a utilizando o botão direito.
+        </Text>
+      )}
+    </View>
+  );
+
+  if (Platform.OS === "web") {
+    return (
+      <View style={[styles.container, { marginTop: 60 }]}>
+        {isWeb && width > 768 ? (
+          <View style={{ flexDirection: "row", flex: 1 }}>
+            <View style={{ width: "25%",borderRightWidth: 2, borderColor: '#4CD964' }}>{renderConversas()}</View>
+            {renderMensagemWeb()}
+          </View>
+        ) : (
+          renderConversas()
+        )}
+      </View>
+    );
+  }
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.titulo}>Conversas</Text>
+      {isWeb && width > 768 ? (
+        <View style={{ flexDirection: "row", flex: 1 }}>
+          <View style={{ flex: 1 }}>{renderConversas()}</View>
+          {renderMensagemWeb()}
+        </View>
+      ) : (
+        renderConversas()
+      )}
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: "#4CD964",
-    },
-    titulo: {
-        fontSize: 25,
-        marginBottom: 10,
-        backgroundColor: '#4CD964',
-        color: '#fff',
-        height: 40,
-        textAlign: 'center'
-    },
-    pessoa: {
-        padding: 15,
-        backgroundColor: "#4CD964",
-        height: 80,
-        borderRadius: 20,
-        marginTop: 5,
-        marginHorizontal: 5,
-    },
-    textp: {
-        fontSize: 15,
-    },
-    Inf: {
-        borderTopLeftRadius: 25,
-        borderTopRightRadius: 25,
-        backgroundColor: '#fff'
-    },
+  container: {
+    flex: 1,
+    backgroundColor: "#4CD964",
+  },
+  titulo: {
+    fontSize: 25,
+    marginBottom: 10,
+    backgroundColor: "#4CD964",
+    color: "#fff",
+    height: 40,
+    textAlign: "center",
+  },
+  logo: {
+    width: 140,
+    height: 140,
+    borderRadius: 80,
+    backgroundColor: "#e7fbe6",
+    marginTop: 50,
+    alignSelf: "center",
+  },
+  pessoa: {
+    padding: 15,
+    backgroundColor: "#4CD964",
+    height: 80,
+    borderRadius: 20,
+    marginTop: 5,
+    marginHorizontal: 5,
+  },
+  textp: {
+    fontSize: 15,
+  },
+  Inf: {
+    backgroundColor: "#2E8B57",
+  },
 });

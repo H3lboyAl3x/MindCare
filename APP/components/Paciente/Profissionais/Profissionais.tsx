@@ -1,151 +1,100 @@
 import React, { useEffect, useState } from "react";
-import { 
-  View, Text, StyleSheet, FlatList, 
-  TouchableOpacity, ActivityIndicator, 
-  Alert
+import {
+  View, Text, StyleSheet, FlatList, TouchableOpacity,
+  ActivityIndicator, Platform, ScrollView
 } from "react-native";
 import axios from "axios";
 import { getUrl } from "@/app/utils/url";
 
-interface Profissional {
-  id: number;
-  tempoexperiencia: number;
-  iduser: number;
-}
-
-interface Usuario {
-  id: number;
-  nome: string;
-  email: string;
-  telefone: string;
-  datanascimento: string;
-}
-
+interface Profissional { id: number; tempoexperiencia: number; iduser: number; }
+interface Usuario { id: number; nome: string; email: string; telefone: string; datanascimento: string; }
 interface ProfissionalComNome {
-  id: number;
-  nome: string;
-  email: string;
-  telefone: string;
-  datanascimento: string;
-  areaT: string;
-  tempoexperiencia: number;
+  id: number; nome: string; email: string; telefone: string;
+  datanascimento: string; areaT: string; tempoexperiencia: number;
 }
+interface AreaTrabalho { id: number; area: string; }
+interface AreaProf { id: number; idprof: number; idarea: number; }
+interface NumeroP { id: number; idprof: number; idpac: number; }
 
-interface AreaTrabalho {
-  id: number;
-  area: string;
-}
-
-interface AreaProf {
-  id: number;
-  idprof: number;
-  idarea: number;
-}
-
-interface NumeroP {
-  id: number;
-  idprof: number;
-  idpac: number;
-}
-
-export default function Profissionais({ navigation ,route }) {
-  const { idp, idu } = route.params;
+export default function Profissionais({ navigation, route }) {
+  const { idp, idu, nomeu, telefoneu, emailu, passwordu, datanascimentou, generou } = route.params;
   const [profissionais, setProfissionais] = useState<ProfissionalComNome[]>([]);
   const [profissionaisC, setProfissionaisC] = useState<ProfissionalComNome[]>([]);
   const [especialidades, setEspecialidades] = useState<AreaTrabalho[]>([]);
   const [tempex, settempex] = useState(Number);
   const [especialidadeSelecionada, setEspecialidadeSelecionada] = useState<number | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [mostrarProfissionaisC, setMostrarProfissionaisC] = useState(true);
 
   const Listafuncionario = async () => {
     try {
-      // Buscar a lista de profissionais
       const response = await axios.get<Profissional[]>(`${getUrl()}/MindCare/API/profissionais`);
       const listaProfissionais = response.data;
 
-      // Buscar todas as áreas de trabalho
       const response1 = await axios.get<AreaTrabalho[]>(`${getUrl()}/MindCare/API/areatrabalho`);
       const listaEspecialidades = response1.data;
       const especialidadesUnicas = listaEspecialidades.filter((item, index, self) =>
         index === self.findIndex((t) => t.area === item.area)
       );
       setEspecialidades(especialidadesUnicas);
-      
 
-      // Buscar os nomes dos usuários relacionados
       const profissionaisComNomes: ProfissionalComNome[] = await Promise.all(
         listaProfissionais.map(async (profissional) => {
           try {
-            const userResponse = await axios.get<Usuario>(getUrl()+"/MindCare/API/users/"+profissional.iduser);
+            const userResponse = await axios.get<Usuario>(getUrl() + "/MindCare/API/users/" + profissional.iduser);
             const areapResponse = await axios.get<AreaProf>(`${getUrl()}/MindCare/API/areaprof/idpro/${profissional.id}`);
             const AreaP = areapResponse.data;
-            const areatResponse = await axios.get<AreaTrabalho>(`${getUrl()}/MindCare/API/areatrabalho/${AreaP.idarea}`)
-;            return {
+            const areatResponse = await axios.get<AreaTrabalho>(`${getUrl()}/MindCare/API/areatrabalho/${AreaP.idarea}`);
+            return {
               id: profissional.id,
               nome: userResponse.data.nome,
               email: userResponse.data.email,
               telefone: userResponse.data.telefone,
               datanascimento: userResponse.data.datanascimento ? userResponse.data.datanascimento.toString().split("T")[0] : "",
               areaT: areatResponse.data.area,
-              tempoexperiencia: profissional.tempoexperiencia,
+              tempoexperiencia: profissional.tempoexperiencia || 0,
             };
-          } catch (error) {
-            console.error(`Erro ao buscar usuário ${profissional.iduser}:, error`);
+          } catch {
             return {
               id: profissional.id,
-              nome: "Desconhecido",
-              email: "Desconhecido",
-              telefone: "Desconhecido",
-              datanascimento: "Desconhecido",
-              areaT: "Desconhecida",
-              tempoexperiencia: profissional.tempoexperiencia,
+              nome: "Desconhecido", email: "Desconhecido", telefone: "Desconhecido",
+              datanascimento: "Desconhecido", areaT: "Desconhecida", tempoexperiencia: 0
             };
           }
         })
       );
 
-      //Buscar a lista de NumeroP
       const NP = await axios.get<NumeroP[]>(`${getUrl()}/MindCare/API/numeroP/idpac/${idp}`);
       const listaProfissionaisC = NP.data;
 
-      // Buscar os nomes dos usuários relacionados
       const profissionaisComNomesC: ProfissionalComNome[] = await Promise.all(
         listaProfissionaisC.map(async (Numero) => {
           try {
             const proResponse = await axios.get<Profissional>(`${getUrl()}/MindCare/API/profissionais/${Numero.idprof}`);
-            settempex(proResponse.data.tempoexperiencia);
-
-            const userResponse = await axios.get<Usuario>(getUrl()+"/MindCare/API/users/"+proResponse.data.iduser);
-
+            settempex(proResponse.data.tempoexperiencia || 0);
+            const userResponse = await axios.get<Usuario>(getUrl() + "/MindCare/API/users/" + proResponse.data.iduser);
             const areapResponse = await axios.get<AreaProf>(`${getUrl()}/MindCare/API/areaprof/idpro/${proResponse.data.id}`);
             const AreaP = areapResponse.data;
-
-            const areatResponse = await axios.get<AreaTrabalho>(`${getUrl()}/MindCare/API/areatrabalho/${AreaP.idarea}`)
-
-;            return {
+            const areatResponse = await axios.get<AreaTrabalho>(`${getUrl()}/MindCare/API/areatrabalho/${AreaP.idarea}`);
+            return {
               id: Numero.idprof,
               nome: userResponse.data.nome,
               email: userResponse.data.email,
               telefone: userResponse.data.telefone,
               datanascimento: userResponse.data.datanascimento ? userResponse.data.datanascimento.toString().split("T")[0] : "",
               areaT: areatResponse.data.area,
-              tempoexperiencia: proResponse.data.tempoexperiencia,
+              tempoexperiencia: proResponse.data.tempoexperiencia || tempex,
             };
-          } catch (error) {
-            console.error(`Erro ao buscar numeroP ${Numero.id}:, error`);
+          } catch {
             return {
               id: Numero.idprof,
-              nome: "Desconhecido",
-              email: "Desconhecido",
-              telefone: "Desconhecido",
-              datanascimento: "Desconhecido",
-              areaT: "Desconhecida",
-              tempoexperiencia: tempex,
+              nome: "Desconhecido", email: "Desconhecido", telefone: "Desconhecido",
+              datanascimento: "Desconhecido", areaT: "Desconhecida", tempoexperiencia: tempex
             };
           }
         })
       );
-      
+
       setProfissionais(profissionaisComNomes);
       setProfissionaisC(profissionaisComNomesC);
     } catch (error) {
@@ -155,10 +104,10 @@ export default function Profissionais({ navigation ,route }) {
     }
   };
 
-  const profissionaisFiltrados = profissionais.filter((profissional) => 
+  const profissionaisFiltrados = profissionais.filter((profissional) =>
     especialidadeSelecionada === null || profissional.areaT === especialidades.find(e => e.id === especialidadeSelecionada)?.area
   );
-  const profissionaisCFiltrados = profissionaisC.filter((profissional) => 
+  const profissionaisCFiltrados = profissionaisC.filter((profissional) =>
     especialidadeSelecionada === null || profissional.areaT === especialidades.find(e => e.id === especialidadeSelecionada)?.area
   );
 
@@ -168,6 +117,50 @@ export default function Profissionais({ navigation ,route }) {
     return () => clearInterval(intervalo);
   }, [idp]);
 
+  const renderProfissional = (item: ProfissionalComNome) => (
+    <TouchableOpacity style={[styles.card, {width: 200}]} onPress={() => navigation.navigate("Proficional", {
+      idu: idu, idp: idp, nomeu: nomeu, telefoneu: telefoneu, emailu:emailu, passwordu: passwordu, datanascimentou: datanascimentou, generou: generou , id: item.id, nome: item.nome, email: item.email,
+      telefone: item.telefone, datanascimento: item.datanascimento,
+      experiencia: item.tempoexperiencia, areaTrabalho: item.areaT
+    })}>
+      <Text style={styles.nome}>{item.nome}</Text>
+      <Text style={styles.nome}>Área: {item.areaT}</Text>
+      <Text style={styles.nome}>Experiência: {item.tempoexperiencia} anos</Text>
+    </TouchableOpacity>
+  );
+
+  if (Platform.OS === "web") {
+    return (
+      <View style={{ flex: 1, flexDirection: "row", height: "100%" }}>
+        <View style={{ width: "25%", backgroundColor: "#2E8B57", paddingTop: 20 }}>
+          <Text style={styles.titulo}>Profissionais</Text>
+          <TouchableOpacity onPress={() => setMostrarProfissionaisC(true)} style={{ marginBottom: 10, backgroundColor:'#4CD964', width:'90%', height: 50, borderRadius: 25, alignSelf: 'center', alignItems: 'center', justifyContent: 'center' }}>
+            <Text style={{color:'#fff'}}>Profissionais que já o acompanham</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => setMostrarProfissionaisC(false)} style={{ marginBottom: 20, backgroundColor:'#4CD964', width:'90%', height: 50, borderRadius: 25, alignSelf: 'center', alignItems: 'center', justifyContent: 'center' }}>
+            <Text style={{color:'#fff'}}>Outros profissionais</Text>
+          </TouchableOpacity>
+          <Text style={styles.especialidades}>Especialidades</Text>
+          {especialidades.map((item) => (
+            <TouchableOpacity style={{ marginBottom: 10, backgroundColor:'#4CD964', width:'90%', height: 50, borderRadius: 25, alignSelf: 'center', alignItems: 'center', justifyContent: 'center' }} key={item.id} onPress={() => setEspecialidadeSelecionada(item.id)}>
+              <Text style={{ marginVertical: 4, color:'#fff' }}>{item.area}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+        <ScrollView contentContainerStyle={{ width: "100%", paddingTop: 60, flexDirection: "row", flexWrap: "wrap" }}>
+          {loading ? (
+            <ActivityIndicator size="large" color="#34C759" />
+          ) : (
+            (mostrarProfissionaisC ? profissionaisCFiltrados : profissionaisFiltrados).map((item) => (
+              <View key={item.id} style={{ width: 200, margin: 5,  alignItems: 'center', justifyContent: 'center'  }}>
+                {renderProfissional(item)}
+              </View>
+            ))
+          )}
+        </ScrollView>
+      </View>
+    );
+  }
   return (
     <View style={styles.container}>
       <Text style={styles.titulo}>Profissionais</Text>
@@ -198,11 +191,10 @@ export default function Profissionais({ navigation ,route }) {
           ) : (
             <FlatList
               data={profissionaisCFiltrados}
-              keyExtractor={(item) => item.id.toString()}
+              keyExtractor={(item) => `${item.id}-${item.nome}-${item.areaT}`}
               renderItem={({ item }) => (
                 <TouchableOpacity style={styles.card} onPress={() => navigation.navigate("Proficional", {
-                  idu: idu,
-                  idp: idp,
+                  idu: idu, idp: idp, nomeu: nomeu, telefoneu: telefoneu, emailu:emailu, passwordu: passwordu, datanascimentou: datanascimentou, generou: generou ,
                   id: item.id,
                   nome: item.nome,
                   email: item.email,
@@ -211,9 +203,9 @@ export default function Profissionais({ navigation ,route }) {
                   experiencia: item.tempoexperiencia,
                   areaTrabalho: item.areaT,
                 })}>
-                  <Text style={styles.nome}>{item.nome}</Text>
-                  <Text>Área: {item.areaT}</Text>
-                  <Text>Experiência: {item.tempoexperiencia} anos</Text>
+                  <Text style={[styles.nome, {fontSize: 16}]}>{item.nome}</Text>
+                  <Text style={styles.nome}>Área: {item.areaT}</Text>
+                  <Text style={styles.nome}>Experiência: {item.tempoexperiencia} anos</Text>
                 </TouchableOpacity>
               )}
             />
@@ -233,8 +225,7 @@ export default function Profissionais({ navigation ,route }) {
               keyExtractor={(item) => item.id.toString()}
               renderItem={({ item }) => (
                 <TouchableOpacity style={styles.card} onPress={() => navigation.navigate("Proficional", {
-                  idu: idu,
-                  idp: idp,
+                  idu: idu, idp: idp, nomeu: nomeu, telefoneu: telefoneu, emailu:emailu, passwordu: passwordu, datanascimentou: datanascimentou, generou: generou ,
                   id: item.id,
                   nome: item.nome,
                   email: item.email,
@@ -243,9 +234,9 @@ export default function Profissionais({ navigation ,route }) {
                   experiencia: item.tempoexperiencia,
                   areaTrabalho: item.areaT,
                 })}>
-                  <Text style={styles.nome}>{item.nome}</Text>
-                  <Text>Área: {item.areaT}</Text>
-                  <Text>Experiência: {item.tempoexperiencia} anos</Text>
+                  <Text style={[styles.nome, {fontSize: 16}]}>{item.nome}</Text>
+                  <Text style={styles.nome}>Área: {item.areaT}</Text>
+                  <Text style={styles.nome}>Experiência: {item.tempoexperiencia} anos</Text>
                 </TouchableOpacity>
               )}
             />
@@ -286,35 +277,35 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 25,
-    backgroundColor: "#4CD964",
+    backgroundColor: "#41b555",
   },
   textoEspecialidade: {
     fontSize: 12,
     textAlign: "center",
+    color: '#fff'
   },
   Textpro: {
     fontSize: 15,
     color: "white",
-    backgroundColor: "#4CD964",
+    backgroundColor: "#41b555",
     padding: 5,
     textAlign: "center",
     marginBottom: 5,
   },
   card: {
-    backgroundColor: "#f0f0f0",
+    backgroundColor: "#4CD964",
     padding: 10,
     borderRadius: 20,
     marginBottom: 5,
     marginHorizontal: 5,
   },
   nome: {
-    fontSize: 16,
+    fontSize: 12,
     fontWeight: "bold",
+    color: '#fff'
   },
   Inf: {
-      borderTopLeftRadius: 25,
-      borderTopRightRadius: 25,
-      backgroundColor: '#fff',
+      backgroundColor: '#2E8B57',
       height: '100%',
   },
 });

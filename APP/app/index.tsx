@@ -34,7 +34,12 @@ const Stack = createStackNavigator();
 
 export default function HomeScreen() {
   return(
-    <Stack.Navigator initialRouteName='TelaInicio01'>
+    <Stack.Navigator screenOptions={{
+      headerShown: false,
+      animation: "slide_from_right", // ← substitui o antigo animationEnabled
+      gestureEnabled: true, // slide lateral
+    }}
+    initialRouteName='TelaInicio01'>
       <Stack.Screen name="TelaInicio01" component={TelaInicio01} options={{ headerShown: false }}/>
       <Stack.Screen name="TelaInicio02" component={TelaInicio02} options={{ headerShown: false }}/>
       <Stack.Screen name="Selecao" component={Selecao} options={{ headerShown: false }}/>

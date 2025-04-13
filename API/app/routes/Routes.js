@@ -1,4 +1,5 @@
 import express from "express";
+import Mensagem from "../models/Mensagem.js";
 import * as Controller from "../controllers/Controller.js";
 
 const router = express.Router();
@@ -50,6 +51,16 @@ router.get("/mensagens/:id", Controller.getMensagemById);
 router.get("/mensagens/idchat/:idchat", Controller.getMensagemByfk);
 router.put("/mensagens/:id", Controller.updateMensagem);
 router.delete("/mensagens/:id", Controller.deleteMensagem);
+// Rota DELETE para apagar todas as mensagens de um chat
+router.delete('/mensagens/chat/:idchat', async (req, res) => {
+    try {
+      await Mensagem.destroy({ where: { idchat: req.params.idchat } });
+      res.status(200).send({ msg: "Mensagens apagadas com sucesso" });
+    } catch (error) {
+      res.status(500).send({ error: "Erro ao apagar mensagens" });
+    }
+  });
+  
 
 //PARA A NumeroP________________________________________
 router.get("/numeroP", Controller.getAllNumeroP);

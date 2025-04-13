@@ -86,8 +86,38 @@ export default function Mensagem({ route }) {
     }
   };
 
+  if(Platform.OS === "web") {
+    return (
+      <KeyboardAvoidingView style={styles.container}>
+        <FlatList
+          data={sms}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => (
+            <View style={[styles.caixasms, { alignSelf: item.remetente === id ? "flex-end" : "flex-start", backgroundColor: item.remetente === id ? "#4CD964" : "#FFFFFF" }]}>
+              <Text style={[styles.textp, { color: "#fff" }]}>{item.conteudo}</Text>
+              {item.hora && <Text style={[styles.textp, { color: "#757575", fontSize: 12, textAlign: "right" }]}>{item.hora.slice(0, 5)}</Text>}
+            </View>
+          )}
+          contentContainerStyle={styles.flatList}
+          keyboardShouldPersistTaps="never"
+        />
+        <View style={styles.escrever}>
+          <TextInput 
+            placeholder="Mensagem" 
+            style={styles.ti} 
+            value={mensagem} 
+            onChangeText={setMensagem} 
+          />
+          <TouchableOpacity style={styles.icon} onPress={enviarMensagem}>
+            <Ionicons name="send-outline" size={32} color={"#3aa64c"} />
+          </TouchableOpacity>
+        </View>
+      </KeyboardAvoidingView>
+    );
+  }
+
   return (
-    <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === "ios" ? "padding" : "padding"}>
+    <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === "ios" ? "padding" : "height"}>
       <View style={styles.titulo}>
         <Text style={styles.nomep}>{nome}</Text>
       </View>
@@ -112,7 +142,7 @@ export default function Mensagem({ route }) {
           onChangeText={setMensagem} 
         />
         <TouchableOpacity style={styles.icon} onPress={enviarMensagem}>
-          <Ionicons name="send-outline" size={32} color={"#3aa64c"} />
+          <Ionicons name="send-outline" size={32} color={"#2E8B57"} />
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
@@ -142,17 +172,18 @@ const styles = StyleSheet.create({
   },
   flatList: {
     flexGrow: 1,
-    backgroundColor: "#e3e6e3",
+    backgroundColor: "#2E8B57",
     paddingHorizontal: 10,
     paddingVertical: 10,
 
   },
   escrever: {
     height: 80,
-    backgroundColor: "#e3e6e3",
+    backgroundColor: "#2E8B57",
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
+    paddingBottom: 25,
   },
   ti: {
     height: 50,

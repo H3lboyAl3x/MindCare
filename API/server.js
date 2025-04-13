@@ -3,11 +3,15 @@ import dotenv from "dotenv";
 import sequelize from "./app/config/db.js";
 import Routes from "./app/routes/Routes.js";
 import { errorHandler } from "./app/middlewares/errorHandler.js";
+import cors from "cors";
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// HABILITAR CORS AQUI
+app.use(cors());
 
 // Middleware para JSON
 app.use(express.json());
@@ -17,6 +21,7 @@ app.use("/MindCare/API", Routes);
 
 // Middleware de erro
 app.use(errorHandler);
+
 
 // Conectar ao banco e iniciar servidor
 (async () => {

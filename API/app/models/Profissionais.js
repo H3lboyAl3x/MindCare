@@ -9,7 +9,7 @@ const Profissionais = sequelize.define('profissionais', {
         autoIncrement: true
     },
     tempoexperiencia: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: false
     },
     iduser: {
