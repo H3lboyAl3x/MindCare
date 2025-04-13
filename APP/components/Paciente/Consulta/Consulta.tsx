@@ -74,8 +74,8 @@ export default function Consulta({ navigation, route }) {
   const renderAnalisarWeb = () => {
     if (!selecionada) {
       return (
-        <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#fff" }}>
-          <Text style={{ textAlign: "center", color: '#2a8c26' }}>
+        <View style={{ flex: 1, alignItems: "center", backgroundColor: "#e3e6e3" }}>
+          <Text style={{ color: '#000' }}>
             Selecione uma consulta para visualizar os detalhes.
           </Text>
         </View>
@@ -109,11 +109,11 @@ export default function Consulta({ navigation, route }) {
           Data: {formattedDate}     |     Hora: {formattedTime}
         </Text>
         <View style={styles.Vbotao}>
-          <TouchableOpacity style={styles.botao} onPress={() => setModoAdiar(true)}>
-            <Text style={styles.buttonText}>Adiar</Text>
+          <TouchableOpacity style={[styles.botao, {backgroundColor: '#fff'}]} onPress={() => setModoAdiar(true)}>
+            <Text style={[styles.buttonText, {color: '#4CD964'}]}>Adiar</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.botao}>
-            <Text style={styles.buttonText}>Entrar</Text>
+          <TouchableOpacity style={[styles.botao, {backgroundColor: '#fff'}]} >
+            <Text style={[styles.buttonText, {color: '#4CD964'}]}>Entrar</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -121,23 +121,39 @@ export default function Consulta({ navigation, route }) {
   };
 
   const renderLista = () => (
-    <FlatList
-      style={styles.Inf}
-      data={consultas}
-      keyExtractor={(item) => item.id.toString()}
-      renderItem={({ item }) => (
-        <TouchableOpacity style={styles.card} onPress={() => Analisar(item)}>
-          <View>
-            <Text style={[styles.consultaText, { fontWeight: "bold", fontSize: 16 }]}>Consulta</Text>
-            <Text style={styles.consultaText}>
-              Data: {item.data ? item.data.toString().split("T")[0] : ""}
-            </Text>
-            <Text style={styles.consultaText}>Hora: {item.hora.slice(0, 5)}</Text>
-          </View>
-        </TouchableOpacity>
+    <>
+      {consultas.length === 0 ? (
+        <View>
+          <Image
+            source={{
+              uri: "https://aebo.pt/wp-content/uploads/2024/05/spo-300x300.png",
+            }}
+            style={styles.logo}
+          />
+          <Text style={{ textAlign: "center", marginTop: 30, color: Platform.OS === 'web' ? "#000" : "#fff" }}>
+            Marca uma consulta para começar a sua jornada de bem-estar!
+          </Text>
+        </View>
+      ) : (
+        <FlatList
+          style={styles.Inf}
+          data={consultas}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => (
+            <TouchableOpacity style={styles.card} onPress={() => Analisar(item)}>
+              <View>
+                <Text style={[styles.consultaText, { fontWeight: "bold", fontSize: 16 }]}>Consulta</Text>
+                <Text style={styles.consultaText}>
+                  Data: {item.data ? item.data.toString().split("T")[0] : ""}
+                </Text>
+                <Text style={styles.consultaText}>Hora: {item.hora.slice(0, 5)}</Text>
+              </View>
+            </TouchableOpacity>
+          )}
+        />
       )}
-    />
-  );
+    </>
+  );  
 
   if (isWeb && width > 768) {
     return (
@@ -246,7 +262,7 @@ const AdiarConsultaInline = ({ selecionada, idp, setModoAdiar, buscarConsultas, 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#4CD964",
+    backgroundColor: Platform.OS === 'web' ? "#fff" : "#2E8B57",
   },
   titulo: {
     fontSize: 25,
@@ -259,7 +275,7 @@ const styles = StyleSheet.create({
   logo: {
     width: 140,
     height: 140,
-    borderRadius: 80,
+    borderRadius: 20,
     backgroundColor: "#e7fbe6",
     marginTop: 50,
     alignSelf: "center",
@@ -277,7 +293,7 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   Inf: {
-    backgroundColor: "#2E8B57",
+    backgroundColor: Platform.OS === 'web' ? "#fff" : "#2E8B57",
   },
   Vbotao: {
     flexDirection: "row",
@@ -286,16 +302,17 @@ const styles = StyleSheet.create({
     marginTop: 200,
   },
   botao: {
-    width: 150,
+    width: 200,
     height: 50,
     marginHorizontal: 25,
-    backgroundColor: "white",
+    backgroundColor: "#4CD964",
     justifyContent: "center",
     alignItems: "center",
+    alignSelf: "center",
     borderRadius: 50,
   },
   buttonText: {
-    color: "#7EBF42",
+    color: "#fff",
     fontSize: 18,
     fontWeight: "bold",
   },

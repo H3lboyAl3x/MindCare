@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, FlatList } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, Platform, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { getUrl } from "@/app/utils/url";
 import axios from "axios";
@@ -134,6 +134,90 @@ export default function Perfil01({navigation, route}){
         setmenu2('white');
         setmenu1('#EEEEEF');
     };
+    if(Platform.OS === 'web'){
+        return(
+            <View style={[styles.container, { padding: 30, backgroundColor: '#EEF3F8' }]}>
+                <View style={{ height: 150, backgroundColor: '#C3D5DC', borderTopLeftRadius: 8, borderTopRightRadius: 8, marginTop: 40 }} />
+                <View style={{
+                    backgroundColor: '#fff',
+                    padding: 20,
+                    borderRadius: 8,
+                    marginTop: -50,
+                    marginHorizontal: 'auto',
+                    shadowColor: '#000',
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowOpacity: 0.1,
+                    shadowRadius: 4,
+                    elevation: 3,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'space-between'
+                }}>
+                    <View>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                            <Image
+                                source={{
+                                  uri: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
+                                }}
+                                style={styles.avatar}
+                              />
+                <View style={{ marginLeft: 20 }}>
+                                            <Text style={{ fontSize: 24, fontWeight: 'bold' }}>{nome}</Text>
+                                            <TouchableOpacity
+                                                style={{ marginTop: 10 }}
+                                                onPress={() => navigation.navigate('ExibirInformacao', {
+                                                    id: id,
+                                                    idp: idp,
+                                                    nome: nome,
+                                                    telefone: telefone,
+                                                    email: email,
+                                                    password: password,
+                                                    datanascimento: datanascimento,
+                                                    genero: genero
+                                                })}
+                                            >
+                                                <Ionicons name="create-outline" size={20} color="#4CD964" />
+                                            </TouchableOpacity>
+                                        </View>
+                        </View>
+                    </View>
+                </View>
+                <View style={[styles.Menu, {marginTop: 10}]}>
+                    <TouchableOpacity style={[styles.menu1, {backgroundColor: cormenu1}]} onPress={() =>{ Funcaobotao1(); setOpcaoSelecionada('consulta')}}>
+                        <Text style={styles.text}>Lista de consultas</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.menu2, {backgroundColor: cormenu2}]} onPress={() =>{ Funcaobotao2(); setOpcaoSelecionada('profissional')}}>
+                        <Text style={styles.text}>Lista de Psicologos</Text>
+                    </TouchableOpacity>
+                </View>
+                {/* Exibir Conteúdo da seleção */}
+                {opcaoSelecionada === "consulta" && (
+                    <FlatList
+                    data={consultas}
+                    keyExtractor={(item) => item.id.toString()}
+                    renderItem={({ item }) => (
+                        <View style={styles.card}>
+                            <Text style={[styles.nome, {fontSize: 16}]}>Consulta</Text>
+                            <Text style={styles.nome}>{item.data.toString().split("T")[0]}</Text>
+                            <Text style={styles.nome}>Estado: {item.status}</Text>
+                        </View>
+                    )}/>
+                )}
+                {opcaoSelecionada === "profissional" && (
+                    <FlatList
+                    data={profissionaisC}
+                    keyExtractor={(item) => item.id.toString()}
+                    renderItem={({ item }) => (
+                        <View style={styles.card}>
+                            <Text style={[styles.nome, {fontSize: 16}]}>{item.nome}</Text>
+                            <Text style={styles.nome}>{item.areaT}</Text>
+                            <Text style={styles.nome}>Estado: {item.tempoexperiencia}</Text>
+                        </View>
+                    )}/>
+                )}
+            </View>
+        );
+    }
 
     return(
         <View style={styles.container}>
@@ -204,6 +288,12 @@ const styles = StyleSheet.create({
         height: 200,
         alignSelf: 'center',
         borderRadius: 25,
+    },
+    avatar: {
+        width: 140,
+        height: 140,
+        borderRadius: 70,
+        backgroundColor: "#e7fbe6",
     },
     bfoto: {
         position: "absolute", 

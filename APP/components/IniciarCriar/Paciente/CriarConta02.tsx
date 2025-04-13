@@ -75,22 +75,40 @@ export default function CriarConta02({ route, navigation }) {
     setShowDatePicker(false);
   };
 
-  if (Platform.OS === "web") {
+   if (Platform.OS === "web") {
     return (
-      <SafeAreaView style={stylesWeb.container}>
-        <View style={stylesWeb.imageContainer}>
+      <SafeAreaView style={stylesWeb.safeArea}>
+        {/* Cabeçalho */}
+        <View style={stylesWeb.header}>
           <Image
             source={{ uri: "https://aebo.pt/wp-content/uploads/2024/05/spo-300x300.png" }}
-            style={stylesWeb.logo}
+            style={stylesWeb.logoHeader}
           />
         </View>
-        <View style={stylesWeb.content}>
-          <View style={stylesWeb.inner}>
-            <Text style={stylesWeb.title}>Criar Conta</Text>
-            <TouchableOpacity style={stylesWeb.input}>
+
+        {/* Corpo */}
+        <View style={stylesWeb.container}>
+          {/* Coluna Esquerda */}
+          <View style={stylesWeb.left}>
+            <Text style={stylesWeb.title}>Finalizar Cadastro</Text>
+            <Text style={stylesWeb.subtitle}>
+              Preencha todos os campos para finalizar seu cadastro no MindCare.
+            </Text>
+            <Image
+              source={{ uri: "https://cdn-icons-png.flaticon.com/512/4088/4088981.png" }}
+              style={stylesWeb.leftImage}
+            />
+          </View>
+
+          {/* Coluna Direita */}
+          <View style={stylesWeb.right}>
+            <View style={stylesWeb.form}>
+              <Text style={stylesWeb.formTitle}>Preencha os dados</Text>
+
+              <TouchableOpacity style={stylesWeb.input}>
               <input
                 type="date"
-                style={{ width: '100%', height: '100%', border: 'none', backgroundColor: 'transparent', textAlign: 'center', color: datanascimento ? '#4CD964' : '#6fcf87' }}
+                style={{ width: '100%', height: '100%', border: 'none', backgroundColor: 'transparent', textAlign: 'center', color: datanascimento ? '#4CD964' : '#b3b3b3' }}
                 value={datanascimento ? datanascimento.toISOString().split('T')[0] : ''}
                 onChange={(e) => {
                   const dateStr = e.target.value;
@@ -104,8 +122,9 @@ export default function CriarConta02({ route, navigation }) {
                 max={maximumDate.toISOString().split('T')[0]}
               />
             </TouchableOpacity>
+
             <TouchableOpacity style={stylesWeb.input} onPress={() => setShowGenderModal(true)}>
-              <Text style={{ color: genero ? '#4CD964' : '#6fcf87' }}>
+              <Text style={{ color: genero ? '#4CD964' : '#b3b3b3' }}>
                 {genero || 'Gênero'}
               </Text>
             </TouchableOpacity>
@@ -128,17 +147,19 @@ export default function CriarConta02({ route, navigation }) {
             </Modal>
 
             <Text style={{ fontSize: 11, color: 'red' }}>{espaco}</Text>
-
-            <TouchableOpacity onPress={criar2}>
-              <LinearGradient colors={['#2E8B57', '#4CD964']} style={stylesWeb.button}>
-                <Text style={stylesWeb.buttonText}>Criar Conta</Text>
-              </LinearGradient>
-            </TouchableOpacity>
+              
+              <TouchableOpacity onPress={criar2}>
+                <LinearGradient colors={["#2E8B57", "#4CD964"]} style={stylesWeb.button}>
+                  <Text style={stylesWeb.buttonText}>Finalizar Cadastro</Text>
+                </LinearGradient>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </SafeAreaView>
     );
   }
+
   return (
     <SafeAreaView style={stylesMobile.safeArea}>
       <KeyboardAvoidingView behavior="padding" style={stylesMobile.container}>
@@ -147,9 +168,9 @@ export default function CriarConta02({ route, navigation }) {
             source={{ uri: "https://img.freepik.com/vetores-premium/trevo-com-quatro-folhas-isoladas-no-fundo-branco-conceito-da-sorte-no-estilo-cartoon-realista_302536-46.jpg" }}
             style={stylesMobile.logo}
           />
-          <Text style={stylesMobile.title}>Criar Conta</Text>
+          <Text style={stylesMobile.title}>Preencha os dados</Text>
           <TouchableOpacity style={stylesMobile.input} onPress={() => setShowDatePicker(true)}>
-            <Text style={{ color: datanascimento ? '#4CD964' : '#6fcf87' }}>
+            <Text style={{ color: datanascimento ? '#4CD964' : '#b3b3b3' }}>
               {datanascimento ? datanascimento.toLocaleDateString('pt-BR') : 'Data de nascimento'}
             </Text>
           </TouchableOpacity>
@@ -165,7 +186,7 @@ export default function CriarConta02({ route, navigation }) {
             />
           )}
           <TouchableOpacity style={stylesMobile.input} onPress={() => setShowGenderModal(true)}>
-            <Text style={{ color: genero ? '#4CD964' : '#6fcf87' }}>
+            <Text style={{ color: genero ? '#4CD964' : '#b3b3b3' }}>
               {genero || 'Gênero'}
             </Text>
           </TouchableOpacity>
@@ -191,7 +212,7 @@ export default function CriarConta02({ route, navigation }) {
 
           <TouchableOpacity onPress={criar2}>
             <LinearGradient colors={['#2E8B57', '#4CD964']} style={stylesMobile.button}>
-              <Text style={stylesMobile.buttonText}>Criar Conta</Text>
+              <Text style={stylesMobile.buttonText}>Finalizar Cadastro</Text>
             </LinearGradient>
           </TouchableOpacity>
         </ScrollView>
@@ -199,6 +220,7 @@ export default function CriarConta02({ route, navigation }) {
     </SafeAreaView>
   );
 }
+
 const stylesMobile = StyleSheet.create({
   safeArea: {
     flex: 1,
@@ -212,7 +234,7 @@ const stylesMobile = StyleSheet.create({
   },
   inner: {
     alignItems: "center",
-    width: "80%",
+    width: "100%",
     gap: 15,
   },
   logo: {
@@ -230,7 +252,7 @@ const stylesMobile = StyleSheet.create({
   },
   input: {
     marginTop: 20,
-    width: 200,
+    width: 300,
     height: 50,
     borderRadius: 50,
     backgroundColor: '#e3e6e3',
@@ -283,75 +305,102 @@ const stylesMobile = StyleSheet.create({
     color: '#fff',
   },
 });
+
 const stylesWeb = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: "#ffffff",
+  },
+  header: {
+    height: 80,
+    backgroundColor: "#005631",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 40,
+  },
+  logoHeader: {
+    width: 60,
+    height: 60,
+    borderRadius: 50,
+  },
   container: {
     flex: 1,
     flexDirection: "row",
-    backgroundColor: "#005631"
+    backgroundColor: "#ffffff",
   },
-  imageContainer: {
+  left: {
     flex: 1,
     backgroundColor: "#005631",
+    padding: 60,
     justifyContent: "center",
-    alignItems: "center",
-    padding: 50
   },
-  logo: {
+  title: {
+    fontSize: 42,
+    fontWeight: "bold",
+    color: "#ffffff",
+    marginBottom: 20,
+  },
+  subtitle: {
+    fontSize: 20,
+    color: "#dcdcdc",
+    marginBottom: 40,
+  },
+  leftImage: {
     width: "80%",
-    height: "80%",
-    objectFit: "contain",
-    maxWidth: 400,
-    maxHeight: 400
+    height: 250,
+    resizeMode: "contain",
   },
-  content: {
+  right: {
     flex: 1,
+    backgroundColor: "#e8ffe9",
     justifyContent: "center",
     alignItems: "center",
     padding: 40,
-    backgroundColor: "#54e86d",
-    borderRadius: 50
   },
-  inner: {
+  form: {
     width: "100%",
     maxWidth: 400,
+    gap: 20,
     alignItems: "center",
-    gap: 20
   },
-  title: {
-    fontSize: 30,
-    fontWeight: 'bold',
-    color: "#369e48",
-    textAlign: "center",
+  formTitle: {
+    fontSize: 32,
+    fontWeight: "bold",
+    color: "#2E8B57",
+    marginBottom: 10,
   },
   input: {
-    marginTop: 20,
-    width: 200,
+    width: "100%",
     height: 50,
-    borderRadius: 50,
-    backgroundColor: '#e3e6e3',
-    justifyContent: 'center',
+    borderRadius: 30,
+    backgroundColor: "#e3e6e3",
+    textAlign: "center",
+    fontSize: 16,
+    color: "#2E8B57",
     alignItems: 'center',
-    overflow: 'hidden'
+    justifyContent: 'center',
+  },
+  erro: {
+    fontSize: 13,
+    color: "red",
   },
   button: {
-    width: 260,
-    height: 56,
-    borderRadius: 50,
+    width: "100%",
+    height: 50,
+    borderRadius: 30,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 5,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.25,
-    shadowRadius: 6,
-    backgroundColor: "#4CD964"
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
   },
   buttonText: {
-    fontSize: 20,
     color: "#fff",
-    fontWeight: "bold"
-  },
-  modalContainer: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },modalContainer: {
     flex: 1,
     backgroundColor: 'rgba(0,0,0,0.5)',
     justifyContent: 'center',

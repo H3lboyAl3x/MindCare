@@ -92,47 +92,96 @@ export default function MarcarConsulta({ navigation, route }) {
     setShowTimePicker(false);
   };
 
+  if(Platform.OS === "web"){
+    return (
+      <View style={styles.container}>
+        <View style={styles.Menu}>
+        <Text style={styles.title}>Marcar Consulta</Text>
+  
+        <TouchableOpacity style={styles.input}>
+                <input
+                  type="date"
+                  style={{
+                    width: '100%', height: '100%', border: 'none', backgroundColor: 'transparent',
+                    textAlign: 'center', color: datamarcacao ? '#4CD964' : '#6fcf87'
+                  }}
+                  value={datamarcacao ? datamarcacao.toISOString().split('T')[0] : ''}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (value) {
+                      setDatan(new Date(`${value}T00:00:00`));
+                    }
+                  }}
+                />
+              </TouchableOpacity>
+        
+              <TouchableOpacity style={styles.input}>
+                <input
+                  type="time"
+                  style={{
+                    width: "100%", height: "100%", border: "none", backgroundColor: "transparent",
+                    textAlign: "center", color: tempomarcacao ? "#4CD964" : "#6fcf87"
+                  }}
+                  value={tempomarcacao ? tempomarcacao.toTimeString().slice(0, 5) : ""}
+                  onChange={(e) => {
+                    const [hours, minutes] = e.target.value.split(":");
+                    const novaHora = new Date();
+                    novaHora.setHours(parseInt(hours));
+                    novaHora.setMinutes(parseInt(minutes));
+                    novaHora.setSeconds(0);
+                    settempo(novaHora);
+                  }}
+                />
+              </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={Marcar}>
+            <Text style={styles.buttonText}>Marcar</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <TopWaves/>
       <View style={styles.Menu}>
       <Text style={styles.title}>Marcar Consulta</Text>
 
-{/* Botão para selecionar DATA */}
-<TouchableOpacity style={styles.input} onPress={() => setShowDatePicker(true)}>
-  <Text style={{ color: datamarcacao ? "#4CD964" : "#6fcf87" }}>
-    {datamarcacao ? datamarcacao.toLocaleDateString("pt-BR") : "Selecionar Data"}
-  </Text>
-</TouchableOpacity>
+      {/* Botão para selecionar DATA */}
+      <TouchableOpacity style={styles.input} onPress={() => setShowDatePicker(true)}>
+        <Text style={{ color: datamarcacao ? "#4CD964" : "#6fcf87" }}>
+          {datamarcacao ? datamarcacao.toLocaleDateString("pt-BR") : "Selecionar Data"}
+        </Text>
+      </TouchableOpacity>
 
-{showDatePicker && (
-  <DateTimePicker
-    value={datamarcacao || new Date()}
-    mode="date"
-    display="spinner"
-    minimumDate={minimumDate}
-    onChange={onDateChange}
-  />
-)}
+      {showDatePicker && (
+        <DateTimePicker
+          value={datamarcacao || new Date()}
+          mode="date"
+          display="spinner"
+          minimumDate={minimumDate}
+          onChange={onDateChange}
+        />
+      )}
 
-{/* Botão para selecionar HORA */}
-<TouchableOpacity style={styles.input} onPress={() => setShowTimePicker(true)}>
-  <Text style={{ color: tempomarcacao ? "#4CD964" : "#6fcf87" }}>
-    {tempomarcacao ? tempomarcacao.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }) : "Selecionar Hora"}
-  </Text>
-</TouchableOpacity>
+      {/* Botão para selecionar HORA */}
+      <TouchableOpacity style={styles.input} onPress={() => setShowTimePicker(true)}>
+        <Text style={{ color: tempomarcacao ? "#4CD964" : "#6fcf87" }}>
+          {tempomarcacao ? tempomarcacao.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }) : "Selecionar Hora"}
+        </Text>
+      </TouchableOpacity>
 
-{showTimePicker && (
-  <DateTimePicker
-    value={tempomarcacao || new Date()}
-    mode="time"
-    display="spinner"
-    onChange={onTimeChange}
-  />
-)}
-<TouchableOpacity style={styles.button} onPress={Marcar}>
-  <Text style={styles.buttonText}>Marcar</Text>
-</TouchableOpacity>
+      {showTimePicker && (
+        <DateTimePicker
+          value={tempomarcacao || new Date()}
+          mode="time"
+          display="spinner"
+          onChange={onTimeChange}
+        />
+      )}
+        <TouchableOpacity style={styles.button} onPress={Marcar}>
+          <Text style={styles.buttonText}>Marcar</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );

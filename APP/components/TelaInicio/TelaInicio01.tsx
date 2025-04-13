@@ -97,8 +97,8 @@ export default function TelaInicio01({ navigation }) {
             {/* Contato */}
             <View style={stylesweb.contactContainer}>
               <Text style={stylesweb.contactTitle}>Entre em Contato</Text>
-              <Text style={[stylesweb.contactText, {fontSize: 14, textAlign: 'center', width: '80%'}]}>O Espaço Gaya oferece serviços de Telemedicina para cuidados psicológicos. Nossa equipe especializada está pronta para
-              fornecer o apoio necessário ao seu bem-estar, com consultas online realizadas com qualidade e conforto, onde quer que você esteja.</Text>
+              <Text style={[stylesweb.contactText, {fontSize: 14, textAlign: 'center', width: '80%'}]}>O Espaço Gaya oferece serviços para cuidados psicológicos. Nossa equipe especializada está pronta para
+              fornecer o apoio necessário ao seu bem-estar, com a nossa plataforma de consultas online realizadas com qualidade e conforto, onde quer que você esteja.</Text>
               <Text style={stylesweb.contactText}>📞 Telefone: 928824001</Text>
               <Text style={stylesweb.contactText}>✉️ Email: rda.geral.2021@gmail.com</Text>
             </View>
@@ -130,6 +130,7 @@ export default function TelaInicio01({ navigation }) {
             </LinearGradient>
           </TouchableOpacity>
         </View>
+        <Text style={{marginTop: 10, color: '#4CD964'}} onPress={() => navigation.navigate('Sobre')}>📃Sobre nos</Text>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );

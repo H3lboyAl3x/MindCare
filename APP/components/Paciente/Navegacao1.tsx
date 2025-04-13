@@ -29,13 +29,18 @@ export default function Navegacao1({ route }) {
           borderTopWidth: 0,
           elevation: 0,
           overflow: 'hidden',
-        },             
+          paddingHorizontal: isWeb ? 400 : 0,
+        },
+        tabBarItemStyle: {
+          marginHorizontal: isWeb ? -10 : 0
+        },
         tabBarBackground: () => (
           <LinearGradient
-            colors={['#2E8B57', '#4CD964']}
+            colors= {isWeb ? ['#2E8B57', '#2E8B57'] : ['#2E8B57', '#4CD964']}
             style={{ flex: 1 }}
           />
         ),
+        tabBarLabel: isWeb ? () => null : undefined,
       }}
     >
       <Tab.Screen

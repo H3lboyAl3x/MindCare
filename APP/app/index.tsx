@@ -28,6 +28,7 @@ import AnalisarConsultasp from "@/components/Proficional/Consulta/AnalisarConsul
 import AnalisarConsultas from "@/components/Paciente/Consulta/AnalisarConsultas";
 import AdiarConsultap from "@/components/Proficional/Consulta/AdiarConsultap";
 import AdiarConsulta from "@/components/Paciente/Consulta/AdiarConsulta";
+import Sobre from "@/components/TelaInicio/Sobre";
 import React from "react";
 
 const Stack = createStackNavigator();
@@ -43,6 +44,7 @@ export default function HomeScreen() {
       <Stack.Screen name="TelaInicio01" component={TelaInicio01} options={{ headerShown: false }}/>
       <Stack.Screen name="TelaInicio02" component={TelaInicio02} options={{ headerShown: false }}/>
       <Stack.Screen name="Selecao" component={Selecao} options={{ headerShown: false }}/>
+      <Stack.Screen name="Sobre" component={Sobre} options={{ headerShown: false }}/>
       <Stack.Screen name="IniciarSessao" component={IniciarSessao} options={{ headerShown: false }}/>
       <Stack.Screen name="CriarConta01" component={CriarConta01} options={{ headerShown: false }}/>
       <Stack.Screen name="CriarConta02" component={CriarConta02} options={{ headerShown: false }}/>

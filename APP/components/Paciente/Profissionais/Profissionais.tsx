@@ -1,10 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   View, Text, StyleSheet, FlatList, TouchableOpacity,
-  ActivityIndicator, Platform, ScrollView
+  ActivityIndicator, Platform, ScrollView,
+  Animated
+  as RNView,
+  Animated
 } from "react-native";
 import axios from "axios";
 import { getUrl } from "@/app/utils/url";
+import { Ionicons } from "@expo/vector-icons";
 
 interface Profissional { id: number; tempoexperiencia: number; iduser: number; }
 interface Usuario { id: number; nome: string; email: string; telefone: string; datanascimento: string; }
@@ -25,6 +29,26 @@ export default function Profissionais({ navigation, route }) {
   const [especialidadeSelecionada, setEspecialidadeSelecionada] = useState<number | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [mostrarProfissionaisC, setMostrarProfissionaisC] = useState(true);
+
+  const [expandido, setExpandido] = useState(false)
+  const widthAnim = useRef(new Animated.Value(Platform.OS === 'web' ? 5 : 25)).current;
+  const expandir = () => {
+    Animated.timing(widthAnim, {
+      toValue: 25,
+      duration: 200,
+      useNativeDriver: false,
+    }).start();
+    setExpandido(true)
+  };
+
+  const reduzir = () => {
+    Animated.timing(widthAnim, {
+      toValue: 5,
+      duration: 200,
+      useNativeDriver: false,
+    }).start();
+    setExpandido(false)
+  };
 
   const Listafuncionario = async () => {
     try {
@@ -118,7 +142,7 @@ export default function Profissionais({ navigation, route }) {
   }, [idp]);
 
   const renderProfissional = (item: ProfissionalComNome) => (
-    <TouchableOpacity style={[styles.card, {width: 200}]} onPress={() => navigation.navigate("Proficional", {
+    <TouchableOpacity style={[styles.card, {width: 230}]} onPress={() => navigation.navigate("Proficional", {
       idu: idu, idp: idp, nomeu: nomeu, telefoneu: telefoneu, emailu:emailu, passwordu: passwordu, datanascimentou: datanascimentou, generou: generou , id: item.id, nome: item.nome, email: item.email,
       telefone: item.telefone, datanascimento: item.datanascimento,
       experiencia: item.tempoexperiencia, areaTrabalho: item.areaT
@@ -131,28 +155,43 @@ export default function Profissionais({ navigation, route }) {
 
   if (Platform.OS === "web") {
     return (
-      <View style={{ flex: 1, flexDirection: "row", height: "100%" }}>
-        <View style={{ width: "25%", backgroundColor: "#2E8B57", paddingTop: 20 }}>
-          <Text style={styles.titulo}>Profissionais</Text>
-          <TouchableOpacity onPress={() => setMostrarProfissionaisC(true)} style={{ marginBottom: 10, backgroundColor:'#4CD964', width:'90%', height: 50, borderRadius: 25, alignSelf: 'center', alignItems: 'center', justifyContent: 'center' }}>
-            <Text style={{color:'#fff'}}>Profissionais que já o acompanham</Text>
+      <View style={{ flex: 1, flexDirection: "row", height: "100%"}}>
+        <Animated.View
+          style={{
+            width: widthAnim.interpolate({
+              inputRange: [5, 25],
+              outputRange: ['5%', '25%'],
+            }),
+            backgroundColor: '#dbdbdb',
+            borderRightWidth: 1,
+            borderColor: '#8c8c8c',
+            paddingTop: 20,
+          }}
+          {...(Platform.OS === 'web'
+            ? {
+                onMouseEnter: expandir,
+                onMouseLeave: reduzir,
+              }
+            : {}) as any}>
+          <TouchableOpacity onPress={() => setMostrarProfissionaisC(true)} style={{ marginBottom: 10, marginTop: 50, backgroundColor:'#4CD964', width:'90%', height: 50, borderRadius: 25, alignSelf: 'center', alignItems: 'center', justifyContent: 'center' }}>
+            {expandido ? <Text style={{color:'#fff'}}>Profissionais que já o acompanham</Text> : <Ionicons name="people-circle-outline" size={24} color="white" />}
           </TouchableOpacity>
           <TouchableOpacity onPress={() => setMostrarProfissionaisC(false)} style={{ marginBottom: 20, backgroundColor:'#4CD964', width:'90%', height: 50, borderRadius: 25, alignSelf: 'center', alignItems: 'center', justifyContent: 'center' }}>
-            <Text style={{color:'#fff'}}>Outros profissionais</Text>
+          {expandido ? <Text style={{color:'#fff'}}>Outros profissionais</Text> : <Ionicons name="person-circle-outline" size={24} color="white" />}
           </TouchableOpacity>
-          <Text style={styles.especialidades}>Especialidades</Text>
+          {expandido ? <Text style={styles.especialidades}>Especialidades</Text> : <Ionicons style={{alignSelf: 'center'}} name="medical-outline" size={24} color="#2E8B57" />}
           {especialidades.map((item) => (
             <TouchableOpacity style={{ marginBottom: 10, backgroundColor:'#4CD964', width:'90%', height: 50, borderRadius: 25, alignSelf: 'center', alignItems: 'center', justifyContent: 'center' }} key={item.id} onPress={() => setEspecialidadeSelecionada(item.id)}>
-              <Text style={{ marginVertical: 4, color:'#fff' }}>{item.area}</Text>
+              {expandido ? <Text style={{ marginVertical: 4, color:'#fff' }}>{item.area}</Text> : <Ionicons style={{alignSelf: 'center'}} name="briefcase-outline" size={24} color="#fff" />}
             </TouchableOpacity>
           ))}
-        </View>
+        </Animated.View >
         <ScrollView contentContainerStyle={{ width: "100%", paddingTop: 60, flexDirection: "row", flexWrap: "wrap" }}>
           {loading ? (
             <ActivityIndicator size="large" color="#34C759" />
           ) : (
             (mostrarProfissionaisC ? profissionaisCFiltrados : profissionaisFiltrados).map((item) => (
-              <View key={item.id} style={{ width: 200, margin: 5,  alignItems: 'center', justifyContent: 'center'  }}>
+              <View key={item.id} style={{ width: 230, margin: 5,  alignItems: 'center', justifyContent: 'center'  }}>
                 {renderProfissional(item)}
               </View>
             ))
@@ -263,7 +302,7 @@ const styles = StyleSheet.create({
   especialidades: {
     textAlign: "center",
     fontSize: 15,
-    color: "#c0c0c0",
+    color: "#2E8B57",
     marginBottom: 5,
   },
   scrollEspecialidades: {

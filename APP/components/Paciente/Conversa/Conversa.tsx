@@ -171,15 +171,14 @@ export default function Conversa({ navigation, route }) {
         <View>
           <Image
             source={{
-              uri: "https://img.freepik.com/vetores-premium/trevo-com-quatro-folhas-isoladas-no-fundo-branco-conceito-da-sorte-no-estilo-cartoon-realista_302536-46.jpg",
+              uri: "https://aebo.pt/wp-content/uploads/2024/05/spo-300x300.png",
             }}
             style={styles.logo}
           />
-          <Text style={{ textAlign: "center", marginTop: 30, color: "#fff" }}>{sos}</Text>
+          <Text style={{ textAlign: "center", marginTop: 30, color: Platform.OS === 'web'? "#000" : "#fff" }}>{sos}</Text>
         </View>
       );
     }
-
     return (
       <FlatList
         style={styles.Inf}
@@ -268,7 +267,7 @@ export default function Conversa({ navigation, route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#4CD964",
+    backgroundColor: Platform.OS === 'web' ? "#fff" : "#2E8B57",
   },
   titulo: {
     fontSize: 25,
@@ -281,7 +280,7 @@ const styles = StyleSheet.create({
   logo: {
     width: 140,
     height: 140,
-    borderRadius: 80,
+    borderRadius: 20,
     backgroundColor: "#e7fbe6",
     marginTop: 50,
     alignSelf: "center",
@@ -298,6 +297,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   Inf: {
-    backgroundColor: "#2E8B57",
+    backgroundColor: Platform.OS === 'web' ? "#fff" : "#2E8B57",
   },
 });

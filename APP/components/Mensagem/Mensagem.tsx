@@ -172,14 +172,14 @@ const styles = StyleSheet.create({
   },
   flatList: {
     flexGrow: 1,
-    backgroundColor: "#2E8B57",
+    backgroundColor: Platform.OS === 'web' ? "#dbdbdb" : "#2E8B57",
     paddingHorizontal: 10,
     paddingVertical: 10,
 
   },
   escrever: {
     height: 80,
-    backgroundColor: "#2E8B57",
+    backgroundColor: Platform.OS === 'web' ? "#dbdbdb" : "#2E8B57",
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
@@ -188,9 +188,10 @@ const styles = StyleSheet.create({
   ti: {
     height: 50,
     width: "85%",
-    backgroundColor: "#fff",
+    backgroundColor: Platform.OS === 'web' ? "#58f573" : "#fff",
     borderRadius: 25,
     paddingHorizontal: 10,
+    color: Platform.OS === 'web' ? "#000" : "#000",
   },
   icon: {
     backgroundColor: "#4CD964",
