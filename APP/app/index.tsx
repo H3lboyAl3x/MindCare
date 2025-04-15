@@ -29,9 +29,11 @@ import AnalisarConsultas from "@/components/Paciente/Consulta/AnalisarConsultas"
 import AdiarConsultap from "@/components/Proficional/Consulta/AdiarConsultap";
 import AdiarConsulta from "@/components/Paciente/Consulta/AdiarConsulta";
 import Sobre from "@/components/TelaInicio/Sobre";
+import { RootStackParamList } from "@/components/types/types"; // ou '../types/types' se não tiver alias "@"
 import React from "react";
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<RootStackParamList>();
+
 
 export default function HomeScreen() {
   return(

@@ -1,5 +1,7 @@
 import express from "express";
 import Mensagem from "../models/Mensagem.js";
+import Consultas from "../models/Consultas.js";
+import axios from "axios";
 import * as Controller from "../controllers/Controller.js";
 
 const router = express.Router();

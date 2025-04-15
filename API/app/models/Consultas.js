@@ -36,6 +36,10 @@ const Consultas = sequelize.define('consultas', {
     status: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    link: {
+        type: DataTypes.STRING,
+        allowNull: true
     }
 });
 

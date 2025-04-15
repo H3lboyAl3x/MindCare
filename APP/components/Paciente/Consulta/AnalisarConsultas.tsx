@@ -1,17 +1,25 @@
-import { Ionicons } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image, Alert, Linking } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import { getUrl } from "@/app/utils/url";
 import axios from "axios";
 
 export default function AnalisarConsultas({navigation, route}) {
-    const {idConsulta, dataConsulta, horaConsulta, idpaci, idp, statusConsulta} = route.params;
+    const {idConsulta, dataConsulta, horaConsulta, idpaci, idp, statusConsulta, link} = route.params;
 
     const formattedDate = new Date(dataConsulta).toISOString().split("T")[0];
     const formattedTime = horaConsulta.slice(0, 5);
     const Adiarconsulta = async () => {
         navigation.navigate("AdiarConsulta", { idConsulta: idConsulta, dataConsulta: dataConsulta, horaConsulta: horaConsulta, idpaci: idpaci, idp: idp, statusConsulta: statusConsulta });
     };
+    const entrarNaChamada = async () => {
+        if (link) {
+          Linking.openURL(link);
+        } else {
+          Alert.alert("Aviso", "Nenhuma conferência encontrada.");
+        }
+      };
+
    
     return (
         <View style={styles.container}>
@@ -22,8 +30,11 @@ export default function AnalisarConsultas({navigation, route}) {
                 />
             <Text style={styles.consultaText}>Data: {formattedDate}     |     Hora: {formattedTime}</Text>
             <View style={styles.Vbotao}>
-                <TouchableOpacity style={styles.botao} onPress={Adiarconsulta}><Text style={styles.buttonText}>Adiar</Text></TouchableOpacity>
-                <TouchableOpacity style={styles.botao}><Text style={styles.buttonText}>Entrar</Text></TouchableOpacity>
+                <TouchableOpacity style={styles.botao} onPress={Adiarconsulta}><Text style={styles.buttonText}>Adiar</Text></TouchableOpacity>   
+                <TouchableOpacity style={styles.botao} onPress={entrarNaChamada}>
+                <Ionicons name="videocam" size={20} color="#7EBF42" />
+                <Text style={styles.buttonText}> Entrar</Text>
+                </TouchableOpacity>
             </View>
         </View>
     );
@@ -57,10 +68,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#2a8c26',
     },
     Vbotao: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignSelf: "center",
-        marginTop: 300,
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        marginTop: 150
     },
     botao: {
         width: 150,

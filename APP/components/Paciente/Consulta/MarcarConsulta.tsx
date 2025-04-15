@@ -13,6 +13,7 @@ type Consulta = {
   idpaci: number;
   idpro: number;
   status: string;
+  link: string;
 };
 
 export default function MarcarConsulta({ navigation, route }) {
@@ -25,7 +26,7 @@ export default function MarcarConsulta({ navigation, route }) {
 
     const pegarData = () => {
         const agora = new Date();
-        agora.setHours(0, 0, 0, 0); // Remove horas para evitar problemas de fuso horário
+        agora.setHours(0, 0, 0, 0); 
         return agora;
     };
     const Marcar = async () => {
@@ -57,18 +58,13 @@ export default function MarcarConsulta({ navigation, route }) {
 
           if (!consultasfiltrada[0])
           {
-            console.log("DATA FORMATADA:", formattedDate);
-            console.log("HORA FORMATADA:", formattedTime);
-            consultasseparada.forEach((c) => {
-              console.log(`Consulta: data=${c.data}, hora=${c.hora}, idpro=${c.idpro}, status=${c.status}`);
-            });
-
             const response = await axios.post(`${getUrl()}/MindCare/API/consultas`, {
               data: formattedDate,
               hora: formattedTime,
               idpaci: idpaci,
               idpro: idpro,
               status: "Pendente",
+              link: `https://meet.jit.si/${formattedDate}`,
             });
             navigation.goBack();
           }else{

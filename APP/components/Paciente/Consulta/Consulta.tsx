@@ -8,6 +8,7 @@ import {
   Platform,
   useWindowDimensions,
   Image,
+  Linking,
 } from "react-native";
 import axios from "axios";
 import { getUrl } from "@/app/utils/url";
@@ -19,6 +20,7 @@ type Consulta = {
   idpaci: number;
   idpro: number;
   status: string;
+  link: string;
 };
 
 type AdiarProps = {
@@ -67,7 +69,15 @@ export default function Consulta({ navigation, route }) {
         idpaci: consulta.idpaci,
         idp: idp,
         statusConsulta: consulta.status,
+        link: consulta.link,
       });
+    }
+  };
+  const entrarNaChamada = async (consulta: Consulta) => {
+    if (consulta.link) {
+      Linking.openURL(consulta.link);
+    } else {
+      console.log('Nenhuma conferência encontrada');
     }
   };
 
@@ -112,9 +122,14 @@ export default function Consulta({ navigation, route }) {
           <TouchableOpacity style={[styles.botao, {backgroundColor: '#fff'}]} onPress={() => setModoAdiar(true)}>
             <Text style={[styles.buttonText, {color: '#4CD964'}]}>Adiar</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.botao, {backgroundColor: '#fff'}]} >
-            <Text style={[styles.buttonText, {color: '#4CD964'}]}>Entrar</Text>
+          <TouchableOpacity
+            style={[styles.botao, { backgroundColor: '#fff' }]}
+            onPress={() => entrarNaChamada(selecionada)}
+          >
+            <Text style={[styles.buttonText, { color: '#4CD964' }]}>Entrar</Text>
           </TouchableOpacity>
+
+
         </View>
       </View>
     );
