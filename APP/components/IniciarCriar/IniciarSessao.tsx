@@ -15,18 +15,18 @@ import { LinearGradient } from "expo-linear-gradient";
 import { getUrl } from "@/app/utils/url";
 
 export default function IniciarSessao({ navigation }) {
-  const [nome, setNome] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [espaco, setEspaco] = useState("");
 
   const iniciar = async () => {
-    if (!nome || !password) {
+    if (!email || !password) {
       setEspaco("Preencha todos os campos antes de continuar.");
       return;
     }
 
     try {
-      const response = await axios.post(`${getUrl()}/MindCare/API/users/login`, { nome, password });
+      const response = await axios.post(`${getUrl()}/MindCare/API/users/login`, { email, password });
       const usuario = response.data;
 
       const formattedDate = usuario.datanascimento
@@ -70,10 +70,12 @@ export default function IniciarSessao({ navigation }) {
       <SafeAreaView style={stylesWeb.safeArea}>
         {/* Cabeçalho */}
         <View style={stylesWeb.header}>
-          <Image
-            source={{ uri: "https://aebo.pt/wp-content/uploads/2024/05/spo-300x300.png" }}
-            style={stylesWeb.logoHeader}
-          />
+          <TouchableOpacity onPress={() => navigation.navigate("TelaInicio01")}>
+            <Image
+              source={{ uri: "https://aebo.pt/wp-content/uploads/2024/05/spo-300x300.png" }}
+              style={stylesWeb.logoHeader}
+            />
+          </TouchableOpacity>
         </View>
 
         {/* Corpo */}
@@ -96,10 +98,11 @@ export default function IniciarSessao({ navigation }) {
               <Text style={stylesWeb.formTitle}>Iniciar Sessão</Text>
               <TextInput
                 style={stylesWeb.input}
-                placeholder="Nome de usuário"
+                placeholder="Email"
                 placeholderTextColor="#b3b3b3"
-                value={nome}
-                onChangeText={setNome}
+                value={email}
+                onChangeText={setEmail}
+                keyboardType="email-address"
               />
               <TextInput
                 style={stylesWeb.input}
@@ -141,9 +144,9 @@ export default function IniciarSessao({ navigation }) {
           <Text style={stylesMobile.welcomeText}>Iniciar Sessão</Text>
           <TextInput
             style={stylesMobile.textbox}
-            value={nome}
-            onChangeText={setNome}
-            placeholder="Nome de usuario"
+            value={email}
+            onChangeText={setEmail}
+            placeholder="Email"
             placeholderTextColor={"#b3b3b3"}
           />
           <TextInput

@@ -80,10 +80,12 @@ export default function CriarConta02({ route, navigation }) {
       <SafeAreaView style={stylesWeb.safeArea}>
         {/* Cabeçalho */}
         <View style={stylesWeb.header}>
-          <Image
-            source={{ uri: "https://aebo.pt/wp-content/uploads/2024/05/spo-300x300.png" }}
-            style={stylesWeb.logoHeader}
-          />
+          <TouchableOpacity onPress={() => navigation.navigate("TelaInicio01")}>
+            <Image
+              source={{ uri: "https://aebo.pt/wp-content/uploads/2024/05/spo-300x300.png" }}
+              style={stylesWeb.logoHeader}
+            />
+          </TouchableOpacity>
         </View>
 
         {/* Corpo */}

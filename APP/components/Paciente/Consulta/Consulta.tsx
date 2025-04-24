@@ -39,6 +39,21 @@ export default function Consulta({ navigation, route }) {
   const { width } = useWindowDimensions();
   const isWeb = Platform.OS === "web";
 
+  const pegarData = () => {
+    const agora = new Date();
+    const ano = agora.getFullYear();
+    const mes = (agora.getMonth() + 1).toString().padStart(2, '0'); // +1 porque começa do zero
+    const dia = agora.getDate().toString().padStart(2, '0');
+
+  return `${ano}-${mes}-${dia}`;
+  };
+  const PegarHora = () => {
+    const agora = new Date();
+    const hora = agora.getHours().toString().padStart(2, '0');
+    const minutos = agora.getMinutes().toString().padStart(2, '0');
+    return `${hora}:${minutos}`;
+  };
+
   const buscarConsultas = async () => {
     try {
       const responde = await axios.get<Consulta[]>(`${getUrl()}/MindCare/API/consultas`);
@@ -47,6 +62,18 @@ export default function Consulta({ navigation, route }) {
         (consulta) => consulta.idpaci === idp && consulta.status === "Pendente"
       );
       setConsultas(consultasfiltrada);
+      for (const consulta of consultasfiltrada) {
+        if (consulta.data < pegarData() && consulta.status !== 'Completo') {
+          await axios.put(`${getUrl()}/MindCare/API/consultas/${consulta.id}`, {
+            data: consulta.data,
+            hora: consulta.hora,
+            idpaci: consulta.idpaci,
+            idpro: consulta.idpro,
+            status: "Perdida",
+            link: '',
+          });
+        }
+      }      
     } catch (error) {
       console.error("Erro ao buscar consultas:", error);
     }
@@ -74,10 +101,11 @@ export default function Consulta({ navigation, route }) {
     }
   };
   const entrarNaChamada = async (consulta: Consulta) => {
-    if (consulta.link) {
+    if (consulta.link && consulta.data.toString().split("T")[0] === pegarData() || consulta.hora <= pegarData() ) {
+      alert('Antes de iniciar a consulta, certifique-se de estar em um local tranquilo e com uma boa conexão à internet. Ao ingressar, você passará por uma tabela se selecao. Por favor, selecione a opção "Aguardar por anfitriao" e aguarde a entrada do profissional. Caso o profissional não esteja presente após 20 minutos de espera, entre em contato com o suporte para assistência.');
       Linking.openURL(consulta.link);
     } else {
-      console.log('Nenhuma conferência encontrada');
+      alert('A consulta ainda não está disponível, por favor entre no horario marcado, obrigado.');
     }
   };
 
@@ -231,16 +259,35 @@ const AdiarConsultaInline = ({ selecionada, idp, setModoAdiar, buscarConsultas, 
         <input
           type="date"
           style={{
-            width: '100%', height: '100%', border: 'none', backgroundColor: 'transparent',
-            textAlign: 'center', color: datamarcacao ? '#4CD964' : '#6fcf87'
+            width: '100%',
+            height: '100%',
+            border: 'none',
+            backgroundColor: 'transparent',
+            textAlign: 'center',
+            color: datamarcacao ? '#4CD964' : '#6fcf87',
+            cursor: 'pointer',
           }}
-          value={datamarcacao ? datamarcacao.toISOString().split('T')[0] : ''}
+          value={
+            datamarcacao
+              ? `${datamarcacao.getFullYear()}-${(datamarcacao.getMonth() + 1)
+                  .toString()
+                  .padStart(2, '0')}-${datamarcacao.getDate().toString().padStart(2, '0')}`
+              : ''
+          }
           onChange={(e) => {
             const value = e.target.value;
             if (value) {
-              setDatan(new Date(`${value}T00:00:00`));
+              const [anoStr, mesStr, diaStr] = value.split('-');
+              const ano = parseInt(anoStr, 10);
+              const mes = parseInt(mesStr, 10);
+              const dia = parseInt(diaStr, 10);
+          
+              if (!isNaN(ano) && !isNaN(mes) && !isNaN(dia)) {
+                const dataLocal = new Date(ano, mes - 1, dia, 12); // <-- aqui está a mágica
+                setDatan(dataLocal);
+              }
             }
-          }}
+          }}          
         />
       </TouchableOpacity>
 

@@ -7,16 +7,43 @@ import axios from "axios";
 export default function AnalisarConsultas({navigation, route}) {
     const {idConsulta, dataConsulta, horaConsulta, idpaci, idp, statusConsulta, link} = route.params;
 
+    console
+
+    const pegarData = () => {
+        const agora = new Date();
+        const ano = agora.getFullYear();
+        const mes = (agora.getMonth() + 1).toString().padStart(2, '0'); // +1 porque começa do zero
+        const dia = agora.getDate().toString().padStart(2, '0');
+    
+      return `${ano}-${mes}-${dia}`;
+      };
+      const PegarHora = () => {
+        const agora = new Date();
+        const hora = agora.getHours().toString().padStart(2, '0');
+        const minutos = agora.getMinutes().toString().padStart(2, '0');
+        return `${hora}:${minutos}`;
+      };
+
     const formattedDate = new Date(dataConsulta).toISOString().split("T")[0];
     const formattedTime = horaConsulta.slice(0, 5);
     const Adiarconsulta = async () => {
         navigation.navigate("AdiarConsulta", { idConsulta: idConsulta, dataConsulta: dataConsulta, horaConsulta: horaConsulta, idpaci: idpaci, idp: idp, statusConsulta: statusConsulta });
     };
     const entrarNaChamada = async () => {
-        if (link) {
-          Linking.openURL(link);
+        if (link && dataConsulta.toString().split("T")[0] === pegarData() || horaConsulta <= pegarData() ) {
+            Alert.alert(
+                'Antes de iniciar a consulta...',
+                'Certifique-se de estar em um local tranquilo e com uma boa conexão à internet. Ao ingressar, você passará por uma tabela de seleção. Por favor, selecione a opção "Aguardar por anfitrião" e aguarde a entrada do profissional. Caso o profissional não esteja presente após 20 minutos de espera, entre em contato com o suporte para assistência.',
+                [
+                  {
+                    text: 'OK',
+                    onPress: () => Linking.openURL(link),
+                  },
+                ],
+                { cancelable: false }
+              );
         } else {
-          Alert.alert("Aviso", "Nenhuma conferência encontrada.");
+            alert('A consulta ainda não está disponível, por favor entre no horario marcado, obrigado.');
         }
       };
 

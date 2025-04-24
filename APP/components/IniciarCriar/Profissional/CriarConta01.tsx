@@ -30,6 +30,14 @@ export default function CriarConta01p({ navigation }) {
       setEspaco("As passwords não combinam.");
       return;
     }
+    if (password.length < 8 || !/^[A-Z]/.test(password) || !/\d/.test(password)) {
+      setEspaco("A password deve ter pelo menos 8 caracteres, uma letra maiúscula e um número.");
+      return;
+    }
+    if (telefone.length < 9) {
+      setEspaco("O telefone deve ter pelo menos 9 dígitos.");
+      return;
+    }
     navigation.navigate("CriarConta02p", {
       nome,
       telefone,
@@ -43,10 +51,12 @@ export default function CriarConta01p({ navigation }) {
       <SafeAreaView style={stylesWeb.safeArea}>
         {/* Cabeçalho */}
         <View style={stylesWeb.header}>
-          <Image
-            source={{ uri: "https://aebo.pt/wp-content/uploads/2024/05/spo-300x300.png" }}
-            style={stylesWeb.logoHeader}
-          />
+          <TouchableOpacity onPress={() => navigation.navigate("TelaInicio01")}>
+            <Image
+              source={{ uri: "https://aebo.pt/wp-content/uploads/2024/05/spo-300x300.png" }}
+              style={stylesWeb.logoHeader}
+            />
+          </TouchableOpacity>
         </View>
 
         {/* Corpo */}

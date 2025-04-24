@@ -23,9 +23,9 @@ export const getUsuarioById = async (id) => {
     return await Usuarios.findByPk(id);
 };
 
-//buscar um usuario por Nome e Password(Login)
-export const getUsuarioByLogin = async (nome, password) => {
-    return await Usuarios.findOne({ where: { nome, password } });
+//buscar um usuario por Email e Password(Login)
+export const getUsuarioByLogin = async (email, password) => {
+    return await Usuarios.findOne({ where: { email, password } });
 };
 
 

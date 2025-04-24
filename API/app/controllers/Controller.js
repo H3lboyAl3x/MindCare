@@ -34,10 +34,10 @@ export const getUsuarioById = async (req, res) => {
 
 export const getUsuarioByLogin = async (req, res) => {
     try {
-        const { nome, password } = req.body;
-        const user = await Services.getUsuarioByLogin(nome, password);
+        const { email, password } = req.body;
+        const user = await Services.getUsuarioByLogin(email, password);
         if (!user) {
-            return res.status(404).json({ message: `Usuário não encontrado com nome: ${nome}` });
+            return res.status(404).json({ message: `Usuário não encontrado com email: ${email}` });
         }
         
         res.status(200).json(user);

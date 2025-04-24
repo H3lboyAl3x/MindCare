@@ -95,21 +95,40 @@ export default function MarcarConsulta({ navigation, route }) {
         <Text style={styles.title}>Marcar Consulta</Text>
   
         <TouchableOpacity style={styles.input}>
-                <input
-                  type="date"
-                  style={{
-                    width: '100%', height: '100%', border: 'none', backgroundColor: 'transparent',
-                    textAlign: 'center', color: datamarcacao ? '#4CD964' : '#6fcf87'
-                  }}
-                  value={datamarcacao ? datamarcacao.toISOString().split('T')[0] : ''}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    if (value) {
-                      setDatan(new Date(`${value}T00:00:00`));
-                    }
-                  }}
-                />
-              </TouchableOpacity>
+          <input
+            type="date"
+            style={{
+              width: '100%',
+              height: '100%',
+              border: 'none',
+              backgroundColor: 'transparent',
+              textAlign: 'center',
+              color: datamarcacao ? '#4CD964' : '#6fcf87',
+              cursor: 'pointer',
+            }}
+            value={
+              datamarcacao
+                ? `${datamarcacao.getFullYear()}-${(datamarcacao.getMonth() + 1)
+                    .toString()
+                    .padStart(2, '0')}-${datamarcacao.getDate().toString().padStart(2, '0')}`
+                : ''
+            }
+            onChange={(e) => {
+              const value = e.target.value;
+              if (value) {
+                const [anoStr, mesStr, diaStr] = value.split('-');
+                const ano = parseInt(anoStr, 10);
+                const mes = parseInt(mesStr, 10);
+                const dia = parseInt(diaStr, 10);
+            
+                if (!isNaN(ano) && !isNaN(mes) && !isNaN(dia)) {
+                  const dataLocal = new Date(ano, mes - 1, dia, 12); // <-- aqui está a mágica
+                  setDatan(dataLocal);
+                }
+              }
+            }}            
+          />
+        </TouchableOpacity>
         
               <TouchableOpacity style={styles.input}>
                 <input

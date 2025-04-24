@@ -107,6 +107,7 @@ export default function Mensagem({ route }) {
             style={styles.ti} 
             value={mensagem} 
             onChangeText={setMensagem} 
+            onSubmitEditing={enviarMensagem}
           />
           <TouchableOpacity style={styles.icon} onPress={enviarMensagem}>
             <Ionicons name="send-outline" size={32} color={"#3aa64c"} />

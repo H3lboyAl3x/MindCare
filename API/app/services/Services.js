@@ -13,8 +13,8 @@ export const getUsuarioById = async (id) => {
     return await Repository.getUsuarioById(id);
 };
 
-export const getUsuarioByLogin = async (nome, password) => {
-    return await Repository.getUsuarioByLogin(nome, password);
+export const getUsuarioByLogin = async (email, password) => {
+    return await Repository.getUsuarioByLogin(email, password);
 };
 
 export const uptadeUsuario = async (id, userData) => {
