@@ -266,7 +266,7 @@ const stylesWeb = StyleSheet.create({
     backgroundColor: "#e8ffe9",
     justifyContent: "center",
     alignItems: "center",
-    padding: 40,
+    padding: 20,
   },
   form: {
     width: "100%",

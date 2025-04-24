@@ -403,7 +403,7 @@ const stylesWeb = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 40,
-    paddingTop: 5,
+    paddingTop: 0,
   },
   form: {
     width: "100%",
@@ -427,7 +427,7 @@ const stylesWeb = StyleSheet.create({
     color: "#4CD964",
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 1,
+    marginTop: 0.5,
   },
   button: {
     width: "100%",
