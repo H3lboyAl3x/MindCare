@@ -69,7 +69,7 @@ export default function CriarConta01({ navigation }) {
           <View style={stylesWeb.left}>
             <Text style={stylesWeb.title}>Criar Conta</Text>
             <Text style={stylesWeb.subtitle}>
-              Preencha todos os campos para criar sua conta no MindCare.
+              Preencha todos os campos para registrar um paciente no MindCare.
             </Text>
             <Image
               source={{ uri: "https://cdn-icons-png.flaticon.com/512/4088/4088981.png" }}
@@ -132,89 +132,7 @@ export default function CriarConta01({ navigation }) {
       </SafeAreaView>
     );
   }
-
-  return (
-    <SafeAreaView style={stylesMobile.safeArea}>
-      <KeyboardAvoidingView behavior="padding" style={stylesMobile.container}>
-        <ScrollView contentContainerStyle={stylesMobile.inner} keyboardShouldPersistTaps="handled">
-          <Image
-            source={{ uri: "https://img.freepik.com/vetores-premium/trevo-com-quatro-folhas-isoladas-no-fundo-branco-conceito-da-sorte-no-estilo-cartoon-realista_302536-46.jpg" }}
-            style={stylesMobile.logo}
-          />
-          <Text style={stylesMobile.welcomeText}>Preencha os dados</Text>
-          <TextInput style={stylesMobile.textbox} value={nome} onChangeText={setNome} placeholder="Nome de usuário" placeholderTextColor="#b3b3b3" />
-          <TextInput style={stylesMobile.textbox} value={telefone} onChangeText={setTelefone} keyboardType="phone-pad" placeholder="Telefone" placeholderTextColor="#b3b3b3" />
-          <TextInput style={stylesMobile.textbox} value={email} onChangeText={setEmail} keyboardType="email-address" placeholder="Email" placeholderTextColor="#b3b3b3" />
-          <TextInput style={stylesMobile.textbox} value={password} onChangeText={setPassword} secureTextEntry placeholder="Senha" placeholderTextColor="#b3b3b3" />
-          <TextInput style={stylesMobile.textbox} value={confirmarp} onChangeText={setConfirmarp} secureTextEntry placeholder="Confirmar Senha" placeholderTextColor="#b3b3b3" />
-          <Text style={{ fontSize: 11, color: "red" }}>{espaco}</Text>
-          <TouchableOpacity onPress={criar1}>
-            <LinearGradient colors={['#2E8B57', '#4CD964']} style={stylesMobile.button}>
-              <Text style={stylesMobile.buttonText}>Criar Conta</Text>
-            </LinearGradient>
-          </TouchableOpacity>
-        </ScrollView>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
-  );
 }
-
-const stylesMobile = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: "#20613d"
-  },
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: 30
-  },
-  inner: {
-    alignItems: "center",
-    width: "100%",
-    gap: 15,
-  },
-  logo: {
-    width: 140,
-    height: 140,
-    borderRadius: 80,
-    backgroundColor: "#e7fbe6",
-    marginBottom: 5,
-    marginTop: 10,
-  },
-  welcomeText: {
-    fontSize: 30,
-    fontWeight: "bold",
-    color: "#4CD964"
-  },
-  textbox: {
-    marginTop: 10,
-    color: "#4CD964",
-    width: 300,
-    height: 50,
-    borderRadius: 50,
-    backgroundColor: "#e3e6e3",
-    textAlign: "center"
-  },
-  button: {
-    width: 220,
-    height: 52,
-    borderRadius: 50,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 15,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4
-  },
-  buttonText: {
-    color: "#fff",
-    fontSize: 17,
-    fontWeight: "bold"
-  }
-});
 
 const stylesWeb = StyleSheet.create({
   safeArea: {
@@ -266,7 +184,7 @@ const stylesWeb = StyleSheet.create({
     backgroundColor: "#e8ffe9",
     justifyContent: "center",
     alignItems: "center",
-    padding: 20,
+    padding: 10,
   },
   form: {
     width: "100%",
@@ -287,7 +205,7 @@ const stylesWeb = StyleSheet.create({
     backgroundColor: "#e3e6e3",
     textAlign: "center",
     fontSize: 16,
-    color: "#2E8B57",
+    color: "#000",
   },
   erro: {
     fontSize: 13,

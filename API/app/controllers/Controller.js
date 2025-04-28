@@ -1,5 +1,74 @@
-import { json } from "sequelize";
 import * as Services from "../services/Services.js";
+
+//PARA O USUARIO_______________________________________________
+export const getAllAdm = async (req, res) => {
+    try {
+        const adm = await Services.getAllAdm();
+        res.status(200).json(adm);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+export const createAdm = async (req, res) => {
+    try {
+        const newadm = await Services.createAdm(req.body);
+        res.status(201).json(newadm);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
+export const getAdmById = async (req, res) => {
+    try {
+        const adm = await Services.getAdmById(req.params.id);
+        if (!adm) {
+            return res.status(404).json({ message: 'ADM nao encontrado de id:' + req.params.id });
+        }
+        res.status(200).json(adm);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+export const getAdmByLogin = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const adm = await Services.getAdmByLogin(email, password);
+        if (!adm) {
+            return res.status(404).json({ message: `Adm não encontrado com nome: ${email}` });
+        }
+        
+        res.status(200).json(adm);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+export const updateAdm = async (req, res) => {
+    try {
+        const updateadm = await Services.updateAdm(req.params.id, req.body);
+        if (!updateadm) {
+            return res.status(404).json({ message: 'ADM nao encontrado' });
+        }
+        res.status(200).json(updateadm);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
+export const deleteAdm = async (req, res) => {
+    try {
+        const deleted = await Services.deleteAdm(req.params.id);
+        if (!deleted) {
+            return res.status(404).json({ message: 'ADM nao encontrado' });
+        }
+        res.status(204).json();
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
 
 //PARA O USUARIO_______________________________________________
 export const getAllUsuario = async (req, res) => {

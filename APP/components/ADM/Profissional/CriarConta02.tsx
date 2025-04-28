@@ -67,10 +67,8 @@ export default function CriarConta02p({ route, navigation }) {
       const idAP = AreaProf.id;
       setidap(idAP);
 
-
-
-      navigation.navigate("Navegacao2", {id: userId, idp: idpac, idat: idAT, idap: idAP, nome: Usuario.nome, telefone: Usuario.telefone, email: Usuario.email, password: Usuario.password, datanascimento: formattedDate, genero: Usuario.genero, espe: AreaTrabalho.area, expe: Profissional.tempoexperiencia});
-    } catch (error) {
+      navigation.navigate("TelaInicio02");
+} catch (error) {
       Alert.alert("Erro ao cadastrar", "Tente novamente mais tarde.");
     }
   };
@@ -114,7 +112,7 @@ export default function CriarConta02p({ route, navigation }) {
             <View style={stylesWeb.left}>
               <Text style={stylesWeb.title}>Finalizar Cadastro</Text>
               <Text style={stylesWeb.subtitle}>
-                Preencha todos os campos para finalizar seu cadastro no MindCare.
+                Preencha todos os campos para finalizar o cadastro do profissionais no MindCare.
               </Text>
               <Image
                 source={{ uri: "https://cdn-icons-png.flaticon.com/512/4088/4088981.png" }}
@@ -130,7 +128,7 @@ export default function CriarConta02p({ route, navigation }) {
                 <TouchableOpacity style={stylesWeb.input}>
                 <input
                   type="date"
-                  style={{ width: '100%', height: '100%', border: 'none', backgroundColor: 'transparent', textAlign: 'center', color: datanascimento ? '#4CD964' : '#b3b3b3' }}
+                  style={{ width: '100%', height: '100%', border: 'none', backgroundColor: 'transparent', textAlign: 'center', color: datanascimento ? '#000' : '#b3b3b3' }}
                   value={datanascimento ? datanascimento.toISOString().split('T')[0] : ''}
                   onChange={(e) => {
                     const dateStr = e.target.value;
@@ -146,7 +144,7 @@ export default function CriarConta02p({ route, navigation }) {
               </TouchableOpacity>
   
               <TouchableOpacity style={stylesWeb.input} onPress={() => setShowGenderModal(true)}>
-                <Text style={{ color: genero ? '#4CD964' : '#b3b3b3' }}>
+                <Text style={{ color: genero ? '#000' : '#b3b3b3' }}>
                   {genero || 'Gênero'}
                 </Text>
               </TouchableOpacity>
@@ -169,7 +167,7 @@ export default function CriarConta02p({ route, navigation }) {
               </Modal>
 
               <TouchableOpacity style={stylesWeb.input} onPress={() => setshowexperiencia(true)}>
-              <Text style={{ color: expe ? '#4CD964' : '#b3b3b3' }}>
+              <Text style={{ color: expe ? '#000' : '#b3b3b3' }}>
                 {expe || 'Anos de experiencia'}
               </Text>
             </TouchableOpacity>
@@ -192,7 +190,7 @@ export default function CriarConta02p({ route, navigation }) {
             </Modal>
 
             <TouchableOpacity style={stylesWeb.input} onPress={() => setshowtrabalho(true)}>
-              <Text style={{ color: espe ? '#4CD964' : '#b3b3b3' }}>
+              <Text style={{ color: espe ? '#000' : '#b3b3b3' }}>
                 {espe || 'Area de trabalho'}
               </Text>
             </TouchableOpacity>
@@ -227,196 +225,7 @@ export default function CriarConta02p({ route, navigation }) {
         </SafeAreaView>
       );
     }
-  return (
-    <SafeAreaView style={stylesMobile.safeArea}>
-      <KeyboardAvoidingView behavior="padding" style={stylesMobile.container}>
-        <ScrollView contentContainerStyle={stylesMobile.inner} keyboardShouldPersistTaps="handled">
-          <Image
-            source={{ uri: "https://img.freepik.com/vetores-premium/trevo-com-quatro-folhas-isoladas-no-fundo-branco-conceito-da-sorte-no-estilo-cartoon-realista_302536-46.jpg" }}
-            style={stylesMobile.logo}
-          />
-          <Text style={stylesMobile.title}>Preencha os dados</Text>
-          <TouchableOpacity style={stylesMobile.input} onPress={() => setShowDatePicker(true)}>
-            <Text style={{ color: datanascimento ? '#4CD964' : '#b3b3b3' }}>
-              {datanascimento ? datanascimento.toLocaleDateString('pt-BR') : 'Data de nascimento'}
-            </Text>
-          </TouchableOpacity>
-
-          {showDatePicker && (
-            <DateTimePicker
-              value={datanascimento || new Date()}
-              mode="date"
-              display="spinner"
-              minimumDate={minimumDate}
-              maximumDate={maximumDate}
-              onChange={onDateChange}
-            />
-          )}
-          <TouchableOpacity style={stylesMobile.input} onPress={() => setShowGenderModal(true)}>
-            <Text style={{ color: genero ? '#4CD964' : '#b3b3b3' }}>
-              {genero || 'Gênero'}
-            </Text>
-          </TouchableOpacity>
-
-          <Modal visible={showGenderModal} transparent={true} animationType="slide" onRequestClose={() => setShowGenderModal(false)}>
-            <View style={stylesMobile.modalContainer}>
-              <View style={stylesMobile.modalContent}>
-                <Text style={stylesMobile.modalTitle}>Selecione o Gênero</Text>
-                <FlatList
-                  data={genders}
-                  keyExtractor={(item) => item}
-                  renderItem={({ item }) => (
-                    <TouchableOpacity style={stylesMobile.modalItem} onPress={() => { setGenero(item); setShowGenderModal(false); }}>
-                      <Text style={stylesMobile.modalText}>{item}</Text>
-                    </TouchableOpacity>
-                  )}
-                />
-              </View>
-            </View>
-          </Modal>
-          <TouchableOpacity style={stylesMobile.input} onPress={() => setshowexperiencia(true)}>
-            <Text style={{ color: expe ? '#4CD964' : '#b3b3b3' }}>
-              {expe || 'Anos de experiencia'}
-            </Text>
-          </TouchableOpacity>
-
-          <Modal visible={showexperiencia} transparent={true} animationType="slide" onRequestClose={() => setshowexperiencia(false)}>
-            <View style={stylesMobile.modalContainer}>
-              <View style={stylesMobile.modalContent}>
-                <Text style={stylesMobile.modalTitle}>Selecione a experiencia-ano</Text>
-                <FlatList
-                  data={experent}
-                  keyExtractor={(item) => item}
-                  renderItem={({ item }) => (
-                    <TouchableOpacity style={stylesMobile.modalItem} onPress={() => { setexperiencia(item); setshowexperiencia(false); }}>
-                      <Text style={[stylesMobile.modalText, {width: 50, textAlign: 'center'}]}>{item}</Text>
-                    </TouchableOpacity>
-                  )}
-                />
-              </View>
-            </View>
-          </Modal>
-
-          <TouchableOpacity style={stylesMobile.input} onPress={() => setshowtrabalho(true)}>
-            <Text style={{ color: espe ? '#4CD964' : '#b3b3b3' }}>
-              {espe || 'Area de trabalho'}
-            </Text>
-          </TouchableOpacity>
-
-          <Modal visible={showtrabalho} transparent={true} animationType="slide" onRequestClose={() => setshowtrabalho(false)}>
-            <View style={stylesMobile.modalContainer}>
-              <View style={stylesMobile.modalContent}>
-                <Text style={stylesMobile.modalTitle}>Selecione a sua Area de Trabalho</Text>
-                <FlatList
-                  data={work}
-                  keyExtractor={(item) => item}
-                  renderItem={({ item }) => (
-                    <TouchableOpacity style={stylesMobile.modalItem} onPress={() => { settrabalho(item); setshowtrabalho(false); }}>
-                      <Text style={stylesMobile.modalText}>{item}</Text>
-                    </TouchableOpacity>
-                  )}
-                />
-              </View>
-            </View>
-          </Modal>
-
-          <Text style={{ fontSize: 11, color: 'red' }}>{espaco}</Text>
-
-          <TouchableOpacity onPress={criar2}>
-            <LinearGradient colors={['#2E8B57', '#4CD964']} style={stylesMobile.button}>
-              <Text style={stylesMobile.buttonText}>Finalizar Cadastro</Text>
-            </LinearGradient>
-          </TouchableOpacity>
-        </ScrollView>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
-  );
 }
-const stylesMobile = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: "#20613d"
-  },
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: 30
-  },
-  inner: {
-    alignItems: "center",
-    width: "100%",
-    gap: 15,
-  },
-  logo: {
-    width: 140,
-    height: 140,
-    borderRadius: 80,
-    backgroundColor: "#e7fbe6",
-    marginBottom: 5,
-    marginTop: 100,
-  },
-  title: {
-    fontSize: 30,
-    fontWeight: "bold",
-    color: "#4CD964"
-  },
-  input: {
-    marginTop: 20,
-    width: 300,
-    height: 50,
-    borderRadius: 50,
-    backgroundColor: '#e3e6e3',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  button: {
-    width: 220,
-    height: 52,
-    borderRadius: 50,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 15,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4
-  },
-  buttonText: {
-    color: "#fff",
-    fontSize: 17,
-    fontWeight: "bold"
-  },
-  modalContainer: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modalContent: {
-    width: 300,
-    backgroundColor: '#37C231',
-    borderRadius: 10,
-    padding: 20,
-    alignItems: 'center',
-  },
-  modalTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    color: '#fff'
-  },
-  modalItem: {
-    width: '100%',
-    paddingVertical: 10,
-    alignItems: 'center',
-  },
-  modalText: {
-    fontSize: 16,
-    color: '#fff',
-  },
-});
-
 const stylesWeb = StyleSheet.create({
   safeArea: {
     flex: 1,
@@ -488,7 +297,7 @@ const stylesWeb = StyleSheet.create({
     backgroundColor: "#e3e6e3",
     textAlign: "center",
     fontSize: 16,
-    color: "#2E8B57",
+    color: "#000",
     alignItems: 'center',
     justifyContent: 'center',
   },

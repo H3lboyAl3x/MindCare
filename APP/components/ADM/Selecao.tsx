@@ -29,9 +29,9 @@ export default function Selecao({ navigation }) {
         <View style={stylesWeb.container}>
           {/* Coluna Esquerda */}
           <View style={stylesWeb.left}>
-            <Text style={stylesWeb.title}>Crie a sua conta</Text>
+            <Text style={stylesWeb.title}>Registrar</Text>
             <Text style={stylesWeb.subtitle}>
-              Seja paciente ou profissional, o MindCare está aqui para cuidar de ti.
+              Seja paciente ou profissional, o MindCare está aqui para cuidar de todos.
             </Text>
             <Image
               source={{ uri: 'https://cdn-icons-png.flaticon.com/512/4088/4088981.png' }}
@@ -55,92 +55,13 @@ export default function Selecao({ navigation }) {
                   <Text style={stylesWeb.buttonText}>Profissional</Text>
                 </LinearGradient>
               </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => navigation.navigate("IniciarSessao")}>
-                <Text style={stylesWeb.instagram}>Ja possui uma conta</Text>
-              </TouchableOpacity>
             </View>
           </View>
         </View>
       </SafeAreaView>
     );
   }
-
-  // MOBILE
-  return (
-    <SafeAreaView style={stylesMobile.safeArea}>
-      <KeyboardAvoidingView behavior="padding" style={stylesMobile.container}>
-        <View style={stylesMobile.inner}>
-          <Image
-            source={{
-              uri: 'https://img.freepik.com/vetores-premium/trevo-com-quatro-folhas-isoladas-no-fundo-branco-conceito-da-sorte-no-estilo-cartoon-realista_302536-46.jpg',
-            }}
-            style={stylesMobile.logo}
-          />
-          <Text style={stylesMobile.title}>MindCare</Text>
-
-          <TouchableOpacity onPress={() => navigation.navigate('CriarConta01')}>
-            <LinearGradient colors={['#2E8B57', '#4CD964']} style={stylesMobile.button}>
-              <Text style={stylesMobile.buttonText}>Paciente</Text>
-            </LinearGradient>
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => navigation.navigate('CriarConta01p')}>
-            <LinearGradient colors={['#2E8B57', '#4CD964']} style={stylesMobile.button}>
-              <Text style={stylesMobile.buttonText}>Profissional</Text>
-            </LinearGradient>
-          </TouchableOpacity>
-        </View>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
-  );
 }
-
-const stylesMobile = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: '#20613d',
-  },
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 30,
-  },
-  inner: {
-    alignItems: 'center',
-    gap: 20,
-  },
-  logo: {
-    width: 140,
-    height: 140,
-    borderRadius: 80,
-    backgroundColor: '#e7fbe6',
-    marginBottom: 10,
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    color: '#4CD964',
-  },
-  button: {
-    width: 220,
-    height: 52,
-    borderRadius: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 15,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 17,
-    fontWeight: 'bold',
-  },
-});
 
 const stylesWeb = StyleSheet.create({
   safeArea: {
@@ -221,12 +142,5 @@ const stylesWeb = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
-  },
-  instagram: {
-    color: "#2E8B57",
-    marginTop: 10,
-    fontSize: 15,
-    fontWeight: "500",
-    textDecorationLine: "underline",
   },
 });

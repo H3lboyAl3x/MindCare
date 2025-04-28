@@ -1,4 +1,28 @@
 import * as Repository from '../repositories/Repository.js'
+//PARA O ADM_____________________________________________
+export const createAdm = async (userData) => {
+    return await Repository.createAdm(userData);
+};
+
+export const getAllAdm = async () => {
+    return await Repository.getAllAdm();
+};
+
+export const getAdmById = async (id) => {
+    return await Repository.getAdmById(id);
+};
+
+export const getAdmByLogin = async (email, password) => {
+    return await Repository.getAdmByLogin(email, password);
+};
+
+export const updateAdm = async (id, userData) => {
+    return await Repository.updateAdm(id, userData);
+};
+
+export const deleteAdm = async (id) => {
+    return await Repository.deleteAdm(id);
+};
 
 //PARA O USUARIO_____________________________________________
 export const createUsuario = async (userData) => {

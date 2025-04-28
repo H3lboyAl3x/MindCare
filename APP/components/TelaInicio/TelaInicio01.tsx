@@ -63,14 +63,9 @@ export default function TelaInicio01({ navigation }) {
         <View style={stylesweb.header}>
           <Image source={{ uri: image1Url }} style={stylesweb.mainImage} />
           <Text style={stylesweb.title}>Bem-vindo ao Espaço Gaya</Text>
-          <TouchableOpacity style={{ marginLeft: 580 }} onPress={() => navigation.navigate('IniciarSessao')}>
+          <TouchableOpacity style={{ marginLeft: 750 }} onPress={() => navigation.navigate('IniciarSessao')}>
             <LinearGradient colors={['#2E8B57', '#4CD964']} style={[stylesweb.button]}>
               <Text style={stylesweb.buttonText}>Iniciar Sessão</Text>
-            </LinearGradient>
-          </TouchableOpacity>
-          <TouchableOpacity style={{ alignSelf: 'center' }} onPress={() => navigation.navigate('Selecao')}>
-            <LinearGradient colors={['#2E8B57', '#4CD964']} style={stylesweb.button}>
-              <Text style={stylesweb.buttonText}>Criar Conta</Text>
             </LinearGradient>
           </TouchableOpacity>
         </View>
@@ -124,7 +119,7 @@ export default function TelaInicio01({ navigation }) {
           />
           <Text style={stylesMobile.welcome}>Bem-vindo ao</Text>
           <Text style={stylesMobile.title}>MindCare</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('TelaInicio02')}>
+          <TouchableOpacity onPress={() => navigation.navigate('IniciarSessao')}>
             <LinearGradient colors={['#2E8B57', '#4CD964']} style={stylesMobile.button}>
               <Text style={stylesMobile.buttonText}>Iniciar</Text>
             </LinearGradient>

@@ -1,10 +1,15 @@
 import express from "express";
 import Mensagem from "../models/Mensagem.js";
-import Consultas from "../models/Consultas.js";
-import axios from "axios";
 import * as Controller from "../controllers/Controller.js";
 
 const router = express.Router();
+//PARA O ADM__________________________________________
+router.get("/adm", Controller.getAllAdm);
+router.post("/adm", Controller.createAdm);
+router.get("/adm/:id", Controller.getAdmById);
+router.post("/adm/login", Controller.getAdmByLogin);
+router.put("/adm/:id", Controller.updateAdm);
+router.delete("/adm/:id", Controller.deleteAdm);
 
 //PARA O USUARIO__________________________________________
 router.get("/users", Controller.getAllUsuario);

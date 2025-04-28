@@ -93,8 +93,8 @@ export default function Mensagem({ route }) {
           data={sms}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
-            <View style={[styles.caixasms, { alignSelf: item.remetente === id ? "flex-end" : "flex-start", backgroundColor: item.remetente === id ? "#4CD964" : "#FFFFFF" }]}>
-              <Text style={[styles.textp, { color: "#fff" }]}>{item.conteudo}</Text>
+            <View style={[styles.caixasms, { alignSelf: item.remetente === id ? "flex-end" : "flex-start", backgroundColor: item.remetente === id ? "#4CD964" : "#FFFFFF",borderBottomLeftRadius: item.remetente === id ? 15 : 0, borderBottomRightRadius: item.remetente === id ? 0 : 15  }]}>
+              <Text style={[styles.textp, { color: item.remetente === id ? "#fff" : "#000" }]}>{item.conteudo}</Text>
               {item.hora && <Text style={[styles.textp, { color: "#757575", fontSize: 12, textAlign: "right" }]}>{item.hora.slice(0, 5)}</Text>}
             </View>
           )}
@@ -127,8 +127,8 @@ export default function Mensagem({ route }) {
         data={sms}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <View style={[styles.caixasms, { alignSelf: item.remetente === id ? "flex-end" : "flex-start", backgroundColor: item.remetente === id ? "#4CD964" : "#FFFFFF" }]}>
-            <Text style={[styles.textp, { color: "#fff" }]}>{item.conteudo}</Text>
+          <View style={[styles.caixasms, { alignSelf: item.remetente === id ? "flex-end" : "flex-start", backgroundColor: item.remetente === id ? "#4CD964" : "#FFFFFF", borderBottomLeftRadius: item.remetente === id ? 15 : 0, borderBottomRightRadius: item.remetente === id ? 0 : 15 }]}>
+            <Text style={[styles.textp, { color: item.remetente === id ? "#fff" : "#000" }]}>{item.conteudo}</Text>
             {item.hora && <Text style={[styles.textp, { color: "#757575", fontSize: 12, textAlign: "right" }]}>{item.hora.slice(0, 5)}</Text>}
           </View>
         )}

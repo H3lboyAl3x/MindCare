@@ -7,7 +7,42 @@ import Mensagem from "../models/Mensagem.js";
 import NumeroP from "../models/NumeroP.js";
 import AreaTrabalho from "../models/AreTrabalho.js";
 import AreaProf from "../models/AreaProf.js";
-import { where } from "sequelize";
+import Adm from "../models/Administrador.js";
+
+//PARA O ADM____________________________________________________________________________--
+//adicionar adm
+export const createAdm = async (admData) => {
+    return await Adm.create(admData); 
+}
+//buscar todos adm
+export const getAllAdm = async () => {
+    return await Adm.findAll();
+}
+//buscar um adm por id
+export const getAdmById = async (id) => {
+    return await Adm.findByPk(id);
+}
+//buscar um adm por email e password(Login)
+export const getAdmByLogin = async (email, password) => {
+    return await Adm.findOne({ where: { email, password } });
+};
+//atualizar adm
+export const updateAdm = async (id, updates) => {
+    const adm = await Adm.findByPk(id);
+    if (!adm) {
+        return null;
+    }
+    return await adm.update(updates);
+}
+//deletar adm
+export const deleteAdm = async (id) => {
+    const adm = await Adm.findByPk(id);
+    if (!adm) {
+        return null
+    }
+    await adm.destroy();
+    return true;
+}
  
 //PARA O USUARIO_____________________________________________________________________
 //adicionar usurio
@@ -22,13 +57,10 @@ export const getAllUsuario = async () => {
 export const getUsuarioById = async (id) => {
     return await Usuarios.findByPk(id);
 };
-
 //buscar um usuario por Email e Password(Login)
 export const getUsuarioByLogin = async (email, password) => {
     return await Usuarios.findOne({ where: { email, password } });
 };
-
-
 //atualizar usuario
 export const uptadeUsuario = async (id, updates) => {
     const user = await Usuarios.findByPk(id);

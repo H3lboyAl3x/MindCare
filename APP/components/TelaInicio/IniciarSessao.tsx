@@ -26,42 +26,52 @@ export default function IniciarSessao({ navigation }) {
     }
 
     try {
-      const response = await axios.post(`${getUrl()}/MindCare/API/users/login`, { email, password });
-      const usuario = response.data;
+      const ADM = await axios.post(`${getUrl()}/MindCare/API/adm/login`, {email, password});
+      const Adm = ADM.data;
+      console.log(Adm);
 
-      const formattedDate = usuario.datanascimento
-        ? new Date(usuario.datanascimento).toISOString().split("T")[0]
-        : null;
+      if(ADM)
+      {
+        navigation.navigate('TelaInicio02', {id: Adm.id, email: Adm.email, password: Adm.password});
+      }else{
+        const response = await axios.post(`${getUrl()}/MindCare/API/users/login`, { email, password });
+        const usuario = response.data;
 
-      try {
-        const response1 = await axios.get(`${getUrl()}/MindCare/API/pacientes/iduser/${usuario.id}`);
-        const paciente = response1.data;
-        navigation.navigate("Navegacao1", {
-          id: usuario.id,
-          idp: paciente.id,
-          nome: usuario.nome,
-          telefone: usuario.telefone,
-          email: usuario.email,
-          password: usuario.password,
-          datanascimento: formattedDate,
-          genero: usuario.genero,
-        });
-      } catch {
-        const response2 = await axios.get(`${getUrl()}/MindCare/API/profissionais/iduser/${usuario.id}`);
-        const profissional = response2.data;
-        navigation.navigate("Navegacao2", {
-          id: usuario.id,
-          idp: profissional.id,
-          nome: usuario.nome,
-          telefone: usuario.telefone,
-          email: usuario.email,
-          password: usuario.password,
-          datanascimento: formattedDate,
-          genero: usuario.genero,
-        });
+        const formattedDate = usuario.datanascimento
+          ? new Date(usuario.datanascimento).toISOString().split("T")[0]
+          : null;
+
+        try {
+          const response1 = await axios.get(`${getUrl()}/MindCare/API/pacientes/iduser/${usuario.id}`);
+          const paciente = response1.data;
+          navigation.navigate("Navegacao1", {
+            id: usuario.id,
+            idp: paciente.id,
+            nome: usuario.nome,
+            telefone: usuario.telefone,
+            email: usuario.email,
+            password: usuario.password,
+            datanascimento: formattedDate,
+            genero: usuario.genero,
+          });
+          } catch {
+          const response2 = await axios.get(`${getUrl()}/MindCare/API/profissionais/iduser/${usuario.id}`);
+          const profissional = response2.data;
+          navigation.navigate("Navegacao2", {
+            id: usuario.id,
+            idp: profissional.id,
+            nome: usuario.nome,
+            telefone: usuario.telefone,
+            email: usuario.email,
+            password: usuario.password,
+            datanascimento: formattedDate,
+            genero: usuario.genero,
+          });
+        }
       }
-    } catch {
+    } catch(error) {
       setEspaco("Senha ou nome incorretos.");
+      console.log(error);
     }
   };
 
@@ -200,7 +210,7 @@ const stylesMobile = StyleSheet.create({
   },
   textbox: {
     marginTop: 20,
-    color: "#4CD964",
+    color: "#000",
     width: "80%",
     height: 50,
     borderRadius: 50,
@@ -300,7 +310,7 @@ const stylesWeb = StyleSheet.create({
     backgroundColor: "#e3e6e3",
     textAlign: "center",
     fontSize: 16,
-    color: "#2E8B57",
+    color: "#000",
   },
   esqueci: {
     color: "#999",
