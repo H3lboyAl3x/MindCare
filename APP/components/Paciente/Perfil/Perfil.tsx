@@ -173,7 +173,8 @@ export default function Perfil01({navigation, route}){
                                                     email: email,
                                                     password: password,
                                                     datanascimento: datanascimento,
-                                                    genero: genero
+                                                    genero: genero,
+                                                    idadm: 0
                                                 })}
                                             >
                                                 <Ionicons name="create-outline" size={20} color="#4CD964" />
@@ -233,7 +234,8 @@ export default function Perfil01({navigation, route}){
                         email: email,
                         password: password,
                         datanascimento: datanascimento,
-                        genero: genero
+                        genero: genero,
+                        idadm: 0
                     })}>
                     <Ionicons style={{backgroundColor: 'white', borderRadius: 50}} name="ellipsis-horizontal-circle-outline" size={40} color={'black'} />
                 </TouchableOpacity>

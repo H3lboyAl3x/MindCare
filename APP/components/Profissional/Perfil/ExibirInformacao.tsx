@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 
 export default function ExibirInformacaop({ navigation, route }) {
-    const { id, idp, nome, telefone, email, password, datanascimento, genero, espe, expe } = route.params;
+    const { id, idp, nome, telefone, email, password, datanascimento, genero, espe, expe, idadm } = route.params;
 
     return (
         <View style={styles.container}>
@@ -17,23 +17,24 @@ export default function ExibirInformacaop({ navigation, route }) {
                 <Text style={styles.text}>Area de Trabalho: {espe}</Text>
                 <Text style={styles.text}>Ano de Experiencia: {expe}</Text>
 
-                <TouchableOpacity 
-                    style={styles.EP} 
-                    onPress={() => navigation.navigate('EditarPerfilp', {
-                        ide: id,
-                        idpe: idp,
-                        nomee: nome,
-                        telefonee: telefone,
-                        emaile: email,
-                        passworde: password,
-                        datanascimentoe: datanascimento,
-                        generoe: genero,
-                        espe: espe,
-                        expe: expe,
-                    })}
-                >
-                    <Text style={{ fontSize: 20, color: 'white' }}>Editar Perfil</Text>
-                </TouchableOpacity>
+                {idadm != 0 && (
+                    <TouchableOpacity 
+                        style={styles.EP} 
+                        onPress={() => navigation.navigate('EditarPerfil', {
+                            ide: id,
+                            idpe: idp,
+                            nomee: nome,
+                            telefonee: telefone,
+                            emaile: email,
+                            passworde: password,
+                            datanascimentoe: datanascimento,
+                            generoe: genero
+                        })}
+                    >
+                        <Text style={{ fontSize: 20, color: 'white' }}>Editar Perfil</Text>
+                    </TouchableOpacity>
+                )}
+
             </View>
         </View>
     );

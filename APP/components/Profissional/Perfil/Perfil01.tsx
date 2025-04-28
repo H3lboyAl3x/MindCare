@@ -127,6 +127,7 @@ export default function Perfil01({navigation, route}){
                         genero: genero,
                         espe: espe,
                         expe: expe,
+                        idadm: 0
                     })}>
                     <Ionicons style={{backgroundColor: 'white', borderRadius: 50}} name="ellipsis-horizontal-circle-outline" size={40} color={'black'} />
                 </TouchableOpacity>

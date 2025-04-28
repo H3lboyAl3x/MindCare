@@ -34,7 +34,7 @@ export default function IniciarSessao({ navigation }) {
       } catch (error) {
         console.log("Não é ADM:",error);
       }
-    
+  
       if (Adm) {
         navigation.navigate('TelaInicio02', { id: Adm.id, email: Adm.email, password: Adm.password });
       } else {

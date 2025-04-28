@@ -36,7 +36,7 @@ export default function Navegacao1({ route }) {
         },
         tabBarBackground: () => (
           <LinearGradient
-            colors= {isWeb ? ['#2E8B57', '#2E8B57'] : ['#2E8B57', '#4CD964']}
+            colors= {isWeb ? ['#2E8B57', '#2E8B57'] : ['#4CD964', '#4CD964']}
             style={{ flex: 1 }}
           />
         ),

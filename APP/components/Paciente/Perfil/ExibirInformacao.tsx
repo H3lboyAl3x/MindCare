@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 
 export default function ExibirInformacao({ navigation, route }) {
-    const { id, idp, nome, telefone, email, password, datanascimento, genero } = route.params;
+    const { id, idp, nome, telefone, email, password, datanascimento, genero, idadm } = route.params;
 
     return (
         <View style={styles.container}>
@@ -15,21 +15,22 @@ export default function ExibirInformacao({ navigation, route }) {
                 <Text style={styles.text}>Data de Nascimento: {datanascimento}</Text>
                 <Text style={styles.text}>Gênero: {genero}</Text>
 
-                <TouchableOpacity 
-                    style={styles.EP} 
-                    onPress={() => navigation.navigate('EditarPerfil', {
-                        ide: id,
-                        idpe: idp,
-                        nomee: nome,
-                        telefonee: telefone,
-                        emaile: email,
-                        passworde: password,
-                        datanascimentoe: datanascimento,
-                        generoe: genero
-                    })}
-                >
-                    <Text style={{ fontSize: 20, color: 'white' }}>Editar Perfil</Text>
-                </TouchableOpacity>
+                {idadm != 0 && (
+                    <TouchableOpacity 
+                        style={styles.EP} 
+                        onPress={() => navigation.navigate('EditarPerfil', {
+                            ide: id,
+                            idpe: idp,
+                            nomee: nome,
+                            telefonee: telefone,
+                            emaile: email,
+                            passworde: password,
+                            datanascimentoe: datanascimento,
+                            generoe: genero
+                        })}>
+                        <Text style={{ fontSize: 20, color: 'white' }}>Editar Perfil</Text>
+                    </TouchableOpacity>
+                )}
             </View>
         </View>
     );
