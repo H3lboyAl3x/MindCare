@@ -7,88 +7,293 @@ import {
   TouchableOpacity,
   Platform,
   ScrollView,
+  Animated,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import axios from 'axios';
+import { Ionicons } from "@expo/vector-icons";
 import { getUrl } from '@/app/utils/url';
 
+// Imagens
 const image1Url = "https://img.freepik.com/vetores-premium/trevo-com-quatro-folhas-isoladas-no-fundo-branco-conceito-da-sorte-no-estilo-cartoon-realista_302536-46.jpg";
 const image2Url = "https://aebo.pt/wp-content/uploads/2024/05/spo-300x300.png";
 
-export default function TelaInicio02({ navigation, route }) {
- const {id, email, password} = route.params;
+// Tipos
+type Usuario = {
+  id: number;
+  nome: string;
+};
 
+type Profissional = {
+  id: number;
+  tempoexperiencia: string;
+  iduser: number;
+};
+
+type Paciente = {
+  id: number;
+  iduser: number;
+};
+
+type Consulta = {
+  id: number;
+  data: string;
+  hora: string;
+  status: string;
+  idprofissional: number;
+  idpaciente: number;
+};
+
+type TipoAba = 'profissionais' | 'pacientes' | 'consultas';
+
+export default function TelaInicio02({ navigation, route }) {
+  const { id, email, password } = route.params;
+
+  const [expandido, setExpandido] = useState(false);
+  const [abaSelecionada, setAbaSelecionada] = useState<TipoAba | null>(null);
+  const [dados, setDados] = useState<Profissional[] | Paciente[] | Consulta[]>([]);
+  const [usuarios, setUsuarios] = useState<Usuario[]>([]);
+  
+  const widthAnim = useRef(new Animated.Value(Platform.OS === 'web' ? 5 : 25)).current;
+
+  useEffect(() => {
+    // Carregar usuários ao iniciar
+    const carregarUsuarios = async () => {
+      try {
+        const response = await fetch(`${getUrl()}/MindCare/API/users`);
+        const json = await response.json();
+        setUsuarios(json);
+      } catch (error) {
+        console.error("Erro ao buscar usuários:", error);
+      }
+    };
+    carregarUsuarios();
+  }, []);
+
+  const expandir = () => {
+    Animated.timing(widthAnim, {
+      toValue: 25,
+      duration: 200,
+      useNativeDriver: false,
+    }).start();
+    setExpandido(true);
+  };
+
+  const reduzir = () => {
+    Animated.timing(widthAnim, {
+      toValue: 5,
+      duration: 200,
+      useNativeDriver: false,
+    }).start();
+    setExpandido(false);
+  };
+
+  const buscarDados = async (tipo: TipoAba) => {
+    let url = '';
+    if (tipo === 'profissionais') url = `${getUrl()}/MindCare/API/profissionais`;
+    if (tipo === 'pacientes') url = `${getUrl()}/MindCare/API/pacientes`;
+    if (tipo === 'consultas') url = `${getUrl()}/MindCare/API/consultas`;
+
+    try {
+      const response = await fetch(url);
+      const json = await response.json();
+      let filtrados = json;
+
+      if (tipo === 'consultas') {
+        filtrados = json.filter((consulta: Consulta) => consulta.status === 'pendente');
+      }
+
+      setDados(filtrados);
+      setAbaSelecionada(tipo);
+    } catch (error) {
+      console.error("Erro ao buscar dados:", error);
+    }
+  };
+
+  // Função para buscar o nome do usuário por ID
+  const obterNomeUsuario = (iduser: number) => {
+    const usuario = usuarios.find(u => u.id === iduser);
+    return usuario ? usuario.nome : 'Desconhecido';
+  };
 
   if (Platform.OS === 'web') {
-      return (
-        <ScrollView style={stylesweb.container}>
-          {/* Cabeçalho */}
-          <View style={stylesweb.header}>
-            <Image source={{ uri: image1Url }} style={stylesweb.mainImage} />
-            <Text style={stylesweb.title}>Espaço Gaya</Text>
-            <TouchableOpacity style={{ marginLeft: 850 }} onPress={() => navigation.navigate('Selecao')}>
-              <LinearGradient colors={['#2E8B57', '#4CD964']} style={[stylesweb.button]}>
-                <Text style={stylesweb.buttonText}>Registrar</Text>
-              </LinearGradient>
-            </TouchableOpacity>
-          </View>
-          <View style={stylesweb.menu}>
+    return (
+      <ScrollView style={stylesweb.container}>
+        {/* Cabeçalho */}
+        <View style={stylesweb.header}>
+          <Image source={{ uri: image1Url }} style={stylesweb.mainImage} />
+          <Text style={stylesweb.title}>Espaço Gaya</Text>
+          <TouchableOpacity style={{ marginLeft: 850 }} onPress={() => navigation.navigate('Selecao', { id, email, password })}>
+            <LinearGradient colors={['#2E8B57', '#4CD964']} style={[stylesweb.button]}>
+              <Text style={stylesweb.buttonText}>Registrar</Text>
+            </LinearGradient>
+          </TouchableOpacity>
+        </View>
 
+        {/* Corpo */}
+        <View style={stylesweb.menu}>
+          {/* Menu Lateral */}
+          <Animated.View
+            style={{
+              width: widthAnim.interpolate({
+                inputRange: [5, 25],
+                outputRange: ['5%', '25%'],
+              }),
+              backgroundColor: '#dbdbdb',
+              borderRightWidth: 1,
+              borderColor: '#8c8c8c',
+              paddingTop: 20,
+              height: 550,
+            }}
+            {...(Platform.OS === 'web'
+              ? {
+                onMouseEnter: expandir,
+                onMouseLeave: reduzir,
+              }
+              : {}) as any}
+          >
+            <TouchableOpacity
+              style={stylesweb.menuButton}
+              onPress={() => buscarDados('profissionais')}
+            >
+              {expandido ? <Text style={{ color: '#fff' }}>Profissionais</Text> : <Ionicons name="people-circle-outline" size={24} color="white" />}
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={stylesweb.menuButton}
+              onPress={() => buscarDados('pacientes')}
+            >
+              {expandido ? <Text style={{ color: '#fff' }}>Pacientes</Text> : <Ionicons name="people-circle-outline" size={24} color="white" />}
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={stylesweb.menuButton}
+              onPress={() => buscarDados('consultas')}
+            >
+              {expandido ? <Text style={{ color: '#fff' }}>Consultas</Text> : <Ionicons name="people-circle-outline" size={24} color="white" />}
+            </TouchableOpacity>
+          </Animated.View>
+
+          {/* Conteúdo à direita */}
+          <View style={stylesweb.content}>
+            {abaSelecionada && (
+              <View style={stylesweb.grid}>
+                {(dados as any[]).map((item, index) => (
+                  <View key={index} style={stylesweb.card}>
+                    {abaSelecionada === 'profissionais' && (
+                      <>
+                        <Text style={stylesweb.cardTitle}>Nome: {obterNomeUsuario(item.iduser)}</Text>
+                        <Text>Tempo de experiência: {item.tempoexperiencia}</Text>
+                      </>
+                    )}
+                    {abaSelecionada === 'pacientes' && (
+                      <>
+                        <Text style={stylesweb.cardTitle}>Nome: {obterNomeUsuario(item.iduser)}</Text>
+                      </>
+                    )}
+                    {abaSelecionada === 'consultas' && (
+                      <>
+                        <Text style={stylesweb.cardTitle}>Profissional: {obterNomeUsuario(item.idprofissional)}</Text>
+                        <Text>Paciente: {obterNomeUsuario(item.idpaciente)}</Text>
+                        <Text>Data: {item.data}</Text>
+                        <Text>Hora: {item.hora}</Text>
+                        <Text>Status: {item.status}</Text>
+                      </>
+                    )}
+                  </View>
+                ))}
+              </View>
+            )}
           </View>
-        </ScrollView>
-      );
-    }
+        </View>
+      </ScrollView>
+    );
   }
-  
-  const stylesweb = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: "#f4f4f4",
-      paddingTop: 20,
-    },
-    header: {
-      alignItems: "center",
-      flexDirection: 'row',
-      paddingHorizontal: 20,
-      backgroundColor: '#20613d',
-      position: 'absolute',
-      top: -20,
-      width: '100%',
-      height: 60,
-    },
-    title: {
-      fontSize: 20,
-      fontWeight: "bold",
-      color: "#4CD964",
-      textAlign: "center",
-      marginLeft: 10,
-    },
-    mainImage: {
-      width: 50,
-      height: 50,
-      borderRadius: 25,
-    },
-    button: {
-      backgroundColor: "#4CD964",
-      borderRadius: 5,
-      alignSelf: "center",
-      height: 40,
-      width: 200,
-      alignItems: 'center',
-      justifyContent: 'center',
-      marginHorizontal: 5,
-    },
-    buttonText: {
-      color: "#fff",
-      fontSize: 16,
-      fontWeight: "bold",
-    },
-    menu: {
-      flexDirection: 'row',
-      width: '100%',
-      height: '100%',
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginTop: 40,
-    },
-  });
+}
+
+// Estilos
+const stylesweb = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#f4f4f4",
+    paddingTop: 20,
+  },
+  header: {
+    alignItems: "center",
+    flexDirection: 'row',
+    paddingHorizontal: 20,
+    backgroundColor: '#20613d',
+    position: 'absolute',
+    top: -20,
+    width: '100%',
+    height: 60,
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#4CD964",
+    textAlign: "center",
+    marginLeft: 10,
+  },
+  mainImage: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+  },
+  button: {
+    backgroundColor: "#4CD964",
+    borderRadius: 5,
+    alignSelf: "center",
+    height: 40,
+    width: 200,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginHorizontal: 5,
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  menu: {
+    flex: 1,
+    flexDirection: "row",
+    height: "100%",
+    marginTop: 40,
+  },
+  menuButton: {
+    marginBottom: 10,
+    marginTop: 10,
+    backgroundColor: '#4CD964',
+    width: '90%',
+    height: 50,
+    borderRadius: 25,
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  content: {
+    flex: 1,
+    padding: 20,
+  },
+  grid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10,
+  },
+  card: {
+    backgroundColor: '#fff',
+    width: 200,
+    padding: 10,
+    borderRadius: 10,
+    margin: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    elevation: 5,
+  },
+  cardTitle: {
+    fontWeight: 'bold',
+    marginBottom: 5,
+  },
+});

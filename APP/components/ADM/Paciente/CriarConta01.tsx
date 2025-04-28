@@ -13,7 +13,9 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
-export default function CriarConta01({ navigation }) {
+export default function CriarConta01({ navigation, route }) {
+ const {idad, emailad, passwordad} = route.params;
+
   const [nome, setNome] = useState("");
   const [telefone, setTelefone] = useState("");
   const [email, setEmail] = useState("");
@@ -45,7 +47,10 @@ export default function CriarConta01({ navigation }) {
       nome,
       telefone,
       email,
-      password
+      password,
+      idad: idad,
+      emailad: emailad,
+      passwordad: passwordad 
     });
   };
 

@@ -11,7 +11,8 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
-export default function Selecao({ navigation }) {
+export default function Selecao({ navigation, route }) {
+  const {id, email, password} = route.params;
   if (Platform.OS === 'web') {
     return (
       <SafeAreaView style={stylesWeb.safeArea}>
@@ -44,13 +45,13 @@ export default function Selecao({ navigation }) {
             <View style={stylesWeb.form}>
               <Text style={stylesWeb.formTitle}>Seleciona o tipo de conta</Text>
 
-              <TouchableOpacity onPress={() => navigation.navigate('CriarConta01')}>
+              <TouchableOpacity onPress={() => navigation.navigate('CriarConta01', { idad: id, emailad: email, passwordad: password })}>
                 <LinearGradient colors={['#2E8B57', '#4CD964']} style={stylesWeb.button}>
                   <Text style={stylesWeb.buttonText}>Paciente</Text>
                 </LinearGradient>
               </TouchableOpacity>
 
-              <TouchableOpacity onPress={() => navigation.navigate('CriarConta01p')}>
+              <TouchableOpacity onPress={() => navigation.navigate('CriarConta01p', { idad: id, emailad: email, passwordad: password })}>
                 <LinearGradient colors={['#2E8B57', '#4CD964']} style={stylesWeb.button}>
                   <Text style={stylesWeb.buttonText}>Profissional</Text>
                 </LinearGradient>

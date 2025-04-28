@@ -6,7 +6,7 @@ import { getUrl } from '@/app/utils/url';
 import { LinearGradient } from 'expo-linear-gradient';
 
 export default function CriarConta02p({ route, navigation }) {
-  const { nome, telefone, email, password} = route.params;
+  const { nome, telefone, email, password, idad, emailad, passwordad} = route.params;
   const [id, setid] = useState(null);
   const [idp, setidp] = useState(null);
 
@@ -67,7 +67,7 @@ export default function CriarConta02p({ route, navigation }) {
       const idAP = AreaProf.id;
       setidap(idAP);
 
-      navigation.navigate("TelaInicio02");
+      navigation.navigate("TelaInicio02", {id: idad, email: emailad, password: passwordad });
 } catch (error) {
       Alert.alert("Erro ao cadastrar", "Tente novamente mais tarde.");
     }

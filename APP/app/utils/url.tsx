@@ -1,1 +1,1 @@
-export const getUrl = () => "http://192.168.255.121:3000";
+export const getUrl = () => "http://192.168.1.219:3000";
