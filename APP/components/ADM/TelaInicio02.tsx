@@ -56,20 +56,33 @@ export default function TelaInicio02({ navigation, route }) {
   const [abaSelecionada, setAbaSelecionada] = useState<TipoAba | null>(null);
   const [dados, setDados] = useState<Profissional[] | Paciente[] | Consulta[]>([]);
   const [usuarios, setUsuarios] = useState<Usuario[]>([]);
+  const [profissionais, setProfissionais] = useState<Profissional[]>([]);
+  const [pacientes, setPacientes] = useState<Paciente[]>([]);
 
   const widthAnim = useRef(new Animated.Value(Platform.OS === 'web' ? 5 : 25)).current;
 
   useEffect(() => {
-    const carregarUsuarios = async () => {
+    const carregarDados = async () => {
       try {
-        const response = await fetch(`${getUrl()}/MindCare/API/users`);
-        const json = await response.json();
-        setUsuarios(json);
+        const [usuariosRes, profissionaisRes, pacientesRes] = await Promise.all([
+          fetch(`${getUrl()}/MindCare/API/users`),
+          fetch(`${getUrl()}/MindCare/API/profissionais`),
+          fetch(`${getUrl()}/MindCare/API/pacientes`)
+        ]);
+
+        const usuariosJson = await usuariosRes.json();
+        const profissionaisJson = await profissionaisRes.json();
+        const pacientesJson = await pacientesRes.json();
+
+        setUsuarios(usuariosJson);
+        setProfissionais(profissionaisJson);
+        setPacientes(pacientesJson);
       } catch (error) {
-        console.error("Erro ao buscar usuários:", error);
+        console.error("Erro ao carregar dados:", error);
       }
     };
-    carregarUsuarios();
+
+    carregarDados();
   }, []);
 
   const expandir = () => {
@@ -115,6 +128,18 @@ export default function TelaInicio02({ navigation, route }) {
   const obterUsuario = (iduser: number) => usuarios.find(u => u.id === iduser);
   const obterNomeUsuario = (iduser: number) => obterUsuario(iduser)?.nome || 'Desconhecido';
 
+  const obterNomeProfissional = (idprofissional: number) => {
+    const prof = profissionais.find(p => p.id === idprofissional);
+    if (!prof) return 'Desconhecido';
+    return obterNomeUsuario(prof.iduser);
+  };
+
+  const obterNomePaciente = (idpaciente: number) => {
+    const pac = pacientes.find(p => p.id === idpaciente);
+    if (!pac) return 'Desconhecido';
+    return obterNomeUsuario(pac.iduser);
+  };
+
   const handlePressPaciente = (iduser: number) => {
     const user = obterUsuario(iduser);
     if (user) {
@@ -154,7 +179,6 @@ export default function TelaInicio02({ navigation, route }) {
   if (Platform.OS === 'web') {
     return (
       <ScrollView style={stylesweb.container}>
-        {/* Cabeçalho */}
         <View style={stylesweb.header}>
           <Image source={{ uri: image1Url }} style={stylesweb.mainImage} />
           <Text style={stylesweb.title}>Espaço Gaya</Text>
@@ -165,9 +189,7 @@ export default function TelaInicio02({ navigation, route }) {
           </TouchableOpacity>
         </View>
 
-        {/* Corpo */}
         <View style={stylesweb.menu}>
-          {/* Menu Lateral */}
           <Animated.View
             style={{
               width: widthAnim.interpolate({
@@ -187,29 +209,19 @@ export default function TelaInicio02({ navigation, route }) {
               }
               : {}) as any}
           >
-            <TouchableOpacity
-              style={stylesweb.menuButton}
-              onPress={() => buscarDados('profissionais')}
-            >
+            <TouchableOpacity style={stylesweb.menuButton} onPress={() => buscarDados('profissionais')}>
               {expandido ? <Text style={{ color: '#fff' }}>Profissionais</Text> : <Ionicons name="people-circle-outline" size={24} color="white" />}
             </TouchableOpacity>
 
-            <TouchableOpacity
-              style={stylesweb.menuButton}
-              onPress={() => buscarDados('pacientes')}
-            >
+            <TouchableOpacity style={stylesweb.menuButton} onPress={() => buscarDados('pacientes')}>
               {expandido ? <Text style={{ color: '#fff' }}>Pacientes</Text> : <Ionicons name="people-circle-outline" size={24} color="white" />}
             </TouchableOpacity>
 
-            <TouchableOpacity
-              style={stylesweb.menuButton}
-              onPress={() => buscarDados('consultas')}
-            >
+            <TouchableOpacity style={stylesweb.menuButton} onPress={() => buscarDados('consultas')}>
               {expandido ? <Text style={{ color: '#fff' }}>Consultas</Text> : <Ionicons name="people-circle-outline" size={24} color="white" />}
             </TouchableOpacity>
           </Animated.View>
 
-          {/* Conteúdo à direita */}
           <View style={stylesweb.content}>
             {abaSelecionada && (
               <View style={stylesweb.grid}>
@@ -217,19 +229,15 @@ export default function TelaInicio02({ navigation, route }) {
                   const cardContent = (
                     <>
                       {abaSelecionada === 'profissionais' && (
-                        <>
-                          <Text style={stylesweb.cardTitle}>Nome: {obterNomeUsuario(item.iduser)}</Text>
-                        </>
+                        <Text style={stylesweb.cardTitle}>Nome: {obterNomeUsuario(item.iduser)}</Text>
                       )}
                       {abaSelecionada === 'pacientes' && (
-                        <>
-                          <Text style={stylesweb.cardTitle}>Nome: {obterNomeUsuario(item.iduser)}</Text>
-                        </>
+                        <Text style={stylesweb.cardTitle}>Nome: {obterNomeUsuario(item.iduser)}</Text>
                       )}
                       {abaSelecionada === 'consultas' && (
                         <>
-                          <Text style={stylesweb.cardTitle}>Profissional: {obterNomeUsuario(item.idpro)}</Text>
-                          <Text>Paciente: {obterNomeUsuario(item.idpaci)}</Text>
+                          <Text style={stylesweb.cardTitle}>Profissional: {obterNomeProfissional(item.idpro)}</Text>
+                          <Text>Paciente: {obterNomePaciente(item.idpaci)}</Text>
                           <Text>Data: {item.data}</Text>
                           <Text>Hora: {item.hora}</Text>
                           <Text>Status: {item.status}</Text>
@@ -261,18 +269,87 @@ export default function TelaInicio02({ navigation, route }) {
   }
 }
 
-// Estilos
 const stylesweb = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#f4f4f4", paddingTop: 20 },
-  header: { alignItems: "center", flexDirection: 'row', paddingHorizontal: 20, backgroundColor: '#20613d', position: 'absolute', top: -20, width: '100%', height: 60 },
-  title: { fontSize: 20, fontWeight: "bold", color: "#4CD964", textAlign: "center", marginLeft: 10 },
-  mainImage: { width: 50, height: 50, borderRadius: 25 },
-  button: { backgroundColor: "#4CD964", borderRadius: 5, alignSelf: "center", height: 40, width: 200, alignItems: 'center', justifyContent: 'center', marginHorizontal: 5 },
-  buttonText: { color: "#fff", fontSize: 16, fontWeight: "bold" },
-  menu: { flex: 1, flexDirection: "row", height: "100%", marginTop: 40 },
-  menuButton: { marginBottom: 10, marginTop: 10, backgroundColor: '#4CD964', width: '90%', height: 50, borderRadius: 25, alignSelf: 'center', alignItems: 'center', justifyContent: 'center' },
-  content: { flex: 1, padding: 20 },
-  grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
-  card: { backgroundColor: '#fff', width: 200, padding: 10, borderRadius: 10, margin: 10, shadowColor: "#000", shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.3, shadowRadius: 3, elevation: 5 },
-  cardTitle: { fontWeight: 'bold', marginBottom: 5 },
+  container: { 
+    flex: 1, 
+    backgroundColor: "#f4f4f4", 
+    paddingTop: 20 
+  },
+  header: { 
+    alignItems: "center", 
+    flexDirection: 'row', 
+    paddingHorizontal: 20, 
+    backgroundColor: '#20613d', 
+    position: 'absolute', 
+    top: -20, width: '100%', 
+    height: 60 
+  },
+  title: { 
+    fontSize: 20, 
+    fontWeight: "bold", 
+    color: "#4CD964", 
+    textAlign: "center", 
+    marginLeft: 10 },
+  mainImage: { 
+    width: 50, 
+    height: 50, 
+    borderRadius: 25 
+  },
+  button: { 
+    backgroundColor: "#4CD964", 
+    borderRadius: 5, 
+    alignSelf: "center", 
+    height: 40, 
+    width: 200, 
+    alignItems: 'center', 
+    justifyContent: 'center', 
+    marginHorizontal: 5 
+  },
+  buttonText: { 
+    color: "#fff", 
+    fontSize: 16, 
+    fontWeight: "bold" 
+  },
+  menu: { 
+    flex: 1, 
+    flexDirection: "row", 
+    height: "100%", 
+    marginTop: 40 
+  },
+  menuButton: { 
+    marginBottom: 10, 
+    marginTop: 10, 
+    backgroundColor: '#4CD964', 
+    width: '90%', 
+    height: 50, 
+    borderRadius: 25, 
+    alignSelf: 'center', 
+    alignItems: 'center', 
+    justifyContent: 'center' 
+  },
+  content: { 
+    flex: 1, 
+    padding: 20 
+  },
+  grid: { 
+    flexDirection: 'row', 
+    flexWrap: 'wrap', 
+    gap: 10 
+  },
+  card: { 
+    backgroundColor: '#fff', 
+    width: 200, 
+    padding: 10, 
+    borderRadius: 10, 
+    margin: 10, 
+    shadowColor: "#000", 
+    shadowOffset: { width: 0, height: 2 }, 
+    shadowOpacity: 0.3, 
+    shadowRadius: 3, 
+    elevation: 5 
+  },
+  cardTitle: { 
+    fontWeight: 'bold', 
+    marginBottom: 5 
+  },
 });

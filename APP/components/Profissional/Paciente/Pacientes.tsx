@@ -36,7 +36,7 @@ interface NumeroP {
   idpac: number;
 }
 
-export default function Paciente({ navigation, route }) {
+export default function Pacientes({ navigation, route }) {
   const { idp, id } = route.params;
   const [paciente, setPaciente] = useState<PacienteComNome[]>([]);
   const [loading, setLoading] = useState<boolean>(true);

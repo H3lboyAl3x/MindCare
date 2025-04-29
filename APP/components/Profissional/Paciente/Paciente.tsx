@@ -16,7 +16,7 @@ interface NumeroP {
     idpac: number;
 }
 
-export default function Proficional({navigation, route}){
+export default function Paciente({navigation, route}){
     const { idu, idp, id, nome, email, telefone, datanascimento} = route.params;
     const CriarConversa = async () => {
         try {

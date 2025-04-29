@@ -18,7 +18,8 @@ import DetalhesProfissional from "@/components/Paciente/Profissionais/DetalhesPr
 import ExibirInformacao from "@/components/Paciente/Perfil/ExibirInformacao";
 import EditarSenha from "@/components/Paciente/Perfil/EditarSenha";
 import MarcarConsulta from "@/components/Paciente/Consulta/MarcarConsulta";
-import Paciente from "@/components/Profissional/Paciente/Pacientes";
+import Pacientes from "@/components/Profissional/Paciente/Pacientes";
+import Paciente from "@/components/Profissional/Paciente/Paciente";
 import DetalhesPaciente from "@/components/Profissional/Paciente/DetalhesPaciente";
 import MarcarConsultap from "@/components/Profissional/Consulta/MarcarConsultap";
 import ExibirInformacaop from "@/components/Profissional/Perfil/ExibirInformacao";
@@ -65,6 +66,7 @@ export default function HomeScreen() {
       <Stack.Screen name="EditarSenhap" component={EditarSenhap} options={{ headerShown: false }}/>
       <Stack.Screen name="MarcarConsulta" component={MarcarConsulta} options={{ headerShown: false }}/>
       <Stack.Screen name="MarcarConsultap" component={MarcarConsultap} options={{ headerShown: false }}/>
+      <Stack.Screen name="Pacientes" component={Pacientes} options={{ headerShown: false }}/>
       <Stack.Screen name="Paciente" component={Paciente} options={{ headerShown: false }}/>
       <Stack.Screen name="DetalhesPaciente" component={DetalhesPaciente} options={{ headerShown: false }}/>
       <Stack.Screen name="ExibirInformacaop" component={ExibirInformacaop} options={{ headerShown: false }}/>
