@@ -12,6 +12,7 @@ import {
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from "@expo/vector-icons";
 import { getUrl } from '@/app/utils/url';
+import axios from 'axios';
 
 const image1Url = "https://img.freepik.com/vetores-premium/trevo-com-quatro-folhas-isoladas-no-fundo-branco-conceito-da-sorte-no-estilo-cartoon-realista_302536-46.jpg";
 const image2Url = "https://aebo.pt/wp-content/uploads/2024/05/spo-300x300.png";
@@ -31,6 +32,17 @@ type Profissional = {
   tempoexperiencia: string;
   especialidade: string;
   iduser: number;
+};
+
+type AreaProf = {
+  id: number;
+  idpro: number;
+  idarea: number;
+};
+
+type Areatrabalho = {
+  id: number;
+  area: string;
 };
 
 type Paciente = {
@@ -142,10 +154,11 @@ export default function TelaInicio02({ navigation, route }) {
 
   const handlePressPaciente = (iduser: number) => {
     const user = obterUsuario(iduser);
-    if (user) {
+    const paciente = pacientes.find(p => p.iduser === iduser);
+    if (user && paciente) {
       navigation.navigate('ExibirInformacao', {
         id: user.id,
-        idp: iduser,
+        idp: paciente.id,
         nome: user.nome,
         telefone: user.telefone,
         email: user.email,
@@ -153,28 +166,36 @@ export default function TelaInicio02({ navigation, route }) {
         datanascimento: user.datanascimento,
         genero: user.genero,
         idadm: id,
+        emailadm: email,
+        passwordadm: password
       });
     }
   };
+  
 
-  const handlePressProfissional = (iduser: number, tempoexperiencia: string, especialidade: string) => {
+  const handlePressProfissional = async (iduser: number, tempoexperiencia: string) => {
     const user = obterUsuario(iduser);
-    if (user) {
+    const profissional = profissionais.find(p => p.iduser === iduser);
+    if (user && profissional) {
+      const areaprof = await axios.get(`${getUrl()}/MindCare/API/areaprof/idpro/${profissional.id}`);
+      const areatrabalho = await axios.get(`${getUrl()}/MindCare/API/areatrabalho/${areaprof.data.idarea}`)
       navigation.navigate('ExibirInformacaop', {
         id: user.id,
-        idp: iduser,
+        idp: profissional.id,
         nome: user.nome,
         telefone: user.telefone,
         email: user.email,
         password: user.password,
         datanascimento: user.datanascimento,
         genero: user.genero,
-        espe: especialidade,
+        espe: areatrabalho.data.area,
         expe: tempoexperiencia,
         idadm: id,
+        emailadm: email,
+        passwordadm: password
       });
     }
-  };
+  };  
 
   if (Platform.OS === 'web') {
     return (
@@ -252,7 +273,7 @@ export default function TelaInicio02({ navigation, route }) {
                       style={stylesweb.card}
                       onPress={() => {
                         if (abaSelecionada === 'pacientes') handlePressPaciente(item.iduser);
-                        if (abaSelecionada === 'profissionais') handlePressProfissional(item.iduser, item.tempoexperiencia, item.especialidade);
+                        if (abaSelecionada === 'profissionais') handlePressProfissional(item.iduser, item.tempoexperiencia);
                       }}
                       disabled={abaSelecionada === 'consultas'}
                     >

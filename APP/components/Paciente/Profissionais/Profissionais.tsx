@@ -4,7 +4,8 @@ import {
   ActivityIndicator, Platform, ScrollView,
   Animated
   as RNView,
-  Animated
+  Animated,
+  Dimensions
 } from "react-native";
 import axios from "axios";
 import { getUrl } from "@/app/utils/url";
@@ -34,7 +35,7 @@ export default function Profissionais({ navigation, route }) {
   const widthAnim = useRef(new Animated.Value(Platform.OS === 'web' ? 5 : 25)).current;
   const expandir = () => {
     Animated.timing(widthAnim, {
-      toValue: 25,
+      toValue: Dimensions.get("window").width < 600 ? 50: 25,
       duration: 200,
       useNativeDriver: false,
     }).start();
@@ -43,7 +44,7 @@ export default function Profissionais({ navigation, route }) {
 
   const reduzir = () => {
     Animated.timing(widthAnim, {
-      toValue: 5,
+      toValue: Dimensions.get("window").width < 600 ? 10: 5,
       duration: 200,
       useNativeDriver: false,
     }).start();

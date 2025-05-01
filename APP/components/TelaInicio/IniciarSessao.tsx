@@ -61,6 +61,9 @@ export default function IniciarSessao({ navigation }) {
         } catch {
           const response2 = await axios.get(`${getUrl()}/MindCare/API/profissionais/iduser/${usuario.id}`);
           const profissional = response2.data;
+          const areap = await axios.get(`${getUrl()}/MindCare/API/areaprof/idpro/${profissional.id}`);
+          const areaT = await axios.get(`${getUrl()}/MindCare/API/areatrabalho/${areap.data.idarea}`);
+
           navigation.navigate("Navegacao2", {
             id: usuario.id,
             idp: profissional.id,
@@ -70,6 +73,8 @@ export default function IniciarSessao({ navigation }) {
             password: usuario.password,
             datanascimento: formattedDate,
             genero: usuario.genero,
+            espe: areaT.data.area,
+            expe: profissional.tempoexperiencia,
           });
         }
       }
@@ -96,7 +101,7 @@ export default function IniciarSessao({ navigation }) {
         <View style={stylesWeb.container}>
           {/* Coluna Esquerda */}
           <View style={stylesWeb.left}>
-            <Text style={stylesWeb.title}>Bem-vindo ao MindCare</Text>
+            <Text style={stylesWeb.title}>Bem-vindo a MindCare</Text>
             <Text style={stylesWeb.subtitle}>
               Aqui a tua saúde mental é prioridade. Faça login para continuar.
             </Text>
@@ -132,11 +137,6 @@ export default function IniciarSessao({ navigation }) {
                 <LinearGradient colors={["#2E8B57", "#4CD964"]} style={stylesWeb.button}>
                   <Text style={stylesWeb.buttonText}>Entrar</Text>
                 </LinearGradient>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => navigation.navigate("Selecao")}
-              >
-                <Text style={stylesWeb.instagram}>Sem nenhuma conta</Text>
               </TouchableOpacity>
             </View>
           </View>

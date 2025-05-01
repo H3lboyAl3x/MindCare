@@ -8,7 +8,7 @@ import CriarConta01 from "@/components/ADM/Paciente/CriarConta01";
 import CriarConta02 from "@/components/ADM/Paciente/CriarConta02";
 import Navegacao1 from "@/components/Paciente/Navegacao1";
 import Navegacao2 from "@/components/Profissional/Navegacao2";
-import EditarPerfil from "@/components/Paciente/Perfil/EditarPerfil";
+import EditarPerfil from "@/components/ADM/Paciente/EditarPerfil";
 import Perfil from "@/components/Paciente/Perfil/Perfil";
 import CriarConta01p from "@/components/ADM/Profissional/CriarConta01";
 import CriarConta02p from "@/components/ADM/Profissional/CriarConta02";
@@ -16,20 +16,22 @@ import Mensagem from "@/components/Mensagem/Mensagem";
 import Proficional from "@/components/Paciente/Profissionais/Profissional";
 import DetalhesProfissional from "@/components/Paciente/Profissionais/DetalhesProfissional";
 import ExibirInformacao from "@/components/Paciente/Perfil/ExibirInformacao";
-import EditarSenha from "@/components/Paciente/Perfil/EditarSenha";
+import EditarSenha from "@/components/ADM/Paciente/EditarSenha";
 import MarcarConsulta from "@/components/Paciente/Consulta/MarcarConsulta";
 import Pacientes from "@/components/Profissional/Paciente/Pacientes";
 import Paciente from "@/components/Profissional/Paciente/Paciente";
 import DetalhesPaciente from "@/components/Profissional/Paciente/DetalhesPaciente";
 import MarcarConsultap from "@/components/Profissional/Consulta/MarcarConsultap";
 import ExibirInformacaop from "@/components/Profissional/Perfil/ExibirInformacao";
-import EditarPerfilp from "@/components/Profissional/Perfil/EditarPerfil";
-import EditarSenhap from "@/components/Profissional/Perfil/EditarSenhap";
+import EditarPerfilp from "@/components/ADM/Profissional/EditarPerfil";
+import EditarSenhap from "@/components/ADM/Profissional/EditarSenhap";
 import AnalisarConsultasp from "@/components/Profissional/Consulta/AnalisarConsultasp";
 import AnalisarConsultas from "@/components/Paciente/Consulta/AnalisarConsultas";
 import AdiarConsultap from "@/components/Profissional/Consulta/AdiarConsultap";
 import AdiarConsulta from "@/components/Paciente/Consulta/AdiarConsulta";
 import Sobre from "@/components/TelaInicio/Sobre";
+import Progresso from "@/components/Profissional/Consulta/ProgressoConsulta";
+import PP from "@/components/Profissional/Perfil/PP";
 import { RootStackParamList } from "@/components/types/types"; // ou '../types/types' se não tiver alias "@"
 import React from "react";
 
@@ -74,6 +76,8 @@ export default function HomeScreen() {
       <Stack.Screen name="AnalisarConsultas" component={AnalisarConsultas} options={{ headerShown: false }}/>
       <Stack.Screen name="AdiarConsultap" component={AdiarConsultap} options={{ headerShown: false }}/>
       <Stack.Screen name="AdiarConsulta" component={AdiarConsulta} options={{ headerShown: false }}/>
+      <Stack.Screen name="Progresso" component={Progresso} options={{ headerShown: false }}/>
+      <Stack.Screen name="PP" component={PP} options={{ headerShown: false }}/>
     </Stack.Navigator>
   );
 }

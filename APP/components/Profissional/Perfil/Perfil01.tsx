@@ -1,177 +1,241 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, FlatList } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, Platform, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { getUrl } from "@/app/utils/url";
 import axios from "axios";
 
+// Definindo as interfaces para tipos de dados
 interface Consultas {
-    id: number;
-    data: string;
-    hora: string;
-    idpaci: number;
-    idpro: number;
-    status: string;
+  id: number;
+  data: string;
+  hora: string;
+  idpaci: number;
+  idpro: number;
+  status: string;
 }
 
 interface Paciente {
-    id: number;
-    tempoexperiencia: number;
-    iduser: number;
+  id: number;
+  iduser: number;
 }
 
 interface Usuario {
-   id: number;
-   nome: string;
-   email: string;
-   telefone: string;
-   datanascimento: string;
+  id: number;
+  nome: string;
+  email: string;
+  telefone: string;
+  datanascimento: string;
 }
 
 interface PacienteComNome {
-   id: number;
-   nome: string;
-   email: string;
-   telefone: string;
-   datanascimento: string;
+  id: number;
+  nome: string;
+  email: string;
+  telefone: string;
+  datanascimento: string;
 }
- 
+
 interface NumeroP {
-   id: number;
-   idprof: number;
-   idpac: number;
+  id: number;
+  idprof: number;
+  idpac: number;
 }
 
-export default function Perfil01({navigation, route}){
-    const {id, idp, nome, telefone, email, password, datanascimento, genero, espe, expe} = route.params;
-    const [opcaoSelecionada, setOpcaoSelecionada] = useState<"consulta" | "paciente">("consulta");
-    const [consultas, setconsultas] = useState<Consultas[]>();
-    const [paciente, setPaciente] = useState<PacienteComNome[]>([]);
+export default function Perfil01({ navigation, route }) {
+  const { id, idp, nome, telefone, email, password, datanascimento, genero, espe, expe } = route.params;
+  const [opcaoSelecionada, setOpcaoSelecionada] = useState<"consulta" | "paciente">("consulta");
+  const [consultas, setConsultas] = useState<Consultas[]>();
+  const [pacienteC, setPacienteC] = useState<PacienteComNome[]>([]);
 
-    //Buscar Consultas e Paciente
-    const ListaConsulta = async () =>{
-        try {
-            const consultaResponde = await axios.get<Consultas[]>(`${getUrl()}/MindCare/API/consultas`);
-            const listaconsulta = consultaResponde.data;
-            const consultasUnicas = listaconsulta.filter((consulta) => consulta.idpaci === idp);
-            setconsultas(consultasUnicas);
+  // Função para buscar as consultas e profissionais
+  const ListaConsulta = async () => {
+    try {
+      const consultaResponde = await axios.get<Consultas[]>(`${getUrl()}/MindCare/API/consultas`);
+      const listaconsulta = consultaResponde.data;
+      const consultasUnicas = listaconsulta.filter((consulta) => consulta.idpaci === idp);
+      setConsultas(consultasUnicas);
 
-            const NP = await axios.get<NumeroP[]>(`${getUrl()}/MindCare/API/numeroP/idprof/${idp}`);
-            const listaPaciente = NP.data;
-            const pacienteComNomes: PacienteComNome[] = await Promise.all(
-                listaPaciente.map(async (Numero) => {
-                try {
-                    const pacResponse = await axios.get<Paciente>(`${getUrl()}/MindCare/API/pacientes/${Numero.idpac}`);
-                    const userResponse = await axios.get<Usuario>(getUrl()+"/MindCare/API/users/"+pacResponse.data.iduser);
+      const NP = await axios.get<NumeroP[]>(`${getUrl()}/MindCare/API/numeroP/idpac/${idp}`);
+      const listaPacienteC = NP.data;
+      const pacineteComNomesC: PacienteComNome[] = await Promise.all(
+        listaPacienteC.map(async (Numero) => {
+          try {
+            const pResponse = await axios.get<Paciente>(`${getUrl()}/MindCare/API/pacientes/${Numero.idpac}`);
 
-        ;            return {
-                    id: Numero.idprof,
-                    nome: userResponse.data.nome,
-                    email: userResponse.data.email,
-                    telefone: userResponse.data.telefone,
-                    datanascimento: userResponse.data.datanascimento ? userResponse.data.datanascimento.toString().split("T")[0] : "",
-                    };
-                } catch (error) {
-                    console.error(`Erro ao buscar numeroP ${Numero.idpac}:, error`);
-                    return {
-                    id: Numero.idprof,
-                    nome: "Desconhecido",
-                    email: "Desconhecido",
-                    telefone: "Desconhecido",
-                    datanascimento: "Desconhecido",
-                    };
-                }
-                })
-            );
-            setPaciente(pacienteComNomes);
-        }catch (error){
-            console.error('erro a buscar consultas: '+error);
+            const userResponse = await axios.get<Usuario>(getUrl() + "/MindCare/API/users/" + pResponse.data.iduser);
 
-        }
+            return {
+              id: Numero.idprof,
+              nome: userResponse.data.nome,
+              email: userResponse.data.email,
+              telefone: userResponse.data.telefone,
+              datanascimento: userResponse.data.datanascimento ? userResponse.data.datanascimento.toString().split("T")[0] : "",
+            };
+          } catch (error) {
+            console.error(`Erro ao buscar numeroP ${Numero.id}:`, error);
+            return {
+              id: Numero.idprof,
+              nome: "Desconhecido",
+              email: "Desconhecido",
+              telefone: "Desconhecido",
+              datanascimento: "Desconhecido",
+            };
+          }
+        })
+      );
+      setPacienteC(pacineteComNomesC);
+    } catch (error) {
+      console.error("Erro ao buscar consultas: " + error);
     }
+  };
 
+  const [cormenu1, setMenu1] = useState('white');
+  const [cormenu2, setMenu2] = useState('#EEEEEF');
 
-    
+  useEffect(() => {
+    ListaConsulta();
+    const intervalo = setInterval(ListaConsulta, 1000);
+    return () => clearInterval(intervalo);
+  }, [idp]);
 
+  const Funcaobotao1 = () => {
+    setMenu1('white');
+    setMenu2('#EEEEEF');
+  };
 
-    const [cormenu1, setmenu1] = useState('white');
-    const [cormenu2, setmenu2] = useState('#EEEEEF');
-    useEffect(() => {
-        ListaConsulta();
-        const intervalo = setInterval(ListaConsulta, 1000);
-        return () => clearInterval(intervalo);
-      }, [idp]);
+  const Funcaobotao2 = () => {
+    setMenu2('white');
+    setMenu1('#EEEEEF');
+  };
 
-    const Funcaobotao1 = () => {
-        setmenu1('white');
-        setmenu2('#EEEEEF');
-    };
-    const Funcaobotao2 = () => {
-        setmenu2('white');
-        setmenu1('#EEEEEF');
-    };
-
-    return(
-        <View style={styles.container}>
-            <View style={styles.quadro}/>
-            <View style={styles.bfoto}>
-                <View>
-                    <Ionicons style={styles.foto} name="person-circle-outline" size={100} color={'black'} ></Ionicons>
-                    <TouchableOpacity style={styles.encrenagem} onPress={() => navigation.navigate('ExibirInformacaop', {
-                        id: id,
-                        idp: idp,
-                        nome: nome,
-                        telefone: telefone,
-                        email: email,
-                        password: password,
-                        datanascimento: datanascimento,
-                        genero: genero,
-                        espe: espe,
-                        expe: expe,
-                        idadm: 0
-                    })}>
-                    <Ionicons style={{backgroundColor: 'white', borderRadius: 50}} name="ellipsis-horizontal-circle-outline" size={40} color={'black'} />
-                </TouchableOpacity>
-                </View>
-                <Text style={{textAlign: 'center', fontSize: 17}}>{nome}</Text>
-                <Text style={{textAlign: 'center', fontSize: 15}}>Area de Trabalho:</Text>
-                <Text style={{textAlign: 'center', fontSize: 13}}>{espe}</Text>
-                <Text style={{textAlign: 'center', fontSize: 15}}>Experiencia:</Text>
-                <Text style={{textAlign: 'center', fontSize: 13}}>{expe}</Text>
-            </View>
-            <View style={styles.Menu}>
-                <TouchableOpacity style={[styles.menu1, {backgroundColor: cormenu1}]} onPress={() =>{ Funcaobotao1(); setOpcaoSelecionada('consulta')}}>
-                    <Text style={styles.text}>Lista de consultas</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={[styles.menu2, {backgroundColor: cormenu2}]} onPress={() =>{ Funcaobotao2(); setOpcaoSelecionada('paciente')}}>
-                    <Text style={styles.text}>Lista de Pacientes</Text>
-                </TouchableOpacity>
-            </View>
-            {/* Exibir Conteúdo da seleção */}
-            {opcaoSelecionada === "consulta" && (
-                <FlatList
-                data={consultas}
-                keyExtractor={(item) => item.id.toString()}
-                renderItem={({ item }) => (
-                    <View style={styles.card}>
-                        <Text style={styles.nome}>Consulta: {item.id}</Text>
-                        <Text>{item.data.toString().split("T")[0]}</Text>
-                        <Text>Estado: {item.status}</Text>
-                    </View>
-                )}/>
-            )}
-            {opcaoSelecionada === "paciente" && (
-                <FlatList
-                data={paciente}
-                keyExtractor={(item) => item.id.toString()}
-                renderItem={({ item }) => (
-                    <View style={styles.card}>
-                        <Text style={styles.nome}>{item.nome}</Text>
-                    </View>
-                )}/>
-            )}
+  if (Platform.OS === 'web') {
+    return (
+      <View style={[styles.container, { padding: 30, backgroundColor: '#EEF3F8' }]}>
+        <View style={{ height: 150, backgroundColor: '#C3D5DC', borderTopLeftRadius: 8, borderTopRightRadius: 8, marginTop: 40 }} />
+        <View style={styles.profileHeader}>
+          <Image
+            source={{
+              uri: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
+            }}
+            style={styles.avatar}
+          />
+          <View style={styles.profileInfo}>
+            <Text style={styles.profileName}>{nome}</Text>
+            <Text style={[styles.profileName, {fontSize: 12}]}>{espe}</Text>
+            <TouchableOpacity
+              style={styles.editIcon}
+              onPress={() => navigation.navigate('ExibirInformacaop', { id, idp, nome, telefone, email, password, datanascimento, genero, espe, expe, idadm: 0 })}
+            >
+              <Ionicons name="create-outline" size={20} color="#4CD964" />
+            </TouchableOpacity>
+          </View>
         </View>
+        <View style={[styles.Menu, { marginTop: 10 }]}>
+          <TouchableOpacity style={[styles.menu1, { backgroundColor: cormenu1 }]} onPress={() => { Funcaobotao1(); setOpcaoSelecionada('consulta'); }}>
+            <Text style={styles.text}>Lista de consultas</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.menu2, { backgroundColor: cormenu2 }]} onPress={() => { Funcaobotao2(); setOpcaoSelecionada('paciente'); }}>
+            <Text style={styles.text}>Lista de Psicologos</Text>
+          </TouchableOpacity>
+        </View>
+        {opcaoSelecionada === "consulta" && (
+          <FlatList
+            data={consultas}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => (
+              <View style={styles.card}>
+                <Text style={[styles.nome, { fontSize: 16 }]}>Consulta</Text>
+                <Text style={styles.nome}>{item.data.toString().split("T")[0]}</Text>
+                <Text style={styles.nome}>Estado: {item.status}</Text>
+              </View>
+            )}
+          />
+        )}
+        {opcaoSelecionada === "paciente" && (
+          <FlatList
+            data={pacienteC}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+              style={styles.card}
+              onPress={() => navigation.navigate('PP', {idp: item.id})}>
+                <Text style={[styles.nome, { fontSize: 16 }]}>{item.nome}</Text>
+                <Text style={styles.nome}>{item.email}</Text>
+              </TouchableOpacity>
+            )}
+          />
+        )}
+      </View>
     );
+  }
+
+  // Retorno para dispositivos móveis
+  return (
+    <View style={styles.container}>
+      <View style={styles.quadro} />
+      <View style={styles.bfoto}>
+        <View>
+          <Ionicons style={styles.foto} name="person-circle-outline" size={100} color={'black'} />
+          <TouchableOpacity
+            style={styles.encrenagem}
+            onPress={() => navigation.navigate('ExibirInformacaop', {
+                id: id,
+                idp: idp,
+                nome: nome,
+                telefone: telefone,
+                email: email,
+                password: password,
+                datanascimento: datanascimento,
+                genero: genero,
+                AreaT : espe, 
+                tempex: expe,
+                idadm: 0
+            })}>
+            <Ionicons style={{ backgroundColor: 'white', borderRadius: 50 }} name="ellipsis-horizontal-circle-outline" size={40} color={'black'} />
+          </TouchableOpacity>
+        </View>
+        <Text style={{ textAlign: 'center', fontSize: 17 }}>{nome}</Text>
+        <Text style={{ textAlign: 'center', fontSize: 13 }}>{espe}</Text>
+      </View>
+      <View style={styles.Menu}>
+        <TouchableOpacity style={[styles.menu1, { backgroundColor: cormenu1 }]} onPress={() => { Funcaobotao1(); setOpcaoSelecionada('consulta'); }}>
+          <Text style={styles.text}>Lista de consultas</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.menu2, { backgroundColor: cormenu2 }]} onPress={() => { Funcaobotao2(); setOpcaoSelecionada('paciente'); }}>
+          <Text style={styles.text}>Lista de Psicologos</Text>
+        </TouchableOpacity>
+      </View>
+      {opcaoSelecionada === "consulta" && (
+        <FlatList
+          data={consultas}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => (
+            <View style={styles.card}>
+              <Text style={[styles.nome, { fontSize: 16 }]}>Consulta</Text>
+              <Text style={styles.nome}>{item.data.toString().split("T")[0]}</Text>
+              <Text style={styles.nome}>Estado: {item.status}</Text>
+            </View>
+          )}
+        />
+      )}
+      {opcaoSelecionada === "paciente" && (
+        <FlatList
+          data={pacienteC}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+             style={styles.card}
+             onPress={() => navigation.navigate('PP', {idp: item.id})}>
+              <Text style={[styles.nome, { fontSize: 16 }]}>{item.nome}</Text>
+              <Text style={styles.nome}>{item.email}</Text>
+            </TouchableOpacity>
+          )}
+        />
+      )}
+    </View>
+  );
 }
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -179,19 +243,25 @@ const styles = StyleSheet.create({
     },
     quadro: {
         marginTop: 40,
-        backgroundColor: '#37C231',
+        backgroundColor: '#4CD964',
         width: '95%',
         height: 200,
         alignSelf: 'center',
         borderRadius: 25,
     },
+    avatar: {
+        width: 140,
+        height: 140,
+        borderRadius: 70,
+        backgroundColor: "#e7fbe6",
+    },
     bfoto: {
         position: "absolute", 
         top: 180,
-        left: 140,
+        left: 120,
         width: 115,
         height: 115,
-        borderColor: '#37C231',
+        borderColor: '#4CD964',
         borderWidth: 2,
         borderRadius: 60,
     },
@@ -209,10 +279,10 @@ const styles = StyleSheet.create({
         left: 130,
         borderRadius: 25,
         borderWidth: 2,
-        borderColor: '#37C231'
+        borderColor: '#4CD964'
     },
     Menu: {
-        marginTop: 200,
+        marginTop: 130,
         backgroundColor: '#EEEEEF',
         width: '100%',
         height: 50,
@@ -239,16 +309,39 @@ const styles = StyleSheet.create({
         fontSize: 15,
     },
     card: {
-        backgroundColor: "#f0f0f0",
+        backgroundColor: "#4CD964",
         padding: 10,
         borderRadius: 20,
         marginTop: 5,
         marginHorizontal: 5,
-        height: 70,
-        justifyContent: 'center',
     },
     nome: {
-        fontSize: 16,
+        fontSize: 13,
         fontWeight: "bold",
+        color: '#fff',
+    },
+    profileHeader: {
+        backgroundColor: '#fff',
+        padding: 20,
+        borderRadius: 8,
+        marginTop: -50,
+        marginHorizontal: 'auto',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+        elevation: 3,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    },
+    profileInfo: {
+        marginLeft: 20,
+    },
+    profileName: {
+        fontSize: 24,
+    },
+    editIcon: {
+        marginTop: 10,
     },
 });

@@ -1,6 +1,6 @@
 import * as Services from "../services/Services.js";
 
-//PARA O USUARIO_______________________________________________
+//PARA O ADM_______________________________________________
 export const getAllAdm = async (req, res) => {
     try {
         const adm = await Services.getAllAdm();

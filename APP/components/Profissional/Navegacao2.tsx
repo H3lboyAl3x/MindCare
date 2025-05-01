@@ -79,7 +79,7 @@ export default function Navegacao2({ route }) {
       <Tab.Screen
         name="Perfil"
         component={Perfil01}
-        initialParams={{ id, idp, nome, telefone, email, password, datanascimento, genero, espe, expe }}
+        initialParams={{ id, idp, nome, telefone, email, password, datanascimento, genero, espe: espe, expe: expe }}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="person-circle-outline" size={size} color={color} />

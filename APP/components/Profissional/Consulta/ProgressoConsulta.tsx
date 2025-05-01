@@ -31,13 +31,13 @@ type AdiarProps = {
   setSelecionada: (consulta: Consulta) => void;
 };
 
-export default function Consulta({ navigation, route }) {
+export default function Progresso({ navigation, route }) {
   const { idp } = route.params;
   const [consultas, setConsultas] = useState<Consulta[]>([]);
   const [selecionada, setSelecionada] = useState<Consulta | null>(null);
   const [modoAdiar, setModoAdiar] = useState(false);
-  const [nome, setNome] = useState<string | null>(null);
   const { width } = useWindowDimensions();
+  const [nome, setNome] = useState<string | null>(null);
   const isWeb = Platform.OS === "web";
 
   const pegarData = () => {
@@ -56,6 +56,8 @@ export default function Consulta({ navigation, route }) {
       const consultasfiltrada = consultasseparada.filter(
         (consulta) => consulta.idpaci === idp && consulta.status === "Pendente"
       );
+      
+      
       setConsultas(consultasfiltrada);
       for (const consulta of consultasfiltrada) {
         if (consulta.data < pegarData() && consulta.status !== 'Completo') {
@@ -74,10 +76,10 @@ export default function Consulta({ navigation, route }) {
     }
   };
 
-  const pegarprofissional = async (consultas: Consulta) => {
+  const pegarpaciente = async (consultas: Consulta) => {
     try {
-      const profissional = await axios.get(`${getUrl()}/MindCare/API/profissionais/${consultas.idpaci}`);
-      const user = await axios.get(`${getUrl()}/MindCare/API/users/${profissional.data.iduser}`);
+      const paciente = await axios.get(`${getUrl()}/MindCare/API/pacientes/${consultas.idpaci}`);
+      const user = await axios.get(`${getUrl()}/MindCare/API/users/${paciente.data.iduser}`);
       setNome(user.data.nome);
     } catch (error) {
       console.error("Erro ao buscar paciente:", error);
@@ -85,32 +87,32 @@ export default function Consulta({ navigation, route }) {
   }
 
   useEffect(() => {
-      const carregar = async () => {
-        await buscarConsultas();
-      };
-    
-      carregar();
-    
-      const intervalo = setInterval(buscarConsultas, 1000);
-      return () => clearInterval(intervalo);
-    }, [idp]);
-    
-    useEffect(() => {
-      if (consultas.length > 0) {
-        const consultaMaisProxima = consultas.reduce((maisProxima, atual) => {
-          return new Date(atual.data) < new Date(maisProxima.data) ? atual : maisProxima;
-        });
-    
-        setSelecionada(consultaMaisProxima);
-        pegarprofissional(consultaMaisProxima);
-      }
-    }, [consultas]);  
+    const carregar = async () => {
+      await buscarConsultas();
+    };
+  
+    carregar();
+  
+    const intervalo = setInterval(buscarConsultas, 1000);
+    return () => clearInterval(intervalo);
+  }, [idp]);
+  
+  useEffect(() => {
+    if (consultas.length > 0) {
+      const consultaMaisProxima = consultas.reduce((maisProxima, atual) => {
+        return new Date(atual.data) < new Date(maisProxima.data) ? atual : maisProxima;
+      });
+  
+      setSelecionada(consultaMaisProxima);
+      pegarpaciente(consultaMaisProxima);
+    }
+  }, [consultas]);  
 
   const Analisar = (consulta: Consulta) => {
     if (isWeb && width > 768) {
       setSelecionada(consulta);
     } else {
-      navigation.navigate("AnalisarConsultas", {
+    navigation.navigate("AnalisarConsultasp", {
         idConsulta: consulta.id,
         dataConsulta: consulta.data,
         horaConsulta: consulta.hora,
@@ -118,17 +120,41 @@ export default function Consulta({ navigation, route }) {
         idp: idp,
         statusConsulta: consulta.status,
         link: consulta.link,
-      });
+        nome: nome,
+    });
     }
   };
   const entrarNaChamada = async (consulta: Consulta) => {
-    if (consulta.link && consulta.data.toString().split("T")[0] === pegarData() || consulta.hora <= pegarData() ) {
-      alert('Antes de iniciar a consulta, certifique-se de estar em um local tranquilo e com uma boa conexão à internet. Ao ingressar, você passará por uma tabela se selecao. Por favor, selecione a opção "Aguardar por anfitriao" e aguarde a entrada do profissional. Caso o profissional não esteja presente após 20 minutos de espera, entre em contato com o suporte para assistência.');
+    if (consulta.link && consulta.data.toString().split("T")[0] === pegarData()) {
+        alert('Antes de iniciar a consulta, certifique-se de estar em um local tranquilo e com uma boa conexão à internet. Ao ingressar, você passará por uma tabela se selecao. Por favor, selecione a opção "Voce e o  anfitriao", adicione a sua conta e aguarde a entrada do Paciente. Caso o Paciente não esteja presente após 20 minutos de espera, podera de retirar.');
       Linking.openURL(consulta.link);
     } else {
       alert('A consulta ainda não está disponível, por favor entre no horario marcado, obrigado.');
     }
   };
+  const Apagarconsulta = async (consulta: Consulta) => {
+    try {
+        await axios.delete(`${getUrl()}/MindCare/API/consultas/${consulta.id}`);
+        navigation.goBack();
+    } catch (error) {
+        console.error("Erro ao cancelar consulta:", error);
+    }
+  };
+  const Confirmarconsulta = async (consulta: Consulta) => {
+        try {
+            await axios.put(`${getUrl()}/MindCare/API/consultas/${consulta.id}`, {
+                data: consulta.data,
+                hora: consulta.hora,
+                idpaci: consulta.idpaci,
+                idpro: consulta.idpro,
+                status: "Concluida",
+                link: '',
+            });
+            navigation.goBack();
+        } catch (error) {
+            console.error("Erro ao cancelar consulta:", error);
+        }
+    };
 
   const renderAnalisarWeb = () => {
     if (!selecionada) {
@@ -173,12 +199,13 @@ export default function Consulta({ navigation, route }) {
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.botao, { backgroundColor: '#fff' }]}
-            onPress={() => entrarNaChamada(selecionada)}
-          >
+            onPress={() => entrarNaChamada(selecionada)}>
             <Text style={[styles.buttonText, { color: '#4CD964' }]}>Entrar</Text>
           </TouchableOpacity>
-
-
+        </View>
+        <View style={[styles.Vbotao, {marginTop: 5}]}>
+            <TouchableOpacity style={[styles.botao, {backgroundColor: '#fff'}]} onPress={() => Confirmarconsulta(selecionada)}><Text style={[styles.buttonText, {color: '#4CD964'}]}>Confirmar</Text></TouchableOpacity>
+            <TouchableOpacity style={[styles.botao, {backgroundColor: '#fff'}]} onPress={() => Apagarconsulta(selecionada)}><Text style={[styles.buttonText, { color: '#fa393d' }]}>Cancelar</Text></TouchableOpacity>
         </View>
       </View>
     );
@@ -221,7 +248,7 @@ export default function Consulta({ navigation, route }) {
 
   if (isWeb && width > 768) {
     return (
-      <View style={[styles.container, { flexDirection: "row", marginTop: 60 }]}>
+      <View style={[styles.container, { flexDirection: "row" }]}>
         <View style={{ width: "30%", borderRightWidth: 2, borderColor: "#2E8B57" }}>
           {renderLista()}
         </View>

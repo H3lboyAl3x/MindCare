@@ -225,7 +225,7 @@ export default function Conversa({ navigation, route }) {
   const renderMensagemWeb = () => (
     <View style={{ flex: 1, backgroundColor: "#e3e6e3" }}>
       {chatSelecionado ? (
-        <Mensagem route={{ params: { idchats: chatSelecionado.id, nome: chatSelecionado.nome, id } }} />
+        <Mensagem route={{ params: { idchats: chatSelecionado.id, nome: chatSelecionado.nome, id: id } }} />
       ) : (
         <Text style={{ textAlign: "center", marginTop: 20 }}>
           Selecione uma conversa para visualizar as mensagens usando o botão esquerdo ou exclua-a utilizando o botão direito.

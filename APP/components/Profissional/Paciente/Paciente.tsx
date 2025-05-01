@@ -1,217 +1,174 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import React from "react";
+import {
+    View,
+    Text,
+    StyleSheet,
+    TouchableOpacity,
+    Image,
+    Platform,
+    Alert,
+    useWindowDimensions,
+    ScrollView,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { getUrl } from "@/app/utils/url";
 import axios from "axios";
-import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
 interface Chat {
     id: number;
     idpaci: number;
     idpro: number;
 }
+
 interface NumeroP {
     id: number;
     idprof: number;
     idpac: number;
 }
 
-export default function Paciente({navigation, route}){
-    const { idu, idp, id, nome, email, telefone, datanascimento} = route.params;
+export default function Paciente({ navigation, route }) {
+    const { idu, idp, id, nome, email, telefone, datanascimento } = route.params;
+    const { width } = useWindowDimensions();
+    const isLargeScreen = width >= 800;
+
     const CriarConversa = async () => {
         try {
-            const resposta = await axios.get<Chat[]>(`${getUrl()}/MindCare/API/chats`);
-            const response1 = await axios.get<NumeroP[]>(`${getUrl()}/MindCare/API/numeroP`);
-            const chats = resposta.data;
-            const numerops = response1.data;
-            const numeropExistente = numerops.find((numeroP : NumeroP) => numeroP.idpac === idp && numeroP.idprof === id);
-            const chatExistente = chats.find((chat: Chat) => chat.idpaci === idp && chat.idpro === id);
+            const chats = (await axios.get<Chat[]>(`${getUrl()}/MindCare/API/chats`)).data;
+            const numerops = (await axios.get<NumeroP[]>(`${getUrl()}/MindCare/API/numeroP`)).data;
+
+            const chatExistente = chats.find(chat => chat.idpaci === idp && chat.idpro === id);
 
             if (chatExistente) {
-                navigation.navigate('Mensagem', {
+                navigation.navigate(Platform.OS === 'web' ? "Navegacao1" : 'Mensagem', {
                     idchats: chatExistente.id,
-                    nome: nome,
+                    nome,
                     id: idu
                 });
             } else {
-                const response = await axios.post(`${getUrl()}/MindCare/API/chats`, {
+                const chatCriado = await axios.post(`${getUrl()}/MindCare/API/chats`, {
                     idpaci: idp,
                     idpro: id
                 });
-                await axios.post(`${getUrl()}/MindCare/API/numeroP`,{
+
+                await axios.post(`${getUrl()}/MindCare/API/numeroP`, {
                     idprof: id,
                     idpac: idp
-                })
-                navigation.navigate('Mensagem', {
-                idchats: response.data.id,
-                nome: nome,
-                id: idu
+                });
+
+                navigation.navigate(Platform.OS === 'web' ? "Navegacao1" : 'Mensagem', {
+                    idchats: chatCriado.data.id,
+                    nome,
+                    id: idu
                 });
             }
         } catch (error) {
             console.error("Erro ao criar ou buscar chat:", error);
+            Alert.alert("Erro", "Não foi possível iniciar a conversa.");
         }
     };
-    const CriarConsulta =  async () => {
-        navigation.navigate('MarcarConsultap',{
+
+    const CriarConsulta = () => {
+        navigation.navigate('MarcarConsultap', {
             idpaci: idp,
-            idpro: id,
-        } )
-    }
-    return(
-        <View style={styles.container}>
-            <View style={{height: '85%'}}>
-            <View style={styles.quadro}/>
-            <View style={styles.bfoto}>
-                <Ionicons style={styles.foto} name="person-circle-outline" size={100} color={'black'} ></Ionicons>
-                <Text style={{textAlign: 'center'}}>{nome}</Text>
-                <TouchableOpacity style={styles.encrenagem} onPress={() => navigation.navigate('DetalhesPaciente', {
-                    id: id,
-                    nome: nome,
-                    email: email,
-                    telefone: telefone,
-                    datanascimento: datanascimento,
-                })}>
-                    <Ionicons style={{backgroundColor: 'white', borderRadius: 50}} name="ellipsis-horizontal-circle-outline" size={40} color={'black'} />
-                </TouchableOpacity>
-                <View style={styles.logoContainer}>
-                    <View style={styles.circle}>
-                        <Image
-                        source={{ uri: 'https://img.freepik.com/vetores-premium/trevo-com-quatro-folhas-isoladas-no-fundo-branco-conceito-da-sorte-no-estilo-cartoon-realista_302536-46.jpg' }}
-                        style={styles.logo}
-                        />
-                  </View>
+            idpro: id
+        });
+    };
+
+    return (
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }} style={{ backgroundColor: '#EEF3F8' }}>
+            <View style={[styles.container, { padding: isLargeScreen ? 60 : 20 }]}>
+                <View style={{ height: 150, backgroundColor: '#C3D5DC', borderTopLeftRadius: 8, borderTopRightRadius: 8 }} />
+
+                <View style={[
+                    styles.card,
+                    {
+                        flexDirection: isLargeScreen ? 'row' : 'column',
+                        gap: isLargeScreen ? 30 : 20,
+                        alignItems: isLargeScreen ? 'center' : 'flex-start',
+                    }
+                ]}>
+                    <Image
+                        source={{ uri: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png" }}
+                        style={[styles.avatar, { alignSelf: isLargeScreen ? "center" : "flex-start" }]}
+                    />
+
+                    <View style={{ flex: 1 }}>
+                        <Text style={styles.nome}>{nome}</Text>
+                        <Text style={styles.info}>Email: {email}</Text>
+                        <Text style={styles.info}>Telefone: {telefone}</Text>
+
+                        <TouchableOpacity
+                            style={{ marginTop: 10 }}
+                            onPress={() =>
+                                navigation.navigate('DetalhesPaciente', {
+                                    id, nome, email, telefone, datanascimento
+                                })}
+                        >
+                            <Ionicons name="create-outline" size={20} color="#4CD964" />
+                        </TouchableOpacity>
+                    </View>
+
+                    <View style={{
+                        width: isLargeScreen ? 220 : "100%",
+                        alignSelf: isLargeScreen ? "center" : "stretch",
+                        gap: 10,
+                        marginTop: isLargeScreen ? 0 : 20
+                    }}>
+                        <TouchableOpacity style={styles.botao} onPress={CriarConversa}>
+                            <Text style={styles.btext}>Enviar Mensagem</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.botao} onPress={CriarConsulta}>
+                            <Text style={styles.btext}>Marcar Consulta</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </View>
-            </View>
-            <View style={styles.Botoes}>
-                <TouchableOpacity style={[styles.botao, {alignSelf: 'flex-start'}]} onPress={() => CriarConversa()}><Text style={styles.btext}>Enviar Mensagem</Text></TouchableOpacity>
-                <TouchableOpacity style={[styles.botao, {alignSelf: 'flex-end'}]} onPress={() => CriarConsulta()}><Text style={styles.btext}>Marcar Consulta</Text></TouchableOpacity>
-            </View>
-        </View>
+        </ScrollView>
     );
 }
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: '#EEF3F8',
+    },
+    card: {
         backgroundColor: '#fff',
+        padding: 20,
+        borderRadius: 8,
+        marginTop: -50,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+        elevation: 3,
     },
-    quadro: {
-        marginTop: 40,
-        backgroundColor: '#37C231',
-        width: '95%',
-        height: 200,
-        alignSelf: 'center',
-        borderRadius: 25,
-    },
-    bfoto: {
-        position: "absolute", 
-        top: 180,
-        left: 140,
-        width: 115,
-        height: 115,
-        borderColor: '#37C231',
-        borderWidth: 2,
+    avatar: {
+        width: 120,
+        height: 120,
         borderRadius: 60,
+        backgroundColor: "#e7fbe6",
     },
-    foto: {
-        width: 110,
-        height: 110,
-        borderRadius: 60,
-        borderWidth: 5,
-        borderColor: 'white',
-        backgroundColor: 'white'
+    nome: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        marginBottom: 5,
     },
-    encrenagem: {
-        position: "absolute", 
-        top: 35,
-        left: 130,
-        borderRadius: 25,
-        borderWidth: 2,
-        borderColor: '#37C231'
-    },
-    Menu: {
-        marginTop: 130,
-        backgroundColor: '#EEEEEF',
-        width: '100%',
-        height: 50,
-        borderRadius: 10,
-        flexDirection: 'row', 
-        alignItems: "center", 
-        justifyContent: "space-between"
-    },
-    menu1: {
-        marginLeft: 3,
-        borderRadius: 10,
-        height: '90%',
-        width: '50%'
-    },
-    menu2: {
-        marginRight: 40,
-        borderRadius: 10,
-        height: '90%',
-        width: '50%'
-    },
-    text: {
-        paddingTop: 10,
-        textAlign: 'center',
-        fontSize: 15,
-    },
-    textA: {
-      fontSize: 17,
-      textAlign: 'center',
-      alignSelf: 'center',
-      width: 200
-    },
-    textB: {
-      fontSize: 15,
-      textAlign: 'center',
-      alignSelf: 'center',
-      backgroundColor: '#D9D9D9',
-      borderRadius: 25,
-    },
-    logoContainer: {
-      justifyContent: 'center',
-      alignItems: 'center',
-      alignSelf: 'center',
-      marginTop: 20,
-      borderRadius: 200,
-      borderWidth: 2,
-      borderColor: '#34C759',
-      width: 150,
-      height: 150
-    },
-    circle: {
-      width: '80%',
-      height: '80%',
-      borderRadius: 200,
-      borderWidth: 2,
-      borderColor: '#40C900',
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    logo: {
-      width: '95%',
-      height: '95%',
-      borderRadius: 200,
-    },
-    Botoes: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      paddingHorizontal: 20,
-      width: "100%",
+    info: {
+        fontSize: 14,
+        color: '#777',
     },
     botao: {
-      backgroundColor: '#14AE5C',
-      width: 180,
-      height: 50,
-      borderRadius: 25,
-      alignItems: 'center',
-      justifyContent: 'center',
+        backgroundColor: '#14AE5C',
+        height: 50,
+        borderRadius: 25,
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: "100%",
     },
     btext: {
-      fontSize: 15,
-      textAlign: 'center',
-      color: 'white',
-    }
+        fontSize: 16,
+        color: 'white',
+        fontWeight: "600"
+    },
 });

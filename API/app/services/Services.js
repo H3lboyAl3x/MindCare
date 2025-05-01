@@ -67,7 +67,7 @@ export const updatePaciente = async(id, pacienteData) => {
     return await Repository.updatePaciente(id, pacienteData);
 };
 export const deletePaciente = async(id) => {
-    return await Repository.deletePaciente
+    return await Repository.deletePaciente(id);
 }
 
 //PARA O PROFISSIONAL__________________________________________
