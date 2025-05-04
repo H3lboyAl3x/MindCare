@@ -55,8 +55,9 @@ type Consulta = {
   data: string;
   hora: string;
   status: string;
-  idprofissional: number;
-  idpaciente: number;
+  idpro: number;
+  idpaci: number;
+  link: string;
 };
 
 type TipoAba = 'profissionais' | 'pacientes' | 'consultas';
@@ -139,6 +140,7 @@ export default function TelaInicio02({ navigation, route }) {
 
   const obterUsuario = (iduser: number) => usuarios.find(u => u.id === iduser);
   const obterNomeUsuario = (iduser: number) => obterUsuario(iduser)?.nome || 'Desconhecido';
+  const obterEmailUsuario = (iduser: number) => obterUsuario(iduser)?.email || 'Desconhecido';
 
   const obterNomeProfissional = (idprofissional: number) => {
     const prof = profissionais.find(p => p.id === idprofissional);
@@ -150,6 +152,18 @@ export default function TelaInicio02({ navigation, route }) {
     const pac = pacientes.find(p => p.id === idpaciente);
     if (!pac) return 'Desconhecido';
     return obterNomeUsuario(pac.iduser);
+  };
+
+  const obterEmailProfissional = (idprofissional: number) => {
+    const prof = profissionais.find(p => p.id === idprofissional);
+    if (!prof) return 'Desconhecido';
+    return obterEmailUsuario(prof.iduser);
+  };
+
+  const obterEmailPaciente = (idpaciente: number) => {
+    const pac = pacientes.find(p => p.id === idpaciente);
+    if (!pac) return 'Desconhecido';
+    return obterEmailUsuario(pac.iduser);
   };
 
   const handlePressPaciente = (iduser: number) => {
@@ -195,7 +209,28 @@ export default function TelaInicio02({ navigation, route }) {
         passwordadm: password
       });
     }
-  };  
+  };
+  
+  const handlePressConsulta = async (consulta: Consulta) => {
+    const profissional = profissionais.find(p => p.id === consulta.idpro);
+    const paciente = pacientes.find(p => p.id === consulta.idpaci);
+  
+    const nomeprofissional = profissional ? obterNomeUsuario(profissional.iduser) : 'Desconhecido';
+    const nomepaciente = paciente ? obterNomeUsuario(paciente.iduser) : 'Desconhecido';
+  
+    navigation.navigate('ConsultaADM', {
+      idConsulta: consulta.id,
+      dataConsulta: consulta.data,
+      horaConsulta: consulta.hora,
+      idpaci: consulta.idpro,
+      idp: consulta.idpaci,
+      statusConsulta: consulta.status,
+      link: consulta.link || '',
+      nomeprofissional,
+      nomepaciente
+    });
+  };
+  
 
   if (Platform.OS === 'web') {
     return (
@@ -250,10 +285,16 @@ export default function TelaInicio02({ navigation, route }) {
                   const cardContent = (
                     <>
                       {abaSelecionada === 'profissionais' && (
-                        <Text style={stylesweb.cardTitle}>Nome: {obterNomeUsuario(item.iduser)}</Text>
+                        <View>
+                          <Text style={stylesweb.cardTitle}>Nome: {obterNomeUsuario(item.iduser)}</Text>
+                          <Text style={stylesweb.cardTitle}>{obterEmailUsuario(item.iduser)}</Text>
+                        </View>
                       )}
                       {abaSelecionada === 'pacientes' && (
-                        <Text style={stylesweb.cardTitle}>Nome: {obterNomeUsuario(item.iduser)}</Text>
+                        <View>
+                          <Text style={stylesweb.cardTitle}>Nome: {obterNomeUsuario(item.iduser)}</Text>
+                          <Text style={stylesweb.cardTitle}>{obterEmailUsuario(item.iduser)}</Text>
+                        </View>
                       )}
                       {abaSelecionada === 'consultas' && (
                         <>
@@ -274,8 +315,8 @@ export default function TelaInicio02({ navigation, route }) {
                       onPress={() => {
                         if (abaSelecionada === 'pacientes') handlePressPaciente(item.iduser);
                         if (abaSelecionada === 'profissionais') handlePressProfissional(item.iduser, item.tempoexperiencia);
-                      }}
-                      disabled={abaSelecionada === 'consultas'}
+                        if (abaSelecionada === 'consultas') handlePressConsulta(item);
+                      }}                      
                     >
                       {cardContent}
                     </TouchableOpacity>
@@ -302,7 +343,8 @@ const stylesweb = StyleSheet.create({
     paddingHorizontal: 20, 
     backgroundColor: '#20613d', 
     position: 'absolute', 
-    top: -20, width: '100%', 
+    top: -20, 
+    width: '100%', 
     height: 60 
   },
   title: { 
@@ -310,7 +352,8 @@ const stylesweb = StyleSheet.create({
     fontWeight: "bold", 
     color: "#4CD964", 
     textAlign: "center", 
-    marginLeft: 10 },
+    marginLeft: 5 
+  },
   mainImage: { 
     width: 50, 
     height: 50, 
@@ -355,11 +398,10 @@ const stylesweb = StyleSheet.create({
   grid: { 
     flexDirection: 'row', 
     flexWrap: 'wrap', 
-    gap: 10 
+    gap: 20
   },
   card: { 
     backgroundColor: '#fff', 
-    width: 200, 
     padding: 10, 
     borderRadius: 10, 
     margin: 10, 

@@ -1,4 +1,3 @@
-import { TopWaves } from "@/app/TopWaves";
 import { getUrl } from "@/app/utils/url";
 import axios from "axios";
 import React, { useState } from "react";
@@ -98,6 +97,7 @@ export default function EditarSenha({navigation,route}){
                           value={confirmarsenha}
                           onChangeText={setcsenha}
                         />
+                        <Text style={{color: 'red'}}>{espaco}</Text>
                         <TouchableOpacity onPress={Editar}>
                           <LinearGradient colors={["#2E8B57", "#4CD964"]} style={stylesWeb.button}>
                             <Text style={stylesWeb.buttonText}>Editar</Text>
@@ -109,102 +109,7 @@ export default function EditarSenha({navigation,route}){
                 </SafeAreaView>
         );
       }
-
-  return (
-    <SafeAreaView style={styles.safeArea}>
-      <KeyboardAvoidingView behavior="padding" style={styles.container}>
-          <ScrollView contentContainerStyle={styles.inner} keyboardShouldPersistTaps="handled">
-            <Image
-              source={{ uri: "https://img.freepik.com/vetores-premium/trevo-com-quatro-folhas-isoladas-no-fundo-branco-conceito-da-sorte-no-estilo-cartoon-realista_302536-46.jpg" }}
-                style={styles.logo}
-              />
-            <Text style={styles.title}>Preencha os dados</Text>
-            <TextInput style={styles.textbox} value={oldsenha} onChangeText={setosenha} placeholder='Senha Antiga' />
-            <TextInput style={styles.textbox} value={newsenha} onChangeText={setnsenha} placeholder='Senha Nova' />
-            <TextInput style={styles.textbox} value={confirmarsenha} onChangeText={setcsenha} placeholder='Confirmar Senha Nova' />
-            <Text style={{fontSize: 11, color: 'red'}}>{espaco}</Text>
-      <TouchableOpacity onPress={Editar}>
-        <LinearGradient colors={['#2E8B57', '#4CD964']} style={styles.button}>
-            <Text style={styles.buttonText}>Editar</Text>
-          </LinearGradient>
-      </TouchableOpacity>
-            </ScrollView>
-          </KeyboardAvoidingView>
-        </SafeAreaView>
-  );
 }
-
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: "#20613d"
-  },
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: 30
-  },
-  inner: {
-    alignItems: "center",
-    width: "100%",
-    gap: 15,
-  },
-  logo: {
-    width: 140,
-    height: 140,
-    borderRadius: 80,
-    backgroundColor: "#e7fbe6",
-    marginBottom: 5,
-    marginTop: 5,
-  },
-  Menu: {
-    width: '100%',
-    height: '80%',
-    alignItems: "center",
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 30,
-    fontWeight: "bold",
-    color: "#4CD964"
-  },
-  textbox: {
-    marginTop: 5,
-    color: "#4CD964",
-    width: 300,
-    height: 50,
-    borderRadius: 50,
-    backgroundColor: "#e3e6e3",
-    textAlign: "center"
-  },
-  input: {
-    marginTop: 5,
-    width: 300,
-    height: 50,
-    borderRadius: 50,
-    backgroundColor: '#e3e6e3',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  button: {
-    width: 220,
-    height: 52,
-    borderRadius: 50,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 15,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4
-  },
-  buttonText: {
-    color: "#fff",
-    fontSize: 17,
-    fontWeight: "bold"
-  },
-});
 
 const stylesWeb = StyleSheet.create({
   safeArea: {

@@ -32,6 +32,7 @@ import AdiarConsulta from "@/components/Paciente/Consulta/AdiarConsulta";
 import Sobre from "@/components/TelaInicio/Sobre";
 import Progresso from "@/components/Profissional/Consulta/ProgressoConsulta";
 import PP from "@/components/Profissional/Perfil/PP";
+import ConsultaADM from "@/components/ADM/ConsultaADM";
 import { RootStackParamList } from "@/components/types/types"; // ou '../types/types' se não tiver alias "@"
 import React from "react";
 
@@ -78,6 +79,7 @@ export default function HomeScreen() {
       <Stack.Screen name="AdiarConsulta" component={AdiarConsulta} options={{ headerShown: false }}/>
       <Stack.Screen name="Progresso" component={Progresso} options={{ headerShown: false }}/>
       <Stack.Screen name="PP" component={PP} options={{ headerShown: false }}/>
+      <Stack.Screen name="ConsultaADM" component={ConsultaADM} options={{ headerShown: false }}/>
     </Stack.Navigator>
   );
 }

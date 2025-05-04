@@ -1,7 +1,4 @@
-import { TopWaves } from "@/app/TopWaves";
 import { getUrl } from "@/app/utils/url";
-import { Ionicons } from "@expo/vector-icons";
-import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import axios from "axios";
 import React, { useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
@@ -17,7 +14,6 @@ export default function EditarPerfil({navigation,route}){
 
   const [datanascimento, setDatan] = useState<Date | null>(datanascimentoe ? new Date(datanascimentoe) : null);
   const [genero, setGenero] = useState(generoe);
-  const [showDatePicker, setShowDatePicker] = useState(false);
   const [showGenderModal, setShowGenderModal] = useState(false);
 
   const Editar = async () => {
@@ -53,20 +49,8 @@ export default function EditarPerfil({navigation,route}){
   
 
   const genders = ['Masculino', 'Feminino', 'Não incluir'];
-  const minimumDate = new Date(1900, 0, 1);
   const maximumDate = new Date();
-  maximumDate.setFullYear(maximumDate.getFullYear() - 10);
-
-  const onDateChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
-    if (event.type === 'set' && selectedDate) {
-      if (selectedDate > maximumDate) {
-        Alert.alert('Data inválida', 'Você deve ter pelo menos 10 anos de idade.');
-      } else {
-        setDatan(selectedDate);
-      }
-    }
-    setShowDatePicker(false);
-  };
+  maximumDate.setFullYear(maximumDate.getFullYear());
 
   if(Platform.OS === 'web'){
     return(
@@ -179,178 +163,7 @@ export default function EditarPerfil({navigation,route}){
             </SafeAreaView>
     );
   }
-
-  return (
-    <SafeAreaView style={styles.safeArea}>
-      <KeyboardAvoidingView behavior="padding" style={styles.container}>
-          <ScrollView contentContainerStyle={styles.inner} keyboardShouldPersistTaps="handled">
-            <Image
-              source={{ uri: "https://img.freepik.com/vetores-premium/trevo-com-quatro-folhas-isoladas-no-fundo-branco-conceito-da-sorte-no-estilo-cartoon-realista_302536-46.jpg" }}
-                style={styles.logo}
-              />
-            <Text style={styles.title}>Preencha os dados</Text>
-        <TextInput style={styles.textbox} value={Nome} onChangeText={setnome} placeholder={nomee} />
-        <TextInput style={styles.textbox} keyboardType="phone-pad" value={Telefone} onChangeText={settelefone} placeholder={telefonee} />
-        <TextInput style={styles.textbox} keyboardType="email-address" value={Email} onChangeText={setemail} placeholder={emaile} />
-        <TouchableOpacity style={styles.input} onPress={() => {navigation.navigate('EditarSenha', {
-                    id: ide,
-                    idp: idpe,
-                    nome: nomee,
-                    telefone: telefonee,
-                    email: emaile,
-                    password: passworde,
-                    datanascimento: datanascimentoe,
-                    genero: generoe
-                })}}>
-            <Text style={{color: '#4CD964'}}>Alterar minha Senha</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.input} onPress={() => setShowDatePicker(true)}>
-            <Text style={{ color: datanascimento instanceof Date ? '#4CD964' : '#6fcf87' }}>
-                {datanascimento instanceof Date ? datanascimento.toLocaleDateString('pt-BR') : datanascimentoe}
-            </Text>
-        </TouchableOpacity>
-        {showDatePicker && (
-        <DateTimePicker
-            value={datanascimento || new Date()}
-            mode="date"
-            display="spinner"
-            minimumDate={minimumDate}
-            maximumDate={maximumDate}
-            onChange={onDateChange}
-        />
-      )}
-      <TouchableOpacity style={styles.input} onPress={() => setShowGenderModal(true)}>
-        <Text style={{ color: genero ? '#4CD964' : '#6fcf87' }}>
-          {genero || 'Selecione o gênero'}
-        </Text>
-      </TouchableOpacity>
-
-      <Modal visible={showGenderModal} transparent={true} animationType="slide" onRequestClose={() => setShowGenderModal(false)}>
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Selecione o Gênero</Text>
-            <FlatList
-              data={genders}
-              keyExtractor={(item) => item}
-              renderItem={({ item }) => (
-                <TouchableOpacity style={styles.modalItem} onPress={() => { setGenero(item); setShowGenderModal(false); }}>
-                  <Text style={styles.modalText}>{item}</Text>
-                </TouchableOpacity>
-              )}
-            />
-          </View>
-        </View>
-      </Modal>
-      <TouchableOpacity onPress={Editar}>
-        <LinearGradient colors={['#2E8B57', '#4CD964']} style={styles.button}>
-            <Text style={styles.buttonText}>Editar</Text>
-          </LinearGradient>
-      </TouchableOpacity>
-            </ScrollView>
-          </KeyboardAvoidingView>
-        </SafeAreaView>
-  );
 }
-
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: "#20613d"
-  },
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: 30
-  },
-  inner: {
-    alignItems: "center",
-    width: "100%",
-    gap: 15,
-  },
-  logo: {
-    width: 140,
-    height: 140,
-    borderRadius: 80,
-    backgroundColor: "#e7fbe6",
-    marginBottom: 5,
-    marginTop: 5,
-  },
-  Menu: {
-    width: '100%',
-    height: '80%',
-    alignItems: "center",
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 30,
-    fontWeight: "bold",
-    color: "#4CD964"
-  },
-  textbox: {
-    marginTop: 5,
-    color: "#4CD964",
-    width: 300,
-    height: 50,
-    borderRadius: 50,
-    backgroundColor: "#e3e6e3",
-    textAlign: "center"
-  },
-  input: {
-    marginTop: 5,
-    width: 300,
-    height: 50,
-    borderRadius: 50,
-    backgroundColor: '#e3e6e3',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  button: {
-    width: 220,
-    height: 52,
-    borderRadius: 50,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 15,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4
-  },
-  buttonText: {
-    color: "#fff",
-    fontSize: 17,
-    fontWeight: "bold"
-  },
-  modalContainer: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modalContent: {
-    width: 300,
-    backgroundColor: '#37C231',
-    borderRadius: 10,
-    padding: 20,
-    alignItems: 'center',
-  },
-  modalTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    color: '#fff'
-  },
-  modalItem: {
-    width: '100%',
-    paddingVertical: 10,
-    alignItems: 'center',
-  },
-  modalText: {
-    fontSize: 16,
-    color: '#fff',
-  },
-});
 
 const stylesWeb = StyleSheet.create({
   safeArea: {

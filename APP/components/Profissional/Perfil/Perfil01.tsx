@@ -124,7 +124,7 @@ export default function Perfil01({ navigation, route }) {
             <Text style={[styles.profileName, {fontSize: 12}]}>{espe}</Text>
             <TouchableOpacity
               style={styles.editIcon}
-              onPress={() => navigation.navigate('ExibirInformacaop', { id, idp, nome, telefone, email, password, datanascimento, genero, espe, expe, idadm: 0 })}
+              onPress={() => navigation.navigate('ExibirInformacaop', { id, idp, nome, telefone, email, password, datanascimento, genero, espe, expe, idadm: 0, emailadm: '', passwordadm: ''  })}
             >
               <Ionicons name="create-outline" size={20} color="#4CD964" />
             </TouchableOpacity>
@@ -135,7 +135,7 @@ export default function Perfil01({ navigation, route }) {
             <Text style={styles.text}>Lista de consultas</Text>
           </TouchableOpacity>
           <TouchableOpacity style={[styles.menu2, { backgroundColor: cormenu2 }]} onPress={() => { Funcaobotao2(); setOpcaoSelecionada('paciente'); }}>
-            <Text style={styles.text}>Lista de Psicologos</Text>
+            <Text style={styles.text}>Lista de Pacientes</Text>
           </TouchableOpacity>
         </View>
         {opcaoSelecionada === "consulta" && (
@@ -187,9 +187,11 @@ export default function Perfil01({ navigation, route }) {
                 password: password,
                 datanascimento: datanascimento,
                 genero: genero,
-                AreaT : espe, 
-                tempex: expe,
-                idadm: 0
+                espe: espe, 
+                expe: expe, 
+                idadm: 0, 
+                emailadm: '', 
+                passwordadm: ''  
             })}>
             <Ionicons style={{ backgroundColor: 'white', borderRadius: 50 }} name="ellipsis-horizontal-circle-outline" size={40} color={'black'} />
           </TouchableOpacity>
@@ -202,7 +204,7 @@ export default function Perfil01({ navigation, route }) {
           <Text style={styles.text}>Lista de consultas</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[styles.menu2, { backgroundColor: cormenu2 }]} onPress={() => { Funcaobotao2(); setOpcaoSelecionada('paciente'); }}>
-          <Text style={styles.text}>Lista de Psicologos</Text>
+          <Text style={styles.text}>Lista de Pacientes</Text>
         </TouchableOpacity>
       </View>
       {opcaoSelecionada === "consulta" && (

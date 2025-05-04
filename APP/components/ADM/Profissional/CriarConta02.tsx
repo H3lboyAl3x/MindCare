@@ -77,21 +77,9 @@ export default function CriarConta02p({ route, navigation }) {
   const genders = ['Masculino', 'Feminino', 'Não incluir'];
   const experent = ['1 ou menos', '2', '3', '4', '5 ou mais'];
   const work = ['Psicologia clínica', 'Psicologia Educacional', 'Terapeuta holístico', 'Terapeuta de Renascimento', 'Orientador Vocacional', 'Terapeuta Juvenil'];
-
-  const minimumDate = new Date(1900, 0, 1);
   const maximumDate = new Date();
   maximumDate.setFullYear(maximumDate.getFullYear() - 18);
 
-  const onDateChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
-    if (event.type === 'set' && selectedDate) {
-      if (selectedDate > maximumDate) {
-        Alert.alert('Data inválida', 'Você deve ter pelo menos 10 anos de idade.');
-      } else {
-        setDatan(selectedDate);
-      }
-    }
-    setShowDatePicker(false);
-  };
 
   if (Platform.OS === "web") {
       return (
