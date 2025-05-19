@@ -19,7 +19,7 @@ export default sequelize;
 
 (async () => {
   try {
-    await sequelize.sync({force: true});
+    await sequelize.sync();
     console.log('Tabelas sincronizadas com sucesso!');
   } catch (error) {
     console.error('Erro ao sincronizar tabelas:', error);

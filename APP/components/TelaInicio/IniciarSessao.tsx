@@ -131,7 +131,6 @@ export default function IniciarSessao({ navigation }) {
                 value={password}
                 onChangeText={setPassword}
               />
-              <Text style={stylesWeb.esqueci}>Esqueci a senha!</Text>
               <Text style={stylesWeb.erro}>{espaco}</Text>
               <TouchableOpacity onPress={iniciar}>
                 <LinearGradient colors={["#2E8B57", "#4CD964"]} style={stylesWeb.button}>
@@ -171,7 +170,6 @@ export default function IniciarSessao({ navigation }) {
             placeholder="Senha"
             placeholderTextColor={"#b3b3b3"}
           />
-          <Text style={stylesMobile.esqueci}>Esqueci a senha!</Text>
           <Text style={{ fontSize: 11, color: "red" }}>{espaco}</Text>
           <TouchableOpacity onPress={iniciar}>
             <LinearGradient colors={['#2E8B57', '#4CD964']} style={stylesMobile.button}>
@@ -220,9 +218,6 @@ const stylesMobile = StyleSheet.create({
     borderRadius: 50,
     backgroundColor: "#e3e6e3",
     textAlign: "center"
-  },
-  esqueci: {
-    color: "#fff"
   },
   button: {
     width: 220,
