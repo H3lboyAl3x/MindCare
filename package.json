@@ -1,0 +1,12 @@
+{
+  "name": "mindcare",
+  "version": "1.0.0",
+  "scripts": {
+    "start:api": "cd API && npm start",
+    "start:app": "cd APP && npx expo start",
+    "dev": "concurrently \"npm run start:API\" \"npm run start:APP\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
