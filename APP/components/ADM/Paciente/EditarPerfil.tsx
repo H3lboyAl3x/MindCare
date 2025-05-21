@@ -6,7 +6,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Alert, Platform, Modal, FlatL
 
 
 export default function EditarPerfil({navigation,route}){
-    const {ide, idpe, nomee, telefonee, emaile, passworde, datanascimentoe, generoe} = route.params;
+    const {ide, nomee, telefonee, emaile, passworde, datanascimentoe, generoe} = route.params;
     const [Nome, setnome] = useState(nomee);
     const [Telefone, settelefone] = useState(telefonee);
     const [Email, setemail] = useState(emaile);
@@ -31,16 +31,7 @@ export default function EditarPerfil({navigation,route}){
             genero: genero,
         });
         const user = response.data
-        navigation.navigate("Navegacao1", { 
-                id: user.id, 
-                idp: idpe, 
-                nome: user.nome, 
-                telefone: user.telefone, 
-                email: user.email, 
-                password: user.password, 
-                datanascimento: formattedDate, 
-                genero: user.genero 
-        });
+        navigation.goBack();
 
     } catch (error) {
       console.error("Erro ao Editar", "Tente novamente mais tarde. "+error);
@@ -100,7 +91,6 @@ export default function EditarPerfil({navigation,route}){
                     />
                     <TouchableOpacity style={stylesWeb.input} onPress={() => {navigation.navigate('EditarSenha', {
                                 id: ide,
-                                idp: idpe,
                                 nome: nomee,
                                 telefone: telefonee,
                                 email: emaile,

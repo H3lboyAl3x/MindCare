@@ -5,14 +5,14 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { getUrl } from "@/app/utils/url";
 
 export default function ExibirInformacao({ navigation, route }) {
-    const { id, idp, nome, telefone, email, password, datanascimento, genero, idadm, emailadm, passwordadm  } = route.params;
+    const { id, nome, telefone, email, password, datanascimento, genero, idadm, emailadm, passwordadm  } = route.params;
 
     const Eliminarconta = async () => {
         const baseUrl = `${getUrl()}/MindCare/API`;
     
         try {
             // 1. Buscar todos os chats do paciente
-            const resChats = await axios.get(`${baseUrl}/chats/idpaci/${idp}`);
+            const resChats = await axios.get(`${baseUrl}/chats/idpaci/${id}`);
             const chats = resChats.data;
     
             if (Array.isArray(chats)) {
@@ -33,7 +33,7 @@ export default function ExibirInformacao({ navigation, route }) {
     
             if (Array.isArray(consultas)) {
                 for (const consulta of consultas) {
-                    if (consulta.idpaci === idp) {
+                    if (consulta.idpaci === id) {
                         try {
                             await axios.delete(`${baseUrl}/consultas/${consulta.id}`);
                         } catch (err) {
@@ -45,7 +45,7 @@ export default function ExibirInformacao({ navigation, route }) {
             }
     
             // 3. Buscar todos os numeroP do paciente
-            const resNumero = await axios.get(`${baseUrl}/numerop/idpac/${idp}`);
+            const resNumero = await axios.get(`${baseUrl}/numerop/idpac/${id}`);
             const numeros = resNumero.data;
     
             if (Array.isArray(numeros)) {
@@ -61,7 +61,7 @@ export default function ExibirInformacao({ navigation, route }) {
     
             // 4. Apagar paciente
             try {
-                await axios.delete(`${baseUrl}/pacientes/${idp}`);
+                await axios.delete(`${baseUrl}/pacientes/${id}`);
             } catch (err) {
                 alert('erro ao apagar profissional')
                 console.log("Erro ao apagar paciente:", err);
@@ -103,7 +103,6 @@ export default function ExibirInformacao({ navigation, route }) {
                             style={styles.EP} 
                                 onPress={() => navigation.navigate('EditarPerfil', {
                                     ide: id,
-                                    idpe: idp,
                                     nomee: nome,
                                     telefonee: telefone,
                                     emaile: email,

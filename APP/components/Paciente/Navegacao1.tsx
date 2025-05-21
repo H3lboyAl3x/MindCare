@@ -11,7 +11,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 const Tab = createBottomTabNavigator();
 
 export default function Navegacao1({ route }) {
-  const { id, idp, nome, telefone, email, password, datanascimento, genero } = route.params;
+  const { id, nome, telefone, email, password, datanascimento, genero } = route.params;
   const isWeb = Platform.OS === 'web';
   
   return (
@@ -46,7 +46,7 @@ export default function Navegacao1({ route }) {
       <Tab.Screen
         name="Conversas"
         component={Conversa}
-        initialParams={{ id: id, idp: idp }}
+        initialParams={{ id: id}}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="chatbox-outline" size={size} color={color} />
@@ -57,7 +57,7 @@ export default function Navegacao1({ route }) {
       <Tab.Screen
         name="Profissionais"
         component={Profissionais}
-        initialParams={{ idp: idp, idu: id, nomeu: nome, telefoneu: telefone, emailu: email, passwordu: password, datanascimentou: datanascimento, generou: genero  }}
+        initialParams={{ idu: id, nomeu: nome, telefoneu: telefone, emailu: email, passwordu: password, datanascimentou: datanascimento, generou: genero  }}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="people-outline" size={size} color={color} />
@@ -68,7 +68,7 @@ export default function Navegacao1({ route }) {
       <Tab.Screen
         name="Consulta"
         component={Consulta}
-        initialParams={{ idp }}
+        initialParams={{ id }}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="videocam-outline" size={size} color={color} />
@@ -79,7 +79,7 @@ export default function Navegacao1({ route }) {
       <Tab.Screen
         name="Perfil"
         component={Perfil}
-        initialParams={{ id, idp, nome, telefone, email, password, datanascimento, genero }}
+        initialParams={{ id, nome, telefone, email, password, datanascimento, genero }}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="person-circle-outline" size={size} color={color} />

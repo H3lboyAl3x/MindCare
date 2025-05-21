@@ -1,5 +1,6 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../config/db.js";
+import Adm from "./Administrador.js";
 
 const Usuarios = sequelize.define('usuarios', {
     id: {
@@ -29,6 +30,14 @@ const Usuarios = sequelize.define('usuarios', {
     },
     genero: {
         type: DataTypes.STRING,
+        allowNull: false
+    },
+    idadm: {
+        type: DataTypes.INTEGER,
+        references: {
+            model: Adm,
+            key: 'id'
+        },
         allowNull: false
     }
 });

@@ -7,7 +7,7 @@ import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Alert, Platform } from "react-native";
 
 export default function AdiarConsulta({ navigation, route }) {
-    const {idConsulta, dataConsulta, horaConsulta, idpaci, idp, statusConsulta} = route.params;
+    const {idConsulta, dataConsulta, horaConsulta, idpaci, idpro, statusConsulta} = route.params;
 
     const [datamarcacao, setDatan] = useState<Date | null>(dataConsulta ? new Date(dataConsulta) : null);
     const [tempomarcacao, settempo] = useState<Date | null>(horaConsulta ? new Date(`1970-01-01T${horaConsulta}`) : null);
@@ -32,10 +32,10 @@ export default function AdiarConsulta({ navigation, route }) {
                 data: formattedDate,
                 hora: formattedTime,
                 idpaci: idpaci,
-                idpro: idp,
+                idpro: idpro,
                 status: "Pendente",
             });
-            navigation.navigate("AnalisarConsultas", { idConsulta: idConsulta, dataConsulta: formattedDate, horaConsulta: formattedTime, idpaci: idpaci, idp: idp, statusConsulta: statusConsulta });
+            navigation.navigate("AnalisarConsultas", { idConsulta: idConsulta, dataConsulta: formattedDate, horaConsulta: formattedTime, idpaci: idpaci, idpro: idpro, statusConsulta: statusConsulta });
         } catch (error) {
             console.error("Erro ao marcar consulta:", error);
         }

@@ -7,7 +7,7 @@ import axios from "axios";
 const { width, height } = Dimensions.get("window");
 
 export default function ConsultaADM({ navigation, route }) {
-    const { idConsulta, dataConsulta, horaConsulta, idpaci, idp, statusConsulta, link, nomeprofissional, nomepaciente } = route.params;
+    const { idConsulta, dataConsulta, horaConsulta, idpaci, idp, nomeprofissional, nomepaciente } = route.params;
 
     const formattedDate = new Date(dataConsulta).toISOString().split("T")[0];
     const formattedTime = horaConsulta.slice(0, 5);

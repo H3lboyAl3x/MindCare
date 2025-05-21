@@ -23,8 +23,6 @@ export default function CriarConta01({ navigation, route }) {
   const [confirmarp, setConfirmarp] = useState("");
   const [espaco, setEspaco] = useState("");
 
-  const Maiuscula = /^[A-Z]/.test(password);
-
   const criar1 = () => {
     if (!nome || !telefone || !email || !password || !confirmarp) {
       setEspaco("Preencha todos os campos antes de continuar.");

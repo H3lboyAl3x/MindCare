@@ -11,7 +11,7 @@ import axios from "axios";
 import { getUrl } from "@/app/utils/url";
 import { Ionicons } from "@expo/vector-icons";
 
-interface Profissional { id: number; tempoexperiencia: number; iduser: number; }
+interface Profissional { id: number; tempoexperiencia: number; }
 interface Usuario { id: number; nome: string; email: string; telefone: string; datanascimento: string; }
 interface ProfissionalComNome {
   id: number; nome: string; email: string; telefone: string;
@@ -22,7 +22,7 @@ interface AreaProf { id: number; idprof: number; idarea: number; }
 interface NumeroP { id: number; idprof: number; idpac: number; }
 
 export default function Profissionais({ navigation, route }) {
-  const { idp, idu, nomeu, telefoneu, emailu, passwordu, datanascimentou, generou } = route.params;
+  const { idu, nomeu, telefoneu, emailu, passwordu, datanascimentou, generou } = route.params;
   const [profissionais, setProfissionais] = useState<ProfissionalComNome[]>([]);
   const [profissionaisC, setProfissionaisC] = useState<ProfissionalComNome[]>([]);
   const [especialidades, setEspecialidades] = useState<AreaTrabalho[]>([]);
@@ -66,7 +66,7 @@ export default function Profissionais({ navigation, route }) {
       const profissionaisComNomes: ProfissionalComNome[] = await Promise.all(
         listaProfissionais.map(async (profissional) => {
           try {
-            const userResponse = await axios.get<Usuario>(getUrl() + "/MindCare/API/users/" + profissional.iduser);
+            const userResponse = await axios.get<Usuario>(getUrl() + "/MindCare/API/users/" + profissional.id);
             const areapResponse = await axios.get<AreaProf>(`${getUrl()}/MindCare/API/areaprof/idpro/${profissional.id}`);
             const AreaP = areapResponse.data;
             const areatResponse = await axios.get<AreaTrabalho>(`${getUrl()}/MindCare/API/areatrabalho/${AreaP.idarea}`);
@@ -89,7 +89,7 @@ export default function Profissionais({ navigation, route }) {
         })
       );
 
-      const NP = await axios.get<NumeroP[]>(`${getUrl()}/MindCare/API/numeroP/idpac/${idp}`);
+      const NP = await axios.get<NumeroP[]>(`${getUrl()}/MindCare/API/numeroP/idpac/${idu}`);
       const listaProfissionaisC = NP.data;
 
       const profissionaisComNomesC: ProfissionalComNome[] = await Promise.all(
@@ -97,7 +97,7 @@ export default function Profissionais({ navigation, route }) {
           try {
             const proResponse = await axios.get<Profissional>(`${getUrl()}/MindCare/API/profissionais/${Numero.idprof}`);
             settempex(proResponse.data.tempoexperiencia || 0);
-            const userResponse = await axios.get<Usuario>(getUrl() + "/MindCare/API/users/" + proResponse.data.iduser);
+            const userResponse = await axios.get<Usuario>(getUrl() + "/MindCare/API/users/" + proResponse.data.id);
             const areapResponse = await axios.get<AreaProf>(`${getUrl()}/MindCare/API/areaprof/idpro/${proResponse.data.id}`);
             const AreaP = areapResponse.data;
             const areatResponse = await axios.get<AreaTrabalho>(`${getUrl()}/MindCare/API/areatrabalho/${AreaP.idarea}`);
@@ -140,11 +140,11 @@ export default function Profissionais({ navigation, route }) {
     Listafuncionario();
     const intervalo = setInterval(Listafuncionario, 1000);
     return () => clearInterval(intervalo);
-  }, [idp]);
+  }, [idu]);
 
   const renderProfissional = (item: ProfissionalComNome) => (
     <TouchableOpacity style={[styles.card, {width: 230}]} onPress={() => navigation.navigate("Proficional", {
-      idu: idu, idp: idp, nomeu: nomeu, telefoneu: telefoneu, emailu:emailu, passwordu: passwordu, datanascimentou: datanascimentou, generou: generou , id: item.id, nome: item.nome, email: item.email,
+      idu: idu, nomeu: nomeu, telefoneu: telefoneu, emailu:emailu, passwordu: passwordu, datanascimentou: datanascimentou, generou: generou , id: item.id, nome: item.nome, email: item.email,
       telefone: item.telefone, datanascimento: item.datanascimento,
       experiencia: item.tempoexperiencia, areaTrabalho: item.areaT
     })}>
@@ -234,7 +234,7 @@ export default function Profissionais({ navigation, route }) {
               keyExtractor={(item) => `${item.id}-${item.nome}-${item.areaT}`}
               renderItem={({ item }) => (
                 <TouchableOpacity style={styles.card} onPress={() => navigation.navigate("Proficional", {
-                  idu: idu, idp: idp, nomeu: nomeu, telefoneu: telefoneu, emailu:emailu, passwordu: passwordu, datanascimentou: datanascimentou, generou: generou ,
+                  idu: idu, nomeu: nomeu, telefoneu: telefoneu, emailu:emailu, passwordu: passwordu, datanascimentou: datanascimentou, generou: generou ,
                   id: item.id,
                   nome: item.nome,
                   email: item.email,
@@ -265,7 +265,7 @@ export default function Profissionais({ navigation, route }) {
               keyExtractor={(item) => item.id.toString()}
               renderItem={({ item }) => (
                 <TouchableOpacity style={styles.card} onPress={() => navigation.navigate("Proficional", {
-                  idu: idu, idp: idp, nomeu: nomeu, telefoneu: telefoneu, emailu:emailu, passwordu: passwordu, datanascimentou: datanascimentou, generou: generou ,
+                  idu: idu, nomeu: nomeu, telefoneu: telefoneu, emailu:emailu, passwordu: passwordu, datanascimentou: datanascimentou, generou: generou ,
                   id: item.id,
                   nome: item.nome,
                   email: item.email,

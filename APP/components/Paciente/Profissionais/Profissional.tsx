@@ -19,7 +19,7 @@ export default function Perfil01({ navigation, route }) {
   const { width } = useWindowDimensions();
 
   const {
-    idu, idp, nomeu, telefoneu, emailu, passwordu, datanascimentou, generou,
+    idu, nomeu, telefoneu, emailu, passwordu, datanascimentou, generou,
     id, nome, email, telefone, datanascimento, experiencia, areaTrabalho
   } = route.params;
 
@@ -30,13 +30,13 @@ export default function Perfil01({ navigation, route }) {
       const chats = resposta.data;
       const numerops = response1.data;
 
-      const numeropExistente = numerops.find((numeroP: NumeroP) => numeroP.idpac === idp && numeroP.idprof === id);
-      const chatExistente = chats.find((chat: Chat) => chat.idpaci === idp && chat.idpro === id);
+      const numeropExistente = numerops.find((numeroP: NumeroP) => numeroP.idpac === idu && numeroP.idprof === id);
+      const chatExistente = chats.find((chat: Chat) => chat.idpaci === idu && chat.idpro === id);
 
       if (chatExistente) {
         if (Platform.OS === 'web') {
           navigation.navigate("Navegacao1", {
-            idu, idp, nomeu, telefoneu, emailu, passwordu, datanascimentou, generou
+            idu, nomeu, telefoneu, emailu, passwordu, datanascimentou, generou
           });
         } else {
           navigation.navigate('Mensagem', {
@@ -47,18 +47,18 @@ export default function Perfil01({ navigation, route }) {
         }
       } else {
         const response = await axios.post(`${getUrl()}/MindCare/API/chats`, {
-          idpaci: idp,
+          idpaci: idu,
           idpro: id
         });
 
         await axios.post(`${getUrl()}/MindCare/API/numeroP`, {
           idprof: id,
-          idpac: idp
+          idpac: idu
         });
 
         if (Platform.OS === 'web') {
           navigation.navigate("Navegacao1", {
-            idu, idp, nomeu, telefoneu, emailu, passwordu, datanascimentou, generou
+            idu, nomeu, telefoneu, emailu, passwordu, datanascimentou, generou
           });
         } else {
           navigation.navigate('Mensagem', {
@@ -75,7 +75,7 @@ export default function Perfil01({ navigation, route }) {
 
   const CriarConsulta = () => {
     navigation.navigate('MarcarConsulta', {
-      idpaci: idp,
+      idpaci: idu,
       idpro: id,
     });
   };

@@ -25,14 +25,14 @@ type Consulta = {
 
 type AdiarProps = {
   selecionada: Consulta;
-  idp: number;
+  id: number;
   setModoAdiar: (v: boolean) => void;
   buscarConsultas: () => void;
   setSelecionada: (consulta: Consulta) => void;
 };
 
 export default function Consulta({ navigation, route }) {
-  const { idp } = route.params;
+  const { id } = route.params;
   const [consultas, setConsultas] = useState<Consulta[]>([]);
   const [selecionada, setSelecionada] = useState<Consulta | null>(null);
   const [modoAdiar, setModoAdiar] = useState(false);
@@ -43,7 +43,7 @@ export default function Consulta({ navigation, route }) {
   const pegarData = () => {
     const agora = new Date();
     const ano = agora.getFullYear();
-    const mes = (agora.getMonth() + 1).toString().padStart(2, '0'); // +1 porque começa do zero
+    const mes = (agora.getMonth() + 1).toString().padStart(2, '0');
     const dia = agora.getDate().toString().padStart(2, '0');
 
   return `${ano}-${mes}-${dia}`;
@@ -54,11 +54,13 @@ export default function Consulta({ navigation, route }) {
       const responde = await axios.get<Consulta[]>(`${getUrl()}/MindCare/API/consultas`);
       const consultasseparada = responde.data;
       const consultasfiltrada = consultasseparada.filter(
-        (consulta) => consulta.idpaci === idp && consulta.status === "Pendente"
+      (consulta) =>
+        consulta.idpaci === id &&
+        (consulta.status === "Pendente" || consulta.status === "Adiado")
       );
       setConsultas(consultasfiltrada);
       for (const consulta of consultasfiltrada) {
-        if (consulta.data < pegarData() && consulta.status !== 'Completo') {
+        if (consulta.data < pegarData() && consulta.status !== 'Completa') {
           await axios.put(`${getUrl()}/MindCare/API/consultas/${consulta.id}`, {
             data: consulta.data,
             hora: consulta.hora,
@@ -76,11 +78,11 @@ export default function Consulta({ navigation, route }) {
 
   const pegarprofissional = async (consultas: Consulta) => {
     try {
-      const profissional = await axios.get(`${getUrl()}/MindCare/API/profissionais/${consultas.idpaci}`);
-      const user = await axios.get(`${getUrl()}/MindCare/API/users/${profissional.data.iduser}`);
+      const profissional = await axios.get(`${getUrl()}/MindCare/API/profissionais/${consultas.idpro}`);
+      const user = await axios.get(`${getUrl()}/MindCare/API/users/${profissional.data.id}`);
       setNome(user.data.nome);
     } catch (error) {
-      console.error("Erro ao buscar paciente:", error);
+      console.error("Erro ao buscar profissionais:", error);
     }
   }
 
@@ -93,7 +95,7 @@ export default function Consulta({ navigation, route }) {
     
       const intervalo = setInterval(buscarConsultas, 1000);
       return () => clearInterval(intervalo);
-    }, [idp]);
+    }, [id]);
     
     useEffect(() => {
       if (consultas.length > 0) {
@@ -114,8 +116,8 @@ export default function Consulta({ navigation, route }) {
         idConsulta: consulta.id,
         dataConsulta: consulta.data,
         horaConsulta: consulta.hora,
-        idpaci: consulta.idpaci,
-        idp: idp,
+        idpaci: id,
+        idpro: consulta.idpro,
         statusConsulta: consulta.status,
         link: consulta.link,
       });
@@ -145,7 +147,7 @@ export default function Consulta({ navigation, route }) {
       return (
         <AdiarConsultaInline
           selecionada={selecionada}
-          idp={idp}
+          id={id}
           setModoAdiar={setModoAdiar}
           buscarConsultas={buscarConsultas}
           setSelecionada={setSelecionada}
@@ -238,7 +240,7 @@ export default function Consulta({ navigation, route }) {
   );
 }
 
-const AdiarConsultaInline = ({ selecionada, idp, setModoAdiar, buscarConsultas, setSelecionada }: AdiarProps) => {
+const AdiarConsultaInline = ({ selecionada, id, setModoAdiar, buscarConsultas, setSelecionada }: AdiarProps) => {
   const [datamarcacao, setDatan] = useState<Date | null>(
     selecionada?.data ? new Date(selecionada.data) : null
   );
@@ -260,7 +262,7 @@ const AdiarConsultaInline = ({ selecionada, idp, setModoAdiar, buscarConsultas, 
         data: formattedDate,
         hora: formattedTime,
         idpaci: selecionada.idpaci,
-        idpro: idp,
+        idpro: selecionada.idpro,
         status: "Pendente",
       });
 

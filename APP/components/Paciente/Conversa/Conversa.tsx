@@ -5,7 +5,6 @@ import {
   StyleSheet,
   FlatList,
   TouchableOpacity,
-  Alert,
   Platform,
   useWindowDimensions,
   Image,
@@ -28,7 +27,7 @@ interface NumeroP {
 }
 
 export default function Conversa({ navigation, route }) {
-  const { id, idp } = route.params;
+  const { id } = route.params;
   const [conversas, setConversas] = useState<ConversaItem[]>([]);
   const [chatSelecionado, setChatSelecionado] = useState<ConversaItem | null>(null);
   const isWeb = Platform.OS === "web";
@@ -38,7 +37,7 @@ export default function Conversa({ navigation, route }) {
 
   const fetchConversas = async () => {
     try {
-      const res = await axios.get(`${getUrl()}/MindCare/API/chats/idpaci/${idp}`);
+      const res = await axios.get(`${getUrl()}/MindCare/API/chats/idpaci/${id}`);
       const chats = res.data;
       if (!chats || chats.length === 0) {
         setSos("Nenhuma conversa encontrada. Acesse a aba 'Profissionais' para iniciar uma nova interação.");
@@ -51,7 +50,7 @@ export default function Conversa({ navigation, route }) {
           try {
             const prof = await axios.get(`${getUrl()}/MindCare/API/profissionais/${chat.idpro}`);
             setIdprof(prof.data.id);
-            const user = await axios.get(`${getUrl()}/MindCare/API/users/${prof.data.iduser}`);
+            const user = await axios.get(`${getUrl()}/MindCare/API/users/${prof.data.id}`);
             const mensagens = await axios.get(`${getUrl()}/MindCare/API/mensagens/idchat/${chat.id}`);
             const lista = mensagens.data;
             const ultima = lista.length > 0 ? lista[lista.length - 1] : null;
@@ -85,86 +84,6 @@ export default function Conversa({ navigation, route }) {
     return () => clearInterval(interval);
   }, [id]);
 
-  const apagarConversa = (idchat: number) => {
-    Alert.alert("Apagar conversa", "Tens certeza que desejas eliminar esta conversa?", [
-      { text: "Cancelar", style: "cancel" },
-      {
-        text: "Apagar",
-        onPress: async () => {
-          try {
-            await axios.delete(`${getUrl()}/MindCare/API/mensagens/chat/${idchat}`);
-            await axios.delete(`${getUrl()}/MindCare/API/chats/${idchat}`);
-
-            const response1 = await axios.get<NumeroP[]>(`${getUrl()}/MindCare/API/numeroP`);
-            const numerops = response1.data;
-            const numeropExistente = numerops.find((numeroP: NumeroP) => numeroP.idpac === idp && numeroP.idprof === idprof);
-            if (numeropExistente) {
-            const responseDelete = await axios.delete(`${getUrl()}/MindCare/API/numeroP/${numeropExistente.id}`);
-            if (responseDelete.status === 200) {
-                console.log("Número P excluído com sucesso!");
-            }
-            } else {
-            console.log("Número P não encontrado!");
-            }
-
-            fetchConversas();
-            if (chatSelecionado?.id === idchat) setChatSelecionado(null);
-          } catch (err) {
-            console.error("Erro ao apagar conversa:", err);
-            Alert.alert("Erro", "Não foi possível apagar a conversa.");
-          }
-        },
-      },
-    ]);
-  };
-
-  const abrirOpcoes = async (item: ConversaItem) => {
-    if (Platform.OS === "web") {
-        const confirmar = window.confirm("Desejas apagar a conversa?");
-        if (confirmar) {
-          apagarConversa(item.id);
-        }
-        return;
-      }      
-    Alert.alert("Opções da conversa", "Escolha uma ação:", [
-      {
-        text: "Visualizar profissional",
-        onPress: async () => {
-          try {
-            const chatInfo = await axios.get(`${getUrl()}/MindCare/API/chats/${item.id}`);
-            const idpro = chatInfo.data.idpro;
-            const prof = await axios.get(`${getUrl()}/MindCare/API/profissionais/${idpro}`);
-            const user = await axios.get(`${getUrl()}/MindCare/API/users/${prof.data.iduser}`);
-
-            navigation.navigate("Proficional", {
-              idu: user.data.id,
-              idp: prof.data.id,
-              id: item.id,
-              nome: user.data.nome,
-              email: user.data.email,
-              telefone: user.data.telefone,
-              datanascimento: user.data.datanascimento,
-              experiencia: prof.data.tempoexperiencia,
-              areaTrabalho: prof.data.areaT,
-            });
-          } catch (err) {
-            console.error("Erro ao buscar profissional:", err);
-            Alert.alert("Erro", "Não foi possível carregar os dados do profissional.");
-          }
-        },
-      },
-      {
-        text: "Apagar conversa",
-        style: "destructive",
-        onPress: () => apagarConversa(item.id),
-      },
-      {
-        text: "Cancelar",
-        style: "cancel",
-      },
-    ]);
-  };
-
   const renderConversas = () => {
     if (conversas.length === 0) {
       return (
@@ -193,7 +112,6 @@ export default function Conversa({ navigation, route }) {
                   ? setChatSelecionado(item)
                   : navigation.navigate("Mensagem", { idchats: item.id, nome: item.nome, id })
               }
-              onLongPress={() => !isWeb && abrirOpcoes(item)}
             >
               <Text style={[styles.textp, { color: "#fff" }]}>{item.nome}</Text>
               <Text style={[styles.textp, { color: "#e6e6e6" }]}>{item.ultimaMensagem}</Text>
@@ -208,7 +126,6 @@ export default function Conversa({ navigation, route }) {
               <div
                 onContextMenu={(e) => {
                   e.preventDefault();
-                  abrirOpcoes(item);
                 }}
               >
                 {content}

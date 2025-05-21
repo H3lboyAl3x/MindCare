@@ -7,8 +7,6 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 export default function CriarConta02({ route, navigation }) {
   const { nome, telefone, email, password, idad, emailad, passwordad} = route.params;
-  const [id, setid] = useState(null);
-  const [idp, setidp] = useState(null);
 
   const [datanascimento, setDatan] = useState<Date | null>(null);
   const [genero, setGenero] = useState('');
@@ -31,18 +29,13 @@ export default function CriarConta02({ route, navigation }) {
         email,
         password,
         datanascimento: formattedDate,
-        genero
+        genero,
+        idadm: idad
       });
       const Usuario = response.data;
-      const userId = Usuario.id;
-      setid(userId);
-
-      const response1 = await axios.post(`${getUrl()}/MindCare/API/pacientes`, {
-        iduser: userId
+      await axios.post(`${getUrl()}/MindCare/API/pacientes`, {
+        id: Usuario.id
       });
-      const Paciente = response1.data;
-      const idpac = Paciente.id;
-      setidp(idpac);
 
       navigation.navigate("TelaInicio02", {id: idad, email: emailad, password: passwordad });
     } catch (error) {
@@ -51,20 +44,9 @@ export default function CriarConta02({ route, navigation }) {
   };
 
   const genders = ['Masculino', 'Feminino', 'Não incluir'];
-  const minimumDate = new Date(1900, 0, 1);
   const maximumDate = new Date();
   maximumDate.setFullYear(maximumDate.getFullYear());
 
-  const onDateChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
-    if (event.type === 'set' && selectedDate) {
-      if (selectedDate > maximumDate) {
-        Alert.alert('Data inválida', 'Você deve ter pelo menos 18 anos de idade.');
-      } else {
-        setDatan(selectedDate);
-      }
-    }
-    setShowDatePicker(false);
-  };
 
    if (Platform.OS === "web") {
     return (

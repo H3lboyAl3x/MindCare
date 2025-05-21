@@ -46,11 +46,11 @@ export default function IniciarSessao({ navigation }) {
           : null;
     
         try {
-          const response1 = await axios.get(`${getUrl()}/MindCare/API/pacientes/iduser/${usuario.id}`);
+          const response1 = await axios.get(`${getUrl()}/MindCare/API/pacientes/${usuario.id}`);
           const paciente = response1.data;
+          console.log(paciente)
           navigation.navigate("Navegacao1", {
-            id: usuario.id,
-            idp: paciente.id,
+            id: paciente.id,
             nome: usuario.nome,
             telefone: usuario.telefone,
             email: usuario.email,
@@ -59,14 +59,13 @@ export default function IniciarSessao({ navigation }) {
             genero: usuario.genero,
           });
         } catch {
-          const response2 = await axios.get(`${getUrl()}/MindCare/API/profissionais/iduser/${usuario.id}`);
+          const response2 = await axios.get(`${getUrl()}/MindCare/API/profissionais/${usuario.id}`);
           const profissional = response2.data;
           const areap = await axios.get(`${getUrl()}/MindCare/API/areaprof/idpro/${profissional.id}`);
           const areaT = await axios.get(`${getUrl()}/MindCare/API/areatrabalho/${areap.data.idarea}`);
 
           navigation.navigate("Navegacao2", {
-            id: usuario.id,
-            idp: profissional.id,
+            id: profissional.id,
             nome: usuario.nome,
             telefone: usuario.telefone,
             email: usuario.email,

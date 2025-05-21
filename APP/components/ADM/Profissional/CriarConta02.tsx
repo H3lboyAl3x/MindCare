@@ -1,23 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import axios from "axios";
-import { View, Text, TouchableOpacity, StyleSheet, Modal, FlatList, Alert, Platform, SafeAreaView, KeyboardAvoidingView, ScrollView, Image } from 'react-native';
-import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
+import { View, Text, TouchableOpacity, StyleSheet, Modal, FlatList, Alert, Platform, SafeAreaView, Image } from 'react-native';
 import { getUrl } from '@/app/utils/url';
 import { LinearGradient } from 'expo-linear-gradient';
 
 export default function CriarConta02p({ route, navigation }) {
   const { nome, telefone, email, password, idad, emailad, passwordad} = route.params;
-  const [id, setid] = useState(null);
-  const [idp, setidp] = useState(null);
-
-  const [idat, setidat] = useState(null);
-  const [idap, setidap] = useState(null);
   const [genero, setGenero] = useState('');
   const [expe, setexperiencia] = useState('');
   const [espe, settrabalho] = useState('');
-
   const [datanascimento, setDatan] = useState<Date | null>(null);
-  const [showDatePicker, setShowDatePicker] = useState(false);
   const [showGenderModal, setShowGenderModal] = useState(false);
   const [showexperiencia, setshowexperiencia] = useState(false);
   const [showtrabalho, setshowtrabalho] = useState(false);
@@ -38,34 +30,23 @@ export default function CriarConta02p({ route, navigation }) {
         email,
         password,
         datanascimento: formattedDate,
-        genero
+        genero,
+        idadm: idad
       });
       const Usuario = response.data;
-      const userId = Usuario.id;
-      setid(userId);
-
       const response1 = await axios.post(`${getUrl()}/MindCare/API/profissionais`, {
+        id: Usuario.id,
         tempoexperiencia: expe,
-        iduser: userId
       });
       const Profissional = response1.data;
-      const idpac = Profissional.id;
-      setidp(idpac);
-
       const response2 = await axios.post(`${getUrl()}/MindCare/API/areatrabalho`, {
         area: espe
       });
       const AreaTrabalho = response2.data;
-      const idAT = AreaTrabalho.id;
-      setidat(idAT);
-
-      const response3 = await axios.post(`${getUrl()}/MindCare/API/areaprof`, {
+      await axios.post(`${getUrl()}/MindCare/API/areaprof`, {
         idarea: AreaTrabalho.id,
         idpro: Profissional.id
       });
-      const AreaProf = response2.data;
-      const idAP = AreaProf.id;
-      setidap(idAP);
 
       navigation.navigate("TelaInicio02", {id: idad, email: emailad, password: passwordad });
 } catch (error) {

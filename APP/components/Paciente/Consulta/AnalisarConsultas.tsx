@@ -7,7 +7,7 @@ import axios from "axios";
 const { width, height } = Dimensions.get("window");
 
 export default function AnalisarConsultas({ navigation, route }) {
-    const { idConsulta, dataConsulta, horaConsulta, idpaci, idp, statusConsulta, link } = route.params;
+    const { idConsulta, dataConsulta, horaConsulta, idpaci, idpro, statusConsulta, link } = route.params;
 
     const pegarData = () => {
         const agora = new Date();
@@ -15,13 +15,6 @@ export default function AnalisarConsultas({ navigation, route }) {
         const mes = (agora.getMonth() + 1).toString().padStart(2, '0');
         const dia = agora.getDate().toString().padStart(2, '0');
         return `${ano}-${mes}-${dia}`;
-    };
-
-    const PegarHora = () => {
-        const agora = new Date();
-        const hora = agora.getHours().toString().padStart(2, '0');
-        const minutos = agora.getMinutes().toString().padStart(2, '0');
-        return `${hora}:${minutos}`;
     };
 
     const formattedDate = new Date(dataConsulta).toISOString().split("T")[0];
@@ -33,7 +26,7 @@ export default function AnalisarConsultas({ navigation, route }) {
             dataConsulta,
             horaConsulta,
             idpaci,
-            idp,
+            idpro,
             statusConsulta
         });
     };

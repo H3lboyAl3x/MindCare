@@ -16,7 +16,6 @@ interface Consultas {
 interface Profissional {
     id: number;
     tempoexperiencia: number;
-    iduser: number;
 }
 
 interface Usuario {
@@ -55,7 +54,7 @@ interface NumeroP {
 }
 
 export default function Perfil01({navigation, route}){
-    const {id, idp, nome, telefone, email, password, datanascimento, genero} = route.params;
+    const {id, nome, telefone, email, password, datanascimento, genero} = route.params;
     const [opcaoSelecionada, setOpcaoSelecionada] = useState<"consulta" | "profissional">("consulta");
     const [consultas, setconsultas] = useState<Consultas[]>();
     const [tempex, settempex] = useState(Number);
@@ -66,10 +65,10 @@ export default function Perfil01({navigation, route}){
         try {
             const consultaResponde = await axios.get<Consultas[]>(`${getUrl()}/MindCare/API/consultas`);
             const listaconsulta = consultaResponde.data;
-            const consultasUnicas = listaconsulta.filter((consulta) => consulta.idpaci === idp);
+            const consultasUnicas = listaconsulta.filter((consulta) => consulta.idpaci === id);
             setconsultas(consultasUnicas);
 
-            const NP = await axios.get<NumeroP[]>(`${getUrl()}/MindCare/API/numeroP/idpac/${idp}`);
+            const NP = await axios.get<NumeroP[]>(`${getUrl()}/MindCare/API/numeroP/idpac/${id}`);
             const listaProfissionaisC = NP.data;
             const profissionaisComNomesC: ProfissionalComNome[] = await Promise.all(
                 listaProfissionaisC.map(async (Numero) => {
@@ -77,7 +76,7 @@ export default function Perfil01({navigation, route}){
                     const proResponse = await axios.get<Profissional>(`${getUrl()}/MindCare/API/profissionais/${Numero.idprof}`);
                     settempex(proResponse.data.tempoexperiencia);
 
-                    const userResponse = await axios.get<Usuario>(getUrl()+"/MindCare/API/users/"+proResponse.data.iduser);
+                    const userResponse = await axios.get<Usuario>(getUrl()+"/MindCare/API/users/"+proResponse.data.id);
 
                     const areapResponse = await axios.get<AreaProf>(`${getUrl()}/MindCare/API/areaprof/idpro/${proResponse.data.id}`);
                     const AreaP = areapResponse.data;
@@ -124,7 +123,7 @@ export default function Perfil01({navigation, route}){
         ListaConsulta();
         const intervalo = setInterval(ListaConsulta, 1000);
         return () => clearInterval(intervalo);
-      }, [idp]);
+      }, [id]);
 
     const Funcaobotao1 = () => {
         setmenu1('white');
@@ -167,14 +166,15 @@ export default function Perfil01({navigation, route}){
                                                 style={{ marginTop: 10 }}
                                                 onPress={() => navigation.navigate('ExibirInformacao', {
                                                     id: id,
-                                                    idp: idp,
                                                     nome: nome,
                                                     telefone: telefone,
                                                     email: email,
                                                     password: password,
                                                     datanascimento: datanascimento,
                                                     genero: genero,
-                                                    idadm: 0
+                                                    idadm: 0,
+                                                    emailadm: '',
+                                                    passwordadm: ''
                                                 })}
                                             >
                                                 <Ionicons name="create-outline" size={20} color="#4CD964" />
@@ -212,7 +212,7 @@ export default function Perfil01({navigation, route}){
                         <View style={styles.card}>
                             <Text style={[styles.nome, {fontSize: 16}]}>{item.nome}</Text>
                             <Text style={styles.nome}>{item.areaT}</Text>
-                            <Text style={styles.nome}>Estado: {item.tempoexperiencia}</Text>
+                            <Text style={styles.nome}>Experiecia: {item.tempoexperiencia}</Text>
                         </View>
                     )}/>
                 )}
@@ -228,14 +228,15 @@ export default function Perfil01({navigation, route}){
                     <Ionicons style={styles.foto} name="person-circle-outline" size={100} color={'black'} ></Ionicons>
                     <TouchableOpacity style={styles.encrenagem} onPress={() => navigation.navigate('ExibirInformacao', {
                         id: id,
-                        idp: idp,
                         nome: nome,
                         telefone: telefone,
                         email: email,
                         password: password,
                         datanascimento: datanascimento,
                         genero: genero,
-                        idadm: 0
+                        idadm: 0,
+                        emailadm: '',
+                        passwordadm: ''
                     })}>
                     <Ionicons style={{backgroundColor: 'white', borderRadius: 50}} name="ellipsis-horizontal-circle-outline" size={40} color={'black'} />
                 </TouchableOpacity>
@@ -271,7 +272,7 @@ export default function Perfil01({navigation, route}){
                     <View style={styles.card}>
                         <Text style={[styles.nome, {fontSize: 16}]}>{item.nome}</Text>
                         <Text style={styles.nome}>{item.areaT}</Text>
-                        <Text style={styles.nome}>Estado: {item.tempoexperiencia}</Text>
+                        <Text style={styles.nome}>Experiecia: {item.tempoexperiencia}</Text>
                     </View>
                 )}/>
             )}

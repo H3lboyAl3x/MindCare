@@ -25,29 +25,18 @@ type Usuario = {
   password: string;
   datanascimento: string;
   genero: string;
+  idadm: number;
 };
 
 type Profissional = {
   id: number;
   tempoexperiencia: string;
   especialidade: string;
-  iduser: number;
 };
 
-type AreaProf = {
-  id: number;
-  idpro: number;
-  idarea: number;
-};
-
-type Areatrabalho = {
-  id: number;
-  area: string;
-};
 
 type Paciente = {
   id: number;
-  iduser: number;
 };
 
 type Consulta = {
@@ -128,7 +117,7 @@ export default function TelaInicio02({ navigation, route }) {
       let filtrados = json;
 
       if (tipo === 'consultas') {
-        filtrados = json.filter((consulta: Consulta) => consulta.status === 'Pendente');
+        filtrados = json.filter((consulta: Consulta) => consulta.status === 'Pendente' || 'Adiada');
       }
 
       setDados(filtrados);
@@ -138,41 +127,29 @@ export default function TelaInicio02({ navigation, route }) {
     }
   };
 
-  const obterUsuario = (iduser: number) => usuarios.find(u => u.id === iduser);
-  const obterNomeUsuario = (iduser: number) => obterUsuario(iduser)?.nome || 'Desconhecido';
-  const obterEmailUsuario = (iduser: number) => obterUsuario(iduser)?.email || 'Desconhecido';
+  const obterUsuario = (id: number) => usuarios.find(u => u.id === id);
+  const obterNomeUsuario = (id: number) => obterUsuario(id)?.nome || 'Desconhecido';
+  const obterEmailUsuario = (id: number) => obterUsuario(id)?.email || 'Desconhecido';
 
   const obterNomeProfissional = (idprofissional: number) => {
     const prof = profissionais.find(p => p.id === idprofissional);
     if (!prof) return 'Desconhecido';
-    return obterNomeUsuario(prof.iduser);
+    return obterNomeUsuario(prof.id);
   };
 
   const obterNomePaciente = (idpaciente: number) => {
     const pac = pacientes.find(p => p.id === idpaciente);
     if (!pac) return 'Desconhecido';
-    return obterNomeUsuario(pac.iduser);
+    return obterNomeUsuario(pac.id);
   };
 
-  const obterEmailProfissional = (idprofissional: number) => {
-    const prof = profissionais.find(p => p.id === idprofissional);
-    if (!prof) return 'Desconhecido';
-    return obterEmailUsuario(prof.iduser);
-  };
-
-  const obterEmailPaciente = (idpaciente: number) => {
-    const pac = pacientes.find(p => p.id === idpaciente);
-    if (!pac) return 'Desconhecido';
-    return obterEmailUsuario(pac.iduser);
-  };
-
-  const handlePressPaciente = (iduser: number) => {
-    const user = obterUsuario(iduser);
-    const paciente = pacientes.find(p => p.iduser === iduser);
+  const handlePressPaciente = (id: number) => {
+    alert('entrou')
+    const user = obterUsuario(id);
+    const paciente = pacientes.find(p => p.id === id);
     if (user && paciente) {
       navigation.navigate('ExibirInformacao', {
-        id: user.id,
-        idp: paciente.id,
+        id: paciente.id,
         nome: user.nome,
         telefone: user.telefone,
         email: user.email,
@@ -187,15 +164,14 @@ export default function TelaInicio02({ navigation, route }) {
   };
   
 
-  const handlePressProfissional = async (iduser: number, tempoexperiencia: string) => {
-    const user = obterUsuario(iduser);
-    const profissional = profissionais.find(p => p.iduser === iduser);
+  const handlePressProfissional = async (id: number, tempoexperiencia: string) => {
+    const user = obterUsuario(id);
+    const profissional = profissionais.find(p => p.id === id);
     if (user && profissional) {
       const areaprof = await axios.get(`${getUrl()}/MindCare/API/areaprof/idpro/${profissional.id}`);
       const areatrabalho = await axios.get(`${getUrl()}/MindCare/API/areatrabalho/${areaprof.data.idarea}`)
       navigation.navigate('ExibirInformacaop', {
-        id: user.id,
-        idp: profissional.id,
+        id: profissional.id,
         nome: user.nome,
         telefone: user.telefone,
         email: user.email,
@@ -215,8 +191,8 @@ export default function TelaInicio02({ navigation, route }) {
     const profissional = profissionais.find(p => p.id === consulta.idpro);
     const paciente = pacientes.find(p => p.id === consulta.idpaci);
   
-    const nomeprofissional = profissional ? obterNomeUsuario(profissional.iduser) : 'Desconhecido';
-    const nomepaciente = paciente ? obterNomeUsuario(paciente.iduser) : 'Desconhecido';
+    const nomeprofissional = profissional ? obterNomeUsuario(profissional.id) : 'Desconhecido';
+    const nomepaciente = paciente ? obterNomeUsuario(paciente.id) : 'Desconhecido';
   
     navigation.navigate('ConsultaADM', {
       idConsulta: consulta.id,
@@ -224,8 +200,6 @@ export default function TelaInicio02({ navigation, route }) {
       horaConsulta: consulta.hora,
       idpaci: consulta.idpro,
       idp: consulta.idpaci,
-      statusConsulta: consulta.status,
-      link: consulta.link || '',
       nomeprofissional,
       nomepaciente
     });
@@ -286,14 +260,14 @@ export default function TelaInicio02({ navigation, route }) {
                     <>
                       {abaSelecionada === 'profissionais' && (
                         <View>
-                          <Text style={stylesweb.cardTitle}>Nome: {obterNomeUsuario(item.iduser)}</Text>
-                          <Text style={stylesweb.cardTitle}>{obterEmailUsuario(item.iduser)}</Text>
+                          <Text style={stylesweb.cardTitle}>Nome: {obterNomeUsuario(item.id)}</Text>
+                          <Text style={stylesweb.cardTitle}>{obterEmailUsuario(item.id)}</Text>
                         </View>
                       )}
                       {abaSelecionada === 'pacientes' && (
                         <View>
-                          <Text style={stylesweb.cardTitle}>Nome: {obterNomeUsuario(item.iduser)}</Text>
-                          <Text style={stylesweb.cardTitle}>{obterEmailUsuario(item.iduser)}</Text>
+                          <Text style={stylesweb.cardTitle}>Nome: {obterNomeUsuario(item.id)}</Text>
+                          <Text style={stylesweb.cardTitle}>{obterEmailUsuario(item.id)}</Text>
                         </View>
                       )}
                       {abaSelecionada === 'consultas' && (
@@ -313,8 +287,8 @@ export default function TelaInicio02({ navigation, route }) {
                       key={index}
                       style={stylesweb.card}
                       onPress={() => {
-                        if (abaSelecionada === 'pacientes') handlePressPaciente(item.iduser);
-                        if (abaSelecionada === 'profissionais') handlePressProfissional(item.iduser, item.tempoexperiencia);
+                        if (abaSelecionada === 'pacientes') handlePressPaciente(item.id);
+                        if (abaSelecionada === 'profissionais') handlePressProfissional(item.id, item.tempoexperiencia);
                         if (abaSelecionada === 'consultas') handlePressConsulta(item);
                       }}                      
                     >

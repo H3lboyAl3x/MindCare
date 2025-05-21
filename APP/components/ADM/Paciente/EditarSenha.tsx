@@ -6,7 +6,7 @@ import { View, Text, TouchableOpacity, StyleSheet, TextInput, SafeAreaView, Keyb
 
 
 export default function EditarSenha({navigation,route}){
-    const {id, idp, nome, telefone, email, password, datanascimento, genero} = route.params;
+    const {id, nome, telefone, email, password, datanascimento, genero} = route.params;
     const [oldsenha, setosenha] = useState("");
     const [newsenha, setnsenha] = useState("");
     const [confirmarsenha, setcsenha] = useState("");
@@ -35,16 +35,7 @@ export default function EditarSenha({navigation,route}){
                 });
                 const user = response.data
                 console.log(user)
-                navigation.navigate("Navegacao1", { 
-                        id: user.id, 
-                        idp: idp, 
-                        nome: user.nome, 
-                        telefone: user.telefone, 
-                        email: user.email, 
-                        password: user.password, 
-                        datanascimento: datanascimento, 
-                        genero: user.genero 
-                });
+                navigation.goBack();
     
             } catch (error) {
             console.error("Erro ao Editar", "Tente novamente mais tarde. "+error);
